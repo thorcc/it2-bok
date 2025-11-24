@@ -1,0 +1,199 @@
+---
+title: Testing
+description: Testing i Python
+---
+
+> OBS! Dette notatet er gammelt. Les heller kapitlene i Smidig IT2 som handler om testing.
+
+## Testklasser
+
+### Eksempel
+
+```python
+class Rektangel:
+    def __init__(self, bredde: int, høyde: int) -> None:
+        self.bredde = bredde
+        self.høyde = høyde
+    def areal(self):
+        return self.bredde * self.høyde
+    
+    def omkrets(self):
+        return 2 * self.bredde + 2 * self.høyde
+
+class TestRektangel:
+    def __init__(self) -> None:
+        self.kvadrat = Rektangel(10, 10)
+        self.vanlig = Rektangel(10, 5)
+    def test_areal(self):
+        assert self.kvadrat.areal() == 100, "Areal skal være 100"
+        assert self.vanlig.areal() == 50, "Areal skal være 50"
+        print("Areal OK!")
+    def test_omkrets(self):
+        assert self.kvadrat.omkrets() == 40, "Omkrets skal være 40"
+        assert self.vanlig.omkrets() == 30, "Omkrets skal være 30"
+        print("Omkrets OK!")
+    def kjør(self):
+        print("-- tester Rektangel --")
+        self.test_areal()
+        self.test_omkrets()
+        print("-- test ferdig --")
+test = TestRektangel()
+test.kjør()
+```
+
+Python har et innebygd bibliotek, `unittest` som kan brukes for å lage egne testklasser.
+Her er noen fine ressurser for å lese om `unittest`-biblioteket:
+
+- [A Beginner's Guide to Unit Tests in Python](https://www.dataquest.io/blog/unit-tests-python/)
+- [A Gentle Introduction to Unit Testing in Python](https://machinelearningmastery.com/a-gentle-introduction-to-unit-testing-in-python/)
+- [docs.python.org - unittest](https://docs.python.org/3/library/unittest.html)
+
+
+## Testing med assert
+
+Nøkkelordet `assert` kan brukes for å forsikre oss om at koden gjør det vi vil at den skal gjøre.
+`assert` inneholder en test som gir en feilmelding hvis den er `False`, og hvis testen er `True` fortsetter koden.
+
+## Enkel testdrevet utvikling med assert
+
+I _testdrevet utvikling_ lager man først tester og deretter skriver man koden.
+Meningen med testdrevet utvikling er at man ikke skal skrive unødvendig kode, og alle kode man skriver må skrives for å bestå en test.
+
+La oss ta et eksempel med en enkel funksjon som skal finne ut om et tall er partall eller ikke.
+
+Vi starter med å skrive tester.
+Her gjelder det å få med alle tilfeller, eller _test cases_.
+
+```python
+assert partall(2) == True
+assert partall(1) == False
+assert partall(-2) == True
+assert partall(-1) == False
+```
+
+Nå kan vi skrive kode som oppfyller testene.
+
+```python
+def partall(tall: int):
+    return tall % 2 == 0
+
+assert partall(2) == True
+assert partall(1) == False
+assert partall(-2) == True
+assert partall(-1) == False
+```
+
+Mer om `assert`: [W3Schools - assert](https://www.w3schools.com/python/ref_keyword_assert.asp)
+
+## Håndtering av feil
+
+Vi kan håndtere eventuelle feil i koden med nøkkelordene `try` og `except`.
+Maskinen vil forsøke å kjøre koden under `try` og hvis noe feiler, kjøres koden under `except`.
+Hvis brukeren skriver inn noe annet enn et tall på inputen i linje 2 i koden under, vil `int()` feile, og koden under `except` vil kjøre.
+
+```python showLineNumbers
+try:
+    tall = int(input("Skriv et tall: "))
+except:
+    print("FEIL! Input er ikke et tall. 'tall' får verdien 10")
+    tall = 10
+
+print(tall)
+```
+
+### Eksempel: riktig input med try, except
+
+Med litt kreativ bruk av `while`, `break`, `try` og `except` kan vi lage en kode der vi sørger for at brukeren skriver inn riktig input.
+
+```python showLineNumbers
+while True:
+    try:
+        alder = int(input("Hvor gammel er du? "))
+        break
+    except:
+        print("Ugyldig input. Alder må være et tall.")
+år = 2024
+fødselsår = år - alder
+print(f"Du er født i {fødselsår}")
+```
+
+## Oppgaver
+
+### Oppgave 1
+
+Lag en testklasse til klassen `Bruker`.
+
+
+```python
+class Bruker:
+    def __init__(self, fornavn: str, etternavn: str) -> None:
+        self.fornavn = fornavn
+        self.etternavn = etternavn
+    
+    def formelt(self):
+        # Metode som retunerer etternavn, fornavn: eks: Coward, Thor Christian
+        return f"{self.etternavn}, {self.fornavn}"
+    
+    def brukernavn(self):
+        # metode som returnerer brukernavn, første del av fornavn pluss første
+        # bokstav i etternavnet: eks: thorc
+        return self.fornavn.lower() + self.etternavn.lower()[0]
+    
+    def mail(self, fylke: str):
+        # metode som returnerer mail: brukernavn@fylke.no:
+        # eks: thorc@akershus.no
+        return f"{self.brukernavn()}@{fylke}.com"
+
+```
+
+### Oppgave 2
+
+Kopier koden under inn i en .py- eller en .ipynb-fil, og legg til en kommentar på hver linje som forklarer hva linjene gjør.
+
+```python showLineNumbers copy
+while True:                                            # Dine kommentarer her
+    try:                                               #
+        alder = int(input("Hvor gammel er du? "))      #
+        break                                          #
+    except:                                            #
+        print("Ugyldig input. Alder må være et tall.") #
+år = 2024                                              #
+fødselsår = år - alder                                 #
+print(f"Du er født i {fødselsår}")                     #
+```
+
+### Oppgave 3
+
+Lag et program som genrerer mailadresser fra fornavn og etternavn.
+Mailen skal bestå av hele det første fornavnet og første bokstav i etternavnet etterfulgt av `@afk.no`.
+For eksempel skal `Thor Christian Coward` bli `thorc@afk.no`.
+Som input til programmet må brukeren skrive inn minst to navn (fornavn og etternavn), hvis ikke skal brukeren få en feilmelding og få lov til å skrive input på nytt.
+
+### Oppgave 4
+
+I denne oppgaven skal du lage ferdig en funksjon som returnerer `True` om et årstall er skuddår og `False` hvis årstallet ikke er et skuddår.
+
+Skuddår er år som er delelige på 4 og som ikke er delelige med 100, med unntak for år som er delelige på 400.
+Kopier koden under, og fiks funksjonen `er_skuddår` slik at alle testene er ok.
+
+```python copy
+def er_skuddår(årstall: int):
+    # 2. lag funksjonen
+    return False
+
+# Tester:
+skuddår = [1704, 1708, 1712, 1716, 1720, 1724, 1728, 1732, 1736, 1740, 1744, 1748, 1752, 1756, 1760, 1764, 1768, 1772, 1776, 1780, 1784, 1788, 1792, 1796, 1804, 1808, 1812, 1816, 1820, 1824, 1828, 1832, 1836, 1840, 1844, 1848, 1852, 1856, 1860, 1864, 1868, 1872, 1876, 1880, 1884, 1888, 1892, 1896, 1904, 1908, 1912, 1916, 1920, 1924, 1928, 1932, 1936, 1940, 1944, 1948, 1952, 1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984, 1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020, 2024, 2028, 2032, 2036, 2040, 2044, 2048, 2052, 2056, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092, 2096, 2104, 2108, 2112, 2116, 2120, 2124, 2128, 2132, 2136, 2140, 2144, 2148, 2152, 2156, 2160, 2164, 2168, 2172, 2176, 2180, 2184, 2188, 2192, 2196]
+for år in range(1704, 2197):
+    if år in skuddår:
+        assert er_skuddår(år) == True
+    else:
+        assert er_skuddår(år) == False
+```
+
+### Oppgave 5
+
+Gjør oppgave 6 fra eksamen våren 23.
+
+- [Udir: IT2-v23](https://kandidat.udir.no/epsmateriell/eksamen?fagkode=rea3049-py&malform=nn-no&semester=v&ar=2023&eksamensdeltype=eksamen)
+
+> Passord: `Eksamen`

@@ -1,0 +1,305 @@
+---
+title: Løkker, lister og ordbøker
+description: Løkker, lister og ordbøker i Python
+---
+
+> OBS! Dette notatet er gammelt. Les heller kapitlene om løkker, lister og ordbøker i Smidig IT2.
+
+Løkker, lister og ordbøker er veldig viktig i databehandling, derfor tar vi en liten repetisjon fra IT1.
+
+## Løkker
+
+<iframe width="100%" height="500" src="https://www.youtube.com/embed/mgooqyWMTxk?start=0&end=37" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## While-løkker
+
+While-løkker kjører "så lenge" en betingelse er sann.
+
+```python
+while betingelse:
+    # kode som gjennomføres så lenge betingelsen er sann
+```
+
+For eksempel bruker programmet under en while-løkke for å telle ned fra 5, og deretter si "lift off!":
+
+<iframe width="100%" height="350" src="https://pythontutor.com/iframe-embed.html#code=n%20%3D%205%0Awhile%20n%20%3E%200%3A%0A%20%20%20%20print%28n%29%0A%20%20%20%20n%20-%3D%201%0Aprint%28%22Lift%20off!%22%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+
+While-løkker brukes som oftest når vi ikke vet hvor lenge vi skal holde på.
+For eksempel helt til en spiller dør i et spill, eller så lenge spilleren ikke har gjettet riktig, som i eksemplet under.
+
+```python
+import random
+
+hemmelig = random.randint(1,100) # trekker et tilfeldig tall fra 1 til 100
+gjett = int(input("Hvilket tall tenker jeg på? 1-100: ")) # henter input fra bruker og lagre den i variabelen gjett
+
+while hemmelig != gjett: # så lenge hemmelig ikke er lik gjett
+    gjett = int(input("Feil, prøv igjen! 1-100: ")) # hent ny input fra bruker og oppdater variabelen gjett
+
+print("Riktig!") # while-løkken er ferdig, som betyr at brukeren har gjettet riktig
+```
+
+### Uendelige løkker
+
+While-løkkene kjører så lenge betingelsen er sann (`True`).
+Hvis betingelsen aldri blir usann (`False`), vil en løkke kjøre for alltid.
+Hvis vi ender opp i en uendelig løkke vil PCen fryse, og vi får ikke kjørt resten av programmet.
+
+> Tips: `ctrl` + `c` stopper programmet i terminalen.
+
+**Eksempel 1**:
+
+```python
+while True:
+    print("Inn i evigheten!")
+```
+
+**Eksempel 2**:
+
+```python
+n = 20
+while n > 0:
+    print(n)
+```
+
+## For-løkker
+
+En for-løkke er en løkke som kan brukes for å gå gjennom *ting*, for eksempel kan vi bruke en for-løkke for å gå gjennom hver bokstav i en tekst, hver *ting* i en liste eller hvert opplslagsord i en ordbok.
+
+Koden under bruker en for-løkke og går gjennom hver bokstav i teksten `Ja, vi elsker` og teller antall mellomrom.
+
+<iframe width="100%" height="340" src="https://pythontutor.com/iframe-embed.html#code=antall_mellomrom%20%3D%200%0Afor%20bokstav%20in%20%22Ja,%20vi%20elsker%22%3A%0A%20%20%20%20if%20bokstav%20%3D%3D%20%22%20%22%3A%0A%20%20%20%20%20%20%20%20antall_mellomrom%20%2B%3D%201%0Aprint%28antall_mellomrom%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=311&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+Inne i en for-løkke lages en variabel, for eksempel `bokstav`.
+For hver runde i løkken oppdateres variabelsen verdi, i eksempelene over har variabelen `bokstav` først verdien `"J"`, så `"a"`, så `","`, så `" "` og så videre.
+Følg med på hva som skjer i minnet (global frame) i eksempelet over.
+
+Vi kan også bruke for-løkker for å gå gjennom lister.
+Da vil variabelen vi oppretter i løkken få verdiene til hvert element i listen, en verdi om gangen.
+Legg merke til hvilke verdier variabelen `elev` har i eksempelet under.
+
+> En liste i python skrives mellom firkantparenteser `["dette", "er", "en", "liste"]`.  
+> Firkantparenteser skrives med `option/alt` + `shift` + `8` på mac.  
+> Firkantparenteser skrives med `Alt gr` + `8` på windows.
+
+<iframe width="100%" height="300"  src="https://pythontutor.com/iframe-embed.html#code=for%20elev%20in%20%5B%22Erling%22,%20%22Ada%22,%20%22Caroline%22%5D%3A%0A%20%20%20%20print%28elev%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=311&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+Det er også mulig å bruke for-løkker på lister med tall.
+Eksempelet under skriver ut syv-gangen.
+
+```python
+print("7-gangen")
+for tall in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
+    gange = 7 * tall
+    print(f"7 * {tall} = {gange}")
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="100%" height="400"  src="https://pythontutor.com/iframe-embed.html#code=print%28%227-gangen%22%29%0Afor%20tall%20in%20%5B1,%202,%203,%204,%205,%206,%207,%208%20,%209,%2010%5D%3A%0A%20%20%20%20gange%20%3D%207%20*%20tall%0A%20%20%20%20print%28f%227%20*%20%7Btall%7D%20%3D%20%7Bgange%7D%22%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=311&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+I lengden blir det litt slitsomt å skrive alle tallene i listen.
+Vi kan heller bruke den innebygde funksjonen `range(start, slutt_før)`, som gir oss et intervall fra og med `start` opp til `slutt_før`.
+
+> `range()` er en innebygd funksjon som lager en rekke med tall.
+> Rekken starter på det første tallet  og slutter ett tall før det andre tallet. Eks: `range(1,3)` gir rekken `1` `2`.
+> `range(5,7)` gir rekken `5` `6`.
+> Det er også mulig å droppe første tallet i range, slik `range(3)`, da lager range en rekke som starter på `0` og slutter før tallet mellom parantesene. Eks: `range(3)` gir rekken `0` `1` `2`
+
+```python
+print("7-gangen")
+for tall in range(1,11):
+    gange = 7 * tall
+    print(f"7 * {tall} = {gange}")
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="100%" height="350"  src="https://pythontutor.com/iframe-embed.html#code=print%28%227-gangen%22%29%0Afor%20tall%20in%20range%281,11%29%3A%0A%20%20%20%20gange%20%3D%207%20*%20tall%0A%20%20%20%20print%28f%227%20*%20%7Btall%7D%20%3D%20%7Bgange%7D%22%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=311&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+Legg merke til at range slutter én før den siste verdien som sendes inn.
+Løkken under vil altså telle fra 1 til 10 – ikke fra 1 til 11!
+
+```python
+for tall in range(1,11):
+    print(tall)
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="800" height="500"  src="https://pythontutor.com/iframe-embed.html#code=for%20i%20in%20range%281,11%29%3A%0A%20%20%20%20print%28i%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+## While vs. for
+
+I mange tilfeller kan vi velge om vi skal bruke *for* eller *while*.
+I eksemplet under brukes både en while-løkke og en for-løkke for å telle til 10.
+
+```python
+# ---- While ----
+i = 1
+while i < 11:
+    print(i)
+    i += 1
+
+# ---- For -----
+for i in range(11):
+    print(i)
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="800" height="500"  src="https://pythontutor.com/iframe-embed.html#code=%23%20----%20While%20----%0Ai%20%3D%201%0Awhile%20i%20%3C%2011%3A%0A%20%20%20%20print%28i%29%0A%20%20%20%20i%20%2B%3D%201%0A%0A%23%20----%20For%20-----%0Afor%20i%20in%20range%2811%29%3A%0A%20%20%20%20print%28i%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+Selv om det er mulig å bruke begge typene løkker for å løse samme problem, er det noen tilfeller hvor vi oftere bruker *for*, og andre tilfeller hvor vi oftere bruker *while*.
+For-løkker brukes som oftest når vi vet hvor mange ganger vi skal gjenta en kode, mens While-løkker brukes oftest når vi ikke vet hvor mange ganger vi skal gjenta en kode.
+
+## Ordbøker og løkker
+
+Hvis man kjører en for-løkke på en ordbok, vil variabelen inne i løkken gå gjennom alle nøklene i ordboken.
+I eksempelet under vil variabelen `nøkkel` har verdiene `fornavn`, `etternavn`, `alder` og `klubb`.
+Videre brukes variebelen `nøkkel` for å hente ut verdiene fra ordboken i print-en.
+
+```python
+fotballspiller = {
+    "fornavn": "Ada",
+    "etternavn": "Hegerberg",
+    "alder": 26,
+    "klubb": "Lyon"
+}
+for nøkkel in fotballspiller:
+    print(f"{nøkkel}: {fotballspiller[nøkkel]}")
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="800" height="500"  src="https://pythontutor.com/iframe-embed.html#code=fotballspiller%20%3D%20%7B%0A%20%20%20%20%22fornavn%22%3A%20%22Ada%22,%0A%20%20%20%20%22etternavn%22%3A%20%22Hegerberg%22,%0A%20%20%20%20%22alder%22%3A%2026,%0A%20%20%20%20%22klubb%22%3A%20%22Lyon%22%0A%7D%0Afor%20n%C3%B8kkel%20in%20fotballspiller%3A%0A%20%20%20%20print%28f%22%7Bn%C3%B8kkel%7D%3A%20%7Bfotballspiller%5Bn%C3%B8kkel%5D%7D%22%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+## Lister med ordbøker
+
+Lister med ordbøker er en veldig vanlig datastruktur, som vi kommer til å bruke mye i IT2.
+Under er et eksempel på en liste med ordbøker, der hver ordbok inneholder informasjon om en skuespiller.
+
+```python
+skuespillere = [
+    {"navn": "Tom Hanks", "alder": 66},
+    {"navn": "Meryl Streep", "alder": 73},
+    {"navn": "Leonardo DiCaprio", "alder": 48},
+    {"navn": "Julia Roberts", "alder": 55},
+    {"navn": "Denzel Washington", "alder": 67},
+    {"navn": "Nicole Kidman", "alder": 55},
+    {"navn": "Brad Pitt", "alder": 59},
+    {"navn": "Charlize Theron", "alder": 47},
+    {"navn": "Johnny Depp", "alder": 59},
+    {"navn": "Emma Stone", "alder": 34},
+]
+```
+
+Vi kan hente ut en skuepspiller fra listen med firkantparenteser og printe informasjon om skuespilleren.
+
+```python
+print(skuespillere[1]) # -> {"navn": "Meryl Streep", "alder": 73}
+
+skuespiller = skuespillere[2] # lager en variabel som peker på ordboken til Leonardi DiCaprio
+print(f"{skuespiller['navn']} er {skuespiller['alder']} år gammel") # -> Leonardi DiCaprio er 48 år gammel
+```
+
+Vi kan bruke en for løkke for å gå gjennom alle skuespillerne, da vil variabelen inne i for-løkken etter tur peke på hver enkelt ordbok.
+
+```python
+for skuespiller in skuespillere:
+    print(f"{skuespiller['navn']} er {skuespiller['alder']} år gammel")
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="800" height="500"  src="https://pythontutor.com/iframe-embed.html#code=skuespillere%20%3D%20%5B%0A%20%20%20%20%7B%22navn%22%3A%20%22Tom%20Hanks%22,%20%22alder%22%3A%2066%7D,%0A%20%20%20%20%7B%22navn%22%3A%20%22Meryl%20Streep%22,%20%22alder%22%3A%2073%7D,%0A%20%20%20%20%7B%22navn%22%3A%20%22Leonardo%20DiCaprio%22,%20%22alder%22%3A%2048%7D%0A%5D%0A%0Afor%20skuespiller%20in%20skuespillere%3A%0A%20%20%20%20print%28f%22%7Bskuespiller%5B'navn'%5D%7D%20er%20%7Bskuespiller%5B'alder'%5D%7D%20%C3%A5r%20gammel%22%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+### Eksempel: Telling med ordbøker
+
+Det finnes mange bruksområder for lister og ordbøker, og er man litt kreativ kan man bruke de for å løse en del problemer.
+I eksempelet under brukes en ordbok for å telle antall sjåfører av forskjellige nasjonaliteter i Formel 1-sirkuset.
+
+```python
+f1_sjåfører = [
+    {"navn": "Lewis Hamilton", "nasjonalitet": "britisk", "team": "Mercedes", "bilnummer": 44},
+    {"navn": "Daniel Ricciardo", "nasjonalitet": "australsk", "team": "McLaren", "bilnummer": 3},
+    {"navn": "Lando Norris", "nasjonalitet": "britisk", "team": "McLaren", "bilnummer": 4},
+    {"navn": "Esteban Ocon", "nasjonalitet": "fransk", "team": "Alpine", "bilnummer": 31},
+    {"navn": "George Russell", "nasjonalitet": "britisk", "team": "Williams", "bilnummer": 63},
+    {"navn": "Pierre Gasly", "nasjonalitet": "fransk", "team": "AlphaTauri", "bilnummer": 10},
+]
+
+antall_nasjonaliteter = {}                      # en tom ordbok som skal fylles med nasjonaliteter
+
+for sjåfør in f1_sjåfører:                      # for hver sjåfør i lista:
+  nasjonalitet = sjåfør['nasjonalitet']           # hent ut nasjonaliteten til sjårføren
+  if nasjonalitet not in antall_nasjonaliteter:   # hvis nasjonaliteten ikke er en nøkkel i ordboken:
+    antall_nasjonaliteter[nasjonalitet] = 1         # legg til nasjonaliteten i ordboken med verdien 1
+  else:                                           # nasjonaliteten finnes allerede i ordboken:
+    antall_nasjonaliteter[nasjonalitet] += 1        # øk verdien til nasjonaliteten med 1
+
+print(antall_nasjonaliteter)                    # print ordboken
+
+# {
+#   'britisk': 3,
+#   'finsk': 2,
+#   'nederlandsk': 1,
+#   'meksikansk': 1,
+#   'monegaskisk': 1,
+#   'spansk': 2,
+#   'australsk': 1,
+#   'fransk': 2,
+#   'tysk': 2,
+#   'canadisk': 1,
+#   'italiensk': 1,
+#   'russisk': 1,
+#   'kanadisk': 1,
+#   'japansk': 1
+# }
+```
+
+<details>
+<summary>Klikk for Pythontutor</summary>
+
+<iframe width="1000" height="500"  src="https://pythontutor.com/iframe-embed.html#code=f1_sj%C3%A5f%C3%B8rer%20%3D%20%5B%0A%20%20%20%20%7B%22navn%22%3A%20%22Lewis%20Hamilton%22,%20%22nasjonalitet%22%3A%20%22britisk%22,%20%22team%22%3A%20%22Mercedes%22,%20%22bilnummer%22%3A%2044%7D,%0A%20%20%20%20%7B%22navn%22%3A%20%22Daniel%20Ricciardo%22,%20%22nasjonalitet%22%3A%20%22australsk%22,%20%22team%22%3A%20%22McLaren%22,%20%22bilnummer%22%3A%203%7D,%0A%20%20%20%20%7B%22navn%22%3A%20%22Lando%20Norris%22,%20%22nasjonalitet%22%3A%20%22britisk%22,%20%22team%22%3A%20%22McLaren%22,%20%22bilnummer%22%3A%204%7D%0A%5D%0A%0Aantall_nasjonaliteter%20%3D%20%7B%7D%20%23%20en%20tom%20ordbok%20som%20skal%20fylles%20med%20nasjonaliteter%0A%0Afor%20sj%C3%A5f%C3%B8r%20in%20f1_sj%C3%A5f%C3%B8rer%3A%0A%20%20nasjonalitet%20%3D%20sj%C3%A5f%C3%B8r%5B'nasjonalitet'%5D%0A%20%20if%20nasjonalitet%20not%20in%20antall_nasjonaliteter%3A%0A%20%20%20%20antall_nasjonaliteter%5Bnasjonalitet%5D%20%3D%201%0A%20%20else%3A%0A%20%20%20%20antall_nasjonaliteter%5Bnasjonalitet%5D%20%2B%3D%201%0A%0Aprint%28antall_nasjonaliteter%29&codeDivHeight=400&codeDivWidth=350&cumulative=false&curInstr=0&heapPrimitives=nevernest&origin=opt-frontend.js&py=3&rawInputLstJSON=%5B%5D&textReferences=false"> </iframe>
+
+</details>
+
+
+### Sortering av ordbøker med verdier
+
+I utgangspunktetet kan ikke ordbøker sorteres, så hvis vi for eksempel ønsker å sortere nøklene i en ordbok etter verdier, må vi konvertere ordboken til en liste.
+
+```python
+personer = {
+   "Ravi": 39,
+   "Thor": 33,
+   "Martin": 34
+}
+
+# lager en liste av tupler som kan sorteres (tupler er nesten som lister, så du kan tenke at vi lager en liste av lister)
+personer_liste = personer.items() # -> [('Ravi', 39), ('Thor', 33), ('Martin', 34)]
+
+personer_sortert = sorted(personer_liste, key=lambda person: person[1]) # sorterer listen på det som ligger på plassering [1], altså verdien
+print(personer_sortert) # -> [('Thor', 33), ('Martin', 34) ('Ravi', 39)]
+print(personer_sortert[0][0]) # -> 'Thor'
+```

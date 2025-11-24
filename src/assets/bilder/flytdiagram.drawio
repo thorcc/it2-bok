@@ -1,0 +1,118 @@
+<mxfile host="Electron" modified="2024-01-08T20:16:13.954Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.16 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="tqg584DN-xuGNF4yHZUw" version="22.1.16" type="device">
+  <diagram name="Page-1" id="vYuViWBdRSpIGdm2kutr">
+    <mxGraphModel dx="1000" dy="813" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GEejDVivMLWnaYJLBYC3-2" value="Start" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="192.5" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-3" value="Hent antall streams" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="140" y="190" width="205" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-4" value="antall streams &amp;gt; 30 000 000" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="140" y="300" width="205" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-5" value="penger tjent = antall streams * 0.7" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="150" y="450" width="185" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-6" value="antall streams &amp;gt; 1 400 000" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="425" y="300" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-7" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-5" target="GEejDVivMLWnaYJLBYC3-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="410" as="sourcePoint" />
+            <mxPoint x="440" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-8" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-4" target="GEejDVivMLWnaYJLBYC3-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="410" as="sourcePoint" />
+            <mxPoint x="440" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-9" value="" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-3" target="GEejDVivMLWnaYJLBYC3-2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="180" as="sourcePoint" />
+            <mxPoint x="300" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-10" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-4" target="GEejDVivMLWnaYJLBYC3-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="410" as="sourcePoint" />
+            <mxPoint x="440" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-12" value="penger tjent = antall streams * 0.4" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="432.5" y="450" width="185" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-13" value="penger tjent = 0" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="720" y="450" width="185" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-14" value="" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-6" target="GEejDVivMLWnaYJLBYC3-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="390" y="410" as="sourcePoint" />
+            <mxPoint x="440" y="360" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="813" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-16" value="Vis penger tjent" style="shape=parallelogram;html=1;strokeWidth=2;perimeter=parallelogramPerimeter;whiteSpace=wrap;rounded=1;arcSize=12;size=0.23;" vertex="1" parent="1">
+          <mxGeometry x="140" y="580" width="205" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-17" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-16" target="GEejDVivMLWnaYJLBYC3-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="416" y="645" as="sourcePoint" />
+            <mxPoint x="466" y="595" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-18" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-16" target="GEejDVivMLWnaYJLBYC3-12">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="449" y="642" as="sourcePoint" />
+            <mxPoint x="499" y="592" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="525" y="608" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-19" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-16" target="GEejDVivMLWnaYJLBYC3-13">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="736" y="662" as="sourcePoint" />
+            <mxPoint x="786" y="612" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="813" y="604" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-20" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-12" target="GEejDVivMLWnaYJLBYC3-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="443" y="446" as="sourcePoint" />
+            <mxPoint x="493" y="396" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-21" value="Nei" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="342" y="327" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-22" value="Nei" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="625" y="327" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-23" value="Ja" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="503" y="394" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-24" value="Ja" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="221" y="394" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-26" value="Slutt" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_1;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="192.5" y="690" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="GEejDVivMLWnaYJLBYC3-27" value="" style="endArrow=none;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="GEejDVivMLWnaYJLBYC3-26" target="GEejDVivMLWnaYJLBYC3-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="769" as="sourcePoint" />
+            <mxPoint x="370" y="719" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,426 @@
+{
+  "respons_dato_tid": "/Date(1708946880283+0100)/",
+  "versjon": "1.6",
+  "regjeringsmedlemmer_liste": [
+    {
+      "respons_dato_tid": "/Date(1708946880298+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Støre",
+      "foedselsdato": "/Date(-295149600000+0200)/",
+      "fornavn": "Jonas Gahr",
+      "id": "JGS",
+      "kjoenn": 2,
+      "departement": "Statsministerens kontor",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 1,
+      "tittel": "Statsminister",
+      "verv": "Statsminister"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880298+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Vedum",
+      "foedselsdato": "/Date(281314800000+0100)/",
+      "fornavn": "Trygve Slagsvold",
+      "id": "TMV",
+      "kjoenn": 2,
+      "departement": "Finansdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 2,
+      "tittel": "Finansminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880376+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Brenna",
+      "foedselsdato": "/Date(561765600000+0200)/",
+      "fornavn": "Tonje",
+      "id": "TONB",
+      "kjoenn": 1,
+      "departement": "Arbeids- og inkluderingsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 3,
+      "tittel": "Arbeids- og inkluderingsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880392+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Tvinnereim",
+      "foedselsdato": "/Date(138405600000+0200)/",
+      "fornavn": "Anne Beathe Kristiansen",
+      "id": "ANNTVI",
+      "kjoenn": 1,
+      "departement": "Utenriksdepartementet, utviklingssaker",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 4,
+      "tittel": "Utviklingsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880470+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Vestre",
+      "foedselsdato": "/Date(529192800000+0200)/",
+      "fornavn": "Jan Christian",
+      "id": "JANVES",
+      "kjoenn": 2,
+      "departement": "Nærings- og fiskeridepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 5,
+      "tittel": "Næringsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880470+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Toppe",
+      "foedselsdato": "/Date(-69472800000+0200)/",
+      "fornavn": "Kjersti",
+      "id": "KJT",
+      "kjoenn": 1,
+      "departement": "Barne- og familiedepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 6,
+      "tittel": "Barne- og familieminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880470+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Eide",
+      "foedselsdato": "/Date(-178941600000+0200)/",
+      "fornavn": "Espen Barth",
+      "id": "EBE",
+      "kjoenn": 2,
+      "departement": "Utenriksdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 7,
+      "tittel": "Utenriksminister",
+      "verv": "Utenriksminister"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Gram",
+      "foedselsdato": "/Date(74037600000+0200)/",
+      "fornavn": "Bjørn Arild",
+      "id": "BJAG",
+      "kjoenn": 2,
+      "departement": "Forsvarsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 8,
+      "tittel": "Forsvarsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Nygård",
+      "foedselsdato": "/Date(94777200000+0100)/",
+      "fornavn": "Jon-Ivar",
+      "id": "JONN",
+      "kjoenn": 2,
+      "departement": "Samferdselsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 9,
+      "tittel": "Samferdselsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Kjerkol",
+      "foedselsdato": "/Date(169596000000+0200)/",
+      "fornavn": "Ingvild",
+      "id": "INK",
+      "kjoenn": 1,
+      "departement": "Helse- og omsorgsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 10,
+      "tittel": "Helse- og omsorgsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Mehl",
+      "foedselsdato": "/Date(744760800000+0200)/",
+      "fornavn": "Emilie",
+      "id": "EEM",
+      "kjoenn": 1,
+      "departement": "Justis- og beredskapsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 11,
+      "tittel": "Justis- og beredskapsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Aasland",
+      "foedselsdato": "/Date(-153882000000+0100)/",
+      "fornavn": "Terje",
+      "id": "TELA",
+      "kjoenn": 2,
+      "departement": "Energidepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 12,
+      "tittel": "Energiminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Jaffery",
+      "foedselsdato": "/Date(323474400000+0200)/",
+      "fornavn": "Lubna Boby",
+      "id": "LBF",
+      "kjoenn": 1,
+      "departement": "Kultur- og likestillingsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 13,
+      "tittel": "Kultur- og likestillingsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Pollestad",
+      "foedselsdato": "/Date(271807200000+0200)/",
+      "fornavn": "Geir",
+      "id": "GP",
+      "kjoenn": 2,
+      "departement": "Landbruks- og matdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 14,
+      "tittel": "Landbruks- og matminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Sande",
+      "foedselsdato": "/Date(279327600000+0100)/",
+      "fornavn": "Erling",
+      "id": "ESAN",
+      "kjoenn": 2,
+      "departement": "Kommunal- og distriktsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 15,
+      "tittel": "Kommunal- og distriktsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Tung",
+      "foedselsdato": "/Date(443487600000+0100)/",
+      "fornavn": "Karianne O.",
+      "id": "KAT",
+      "kjoenn": 1,
+      "departement": "Digitaliserings- og forvaltningsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 16,
+      "tittel": "Digitaliserings- og forvaltningsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880486+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Myrseth",
+      "foedselsdato": "/Date(459727200000+0200)/",
+      "fornavn": "Cecilie",
+      "id": "CTM",
+      "kjoenn": 1,
+      "departement": "Nærings- og fiskeridepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 17,
+      "tittel": "Fiskeri- og havminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880564+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Nordtun",
+      "foedselsdato": "/Date(518479200000+0200)/",
+      "fornavn": "Kari Nessa",
+      "id": "KARNOR",
+      "kjoenn": 1,
+      "departement": "Kunnskapsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 18,
+      "tittel": "Kunnskapsminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880626+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Eriksen",
+      "foedselsdato": "/Date(701305200000+0100)/",
+      "fornavn": "Andreas Bjelland",
+      "id": "ANDERI",
+      "kjoenn": 2,
+      "departement": "Klima- og miljødepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "A",
+        "navn": "Arbeiderpartiet",
+        "representert_parti": true
+      },
+      "sortering": 19,
+      "tittel": "Klima- og miljøminister",
+      "verv": "Statsråd"
+    },
+    {
+      "respons_dato_tid": "/Date(1708946880704+0100)/",
+      "versjon": "1.6",
+      "doedsdato": null,
+      "etternavn": "Hoel",
+      "foedselsdato": "/Date(-36205200000+0100)/",
+      "fornavn": "Oddmund",
+      "id": "ODDHOE",
+      "kjoenn": 2,
+      "departement": "Kunnskapsdepartementet",
+      "parti": {
+        "respons_dato_tid": "/Date(1708905630744+0100)/",
+        "versjon": "1.6",
+        "id": "Sp",
+        "navn": "Senterpartiet",
+        "representert_parti": true
+      },
+      "sortering": 20,
+      "tittel": "Forsknings- og høyere utdanningsminister",
+      "verv": "Statsråd"
+    }
+  ]
+}

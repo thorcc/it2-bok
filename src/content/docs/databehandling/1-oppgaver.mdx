@@ -1,0 +1,510 @@
+---
+title: Oppgaver
+description: Oppgaver om databehandling
+---
+
+## Oppgave 1 - Twitter
+
+- Datasett: [twitter.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/twitter.json)
+
+1. Lag et program som finner og presenterer de ti brukerne i datasettet som har flest Twitter-følgere.
+2. Utvid programmet slik at det regner ut og presenterer antall tweets og antall følgere per bruker for disse ti brukerne.
+3. Utvid programmet slik at det også viser brukerenes følgere/følger-ratio, altså antall som følger kontoen delt på antall som kontoen følger.
+
+## Oppgave 2 - YouTube
+
+> Oppgave 11 fra eksamen H23
+
+Du skal lage et program som leser inn informasjon fra et datasett og presenterer den. Last ned datasettet her:
+
+- [CSV/JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3049&aar=2023-19&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+
+Tips: Du står fritt til å velge hvordan programmet skal presentere informasjonen, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter. Du kan også velge om du besvarer a og b i en samlet oversikt eller lager en oversikt for hvert oppgavepunkt.
+
+Programmet du lager i denne oppgaven, skal inneholde en flerlinjet kommentar øverst som beskriver de vurderingene og valgene du har gjort for å vaske og forberede datasettet til bruk med programmet ditt.
+
+1. Lag et program som finner og presenterer de ti landene i datasettet som har flest YouTube-kanaler.
+2. Utvid programmet til å regne ut og presentere gjennomsnittlig antall abonnenter og videovisninger per kanal for hvert av disse landene.
+
+## Oppgave 3 - Google Play Store
+
+> Oppgave 9 fra eksamen V23
+> OBS! Denne oppgaven er vanskelig. Den krever blanet annet at du _renser_ datasettet
+
+Du skal lage et program som leser inn informasjon fra datasettet og presenterer dette i to oversikter.
+Last ned datasettet her:
+
+- [CSV](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-6&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+- [JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-7&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+
+Tips: Du står fritt til å velge hvordan programmet skal presentere informasjon, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter.
+
+1. Lag et program som presenterer en oversikt over de tre største kategoriene målt i antall apper. Oversikten skal vise antallet apper, gjennomsnittsratingen og det gjennomsnittlige antallet installasjoner for hver av disse tre kategoriene.
+   - Tips: For å kunne beregne gjennomsnittet av antallet installasjoner må du tilpasse innholdet i det aktuelle datafeltet. Du vil få noe uttelling om du bare viser antallet apper og gjennomsnittsratingen.
+2. Utvid programmet slik at det også presenterer de tre mest populære appene, målt i antall installasjoner, i hver av disse tre kategoriene.
+
+## Oppgave 4 - Stortinget
+
+Fil: [stortinget.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/stortinget.json)
+
+1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
+2. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
+3. Lag en ordbok som teller antall representanter hvert parti har
+4. Lag et plott som viser en oversikt over partier og antall representanter
+5. Hvor mange representanter har hvert parti i gjennomsnitt?
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+with open("stortinget.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+politikere = data["representanter_liste"]
+
+# 1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
+
+for politiker in politikere:
+    print(f"{politiker['fornavn']} {politiker['etternavn']}: {politiker['parti']['navn']}")
+
+# 2. Lag en ordbok som teller antall representanter hvert parti har
+
+antall = {}
+for politiker in politikere:
+    parti = politiker['parti']['navn']
+    if parti not in antall:
+        antall[parti] = 1
+    else:
+        antall[parti] += 1
+print(antall)
+
+# 3. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
+
+# Tips: https://it2.thorcc.no/databehandling-og-algoritmer/lokker-lister-og-ordboker#sortering-av-ordbøker-med-verdier
+
+antall_liste = list(antall.items())
+antall_sortert = sorted(antall_liste, key=lambda parti: parti[1])
+parti_flest = antall_sortert[-1] # det siste partiet i lista har flest politikere på stortinget
+print(f"Partiet med flest politikere på tinget er {parti_flest[0]} de har {parti_flest[1]}")
+
+# 4. Lag et plott som viser en oversikt over partier og antall representanter
+
+import matplotlib.pyplot as plt
+parti_liste = list(antall.keys())
+antall_liste = list(antall.values())
+plt.bar(parti_liste, antall_liste)
+plt.xticks(rotation=90) # bonus: roterer teksten på x-aksen 90 grader slik at den er lettere å lese
+plt.show() # trenger ikke denne i .ipynb-filer
+
+# 5. Hvor mange representanter har hvert parti i gjennomsnitt?
+
+total = 0
+for parti in antall:
+    total += antall[parti]
+    snitt = total / len(antall)
+print(f"Hvert parti har i gjennomsnitt {snitt} representanter")
+````
+
+</details>
+
+
+## Oppgave 5 - Spotify
+
+Fil: [spotify-weekly-top-songs-global-uke2-2023.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/spotify-weekly-top-songs-global-uke2-2023.json)
+
+1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
+2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
+3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+with open("spotify-weekly-top-songs-global-uke2-2023.json") as fil:
+    sanger = json.load(fil)
+
+# 1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
+flest = sanger[0]
+for sang in sanger:
+    if sang["uker_paa_listen"] > flest["uker_paa_listen"]:
+        flest = sang
+print(flest)
+
+# 2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
+total = 0
+for sang in sanger:
+    if sang["artist"] == "Taylor Swift":
+        total += sang["antall_streams"]
+print(f"Taylor Swift har totalt {total} antall streams på sangene hennes som ligger på topplista.")
+
+# 3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
+sang_størst_endring = sanger[0]
+størst_endring = sang_størst_endring["plassering"] - sang_størst_endring["forrige_plassering"]
+for sang in sanger:
+    if sang["forrige_plassering"] != -1:
+        endring = sang["plassering"] - sang["forrige_plassering"]
+        if endring > størst_endring:
+            sang_størst_endring = sang
+            størst_endring = endring
+
+print(f"{sang_størst_endring['tittel']} gikk opp flest plasseringer")
+````
+
+</details>
+
+## Oppgave 6 - IMDB
+
+Fil: [imdb_top250.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/imdb_top250.json)
+
+1. Hvilken film har høyest karakter?
+2. Hva er gjennomsnittskarakteren til alle filmene på listen?
+3. Hva er gjennomsnittskarakteren til de ti første filmene?
+4. Hvilken regissør har regissert flest filmer på listen?
+   - For hver film er regisørrer en liste. Her holder det med første regissør i listen.
+   - Bonus: Alle regisørrene i regissørlistene skal telles med.
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+
+fil = open("imdb_top250.json", encoding="utf-8")
+filmer = json.load(fil)
+fil.close()
+
+# 1. Hvilken film har høyest karakter?
+høyest = filmer[0]
+for film in filmer:
+    if film["karakter"] > høyest["karakter"]:
+        høyest = film
+print(f"Filmen med høyest karakter er {høyest['navn']}")
+
+# 2. Hva er gjennomsnittskarakteren til filmene på listen?
+total_karakter = 0
+for film in filmer:
+    total_karakter += film['karakter']
+snittkarakter = total_karakter / len(filmer)
+print(f"Gjennomsnittskarakteren til filmene er {snittkarakter}")
+
+# 3. Hva er gjennomsnittskarakteren til de ti første filmene?
+filmer_sortert = sorted(filmer, key=lambda film:film['karakter'], reverse=True) # sorterer listen i stigende rekkefølge etter karakter.
+ti_første = filmer_sortert[:10] # lager en ny liste som inneholder de ti første filmene
+total_karakter_ti_første = 0
+for film in ti_første:
+    total_karakter_ti_første += film['karakter']
+snittkarakter_ti_første = total_karakter_ti_første / len(ti_første)
+print(f"Gjennomsnittskarakteren til filmene er {snittkarakter_ti_første}")
+
+# 4. Hvilken regissør har regissert flest filmer på listen?
+regissører_antall = {}
+for film in filmer:
+    for regissør in film['regissører']:
+        if regissør in regissører_antall:
+            regissører_antall[regissør] += 1
+        else:
+            regissører_antall[regissør] = 1
+
+regissører_sortert = sorted(regissører_antall.items(), key=lambda regissør: regissør[1], reverse=True)
+print(f"Regissøren med flest filmer på listen er {regissører_sortert[0][0]} med {regissører_sortert[0][1]} filmer")
+
+# Bonus: Det er faktisk fem regissører med syv filmer på listen.
+for i in range(6):
+    print(f"{i + 1}: {regissører_sortert[i][0]} - {regissører_sortert[i][1]} filmer")
+````
+
+</details>
+
+## Oppgave 7
+
+1. Kopier listen med vinnere av gullballen 👇👇 inn i en python-fil og print ordboken til den første spilleren.
+2. Lag en for-løkke som printer navn og nasjonalitet på hver spiller.
+3. Utvid koden slik at for-løkken også printer antall gullballer spillerne har vunnet.
+
+<details>
+<summary>Klikk for startkode</summary>
+
+```python
+gullballen = [
+  {
+    "navn": "Luís Figo",
+    "år": [2000],
+    "nasjonalitet": "Portugal",
+    "klubber": ["Real Madrid"]
+  },
+  {
+    "navn": "Michael Owen",
+    "år": [2001],
+    "nasjonalitet": "England",
+    "klubber": ["Liverpool"]
+  },
+  {
+    "navn": "Ronaldo",
+    "år": [2002],
+    "nasjonalitet": "Brasil",
+    "klubber": ["Real Madrid"]
+  },
+  {
+    "navn": "Pavel Nedvěd",
+    "år": [2003],
+    "nasjonalitet": "Tsjekkia",
+    "klubber": ["Juventus"]
+  },
+  {
+    "navn": "Andriy Shevchenko",
+    "år": [2004],
+    "nasjonalitet": "Ukraina",
+    "klubber": ["Milan"]
+  },
+  {
+    "navn": "Ronaldinho",
+    "år": [2005],
+    "nasjonalitet": "Brasil",
+    "klubber": ["Barcelona"]
+  },
+  {
+    "navn": "Fabio Cannavaro",
+    "år": [2006],
+    "nasjonalitet": "Italia",
+    "klubber": ["Real Madrid"]
+  },
+  {
+    "navn": "Kaká",
+    "år": [2007],
+    "nasjonalitet": "Brasil",
+    "klubber": ["Milan"]
+  },
+  {
+    "navn": "Cristiano Ronaldo",
+    "år": [2008, 2013, 2014, 2016, 2017],
+    "nasjonalitet": "Portugal",
+    "klubber": ["Manchester United", "Real Madrid"]
+  },
+  {
+    "navn": "Lionel Messi",
+    "år": [2009, 2010, 2011, 2012, 2015, 2019, 2021, 2023],
+    "nasjonalitet": "Argentina",
+    "klubber": ["Barcelona", "Paris Saint-Germain F.C.", "Inter Miami"]
+  },
+  {
+    "navn": "Luka Modric",
+    "år": [2018],
+    "nasjonalitet": "Kroatia",
+    "klubber": ["Real Madrid"]
+  },
+  {
+    "navn": "Karim Benzema",
+    "år": [2022],
+    "nasjonalitet": "Frankrike",
+    "klubber": ["Real Madrid"]
+  }
+]
+```
+
+</details>
+
+## Oppgave 8
+
+1. Kopier listen med informasjon over de 30 mest fulgte Instagram-kontoene 👇👇 inn i en python-fil.
+2. Hvor mange følgere har kontoene på listen i gjennomsnitt?
+3. Hvor mange kontoer på listen kommer ikke fra USA?
+
+<details>
+<summary>Klikk for startkode</summary>
+
+```python
+top_30 = [
+    {"name": "Cristiano Ronaldo", "account": "@cristiano", "followers": 617.16, "nationality": "Portugal"},
+    {"name": "Leo Messi", "account": "@leomessi", "followers": 497.05, "nationality": "Argentina"},
+    {"name": "Selena Gomez", "account": "@selenagomez", "followers": 429.66, "nationality": "United States"},
+    {"name": "Kylie Jenner", "account": "@kyliejenner", "followers": 399.45, "nationality": "United States"},
+    {"name": "Dwayne Johnson", "account": "@therock", "followers": 395.59, "nationality": "United States"},
+    {"name": "Ariana Grande", "account": "@arianagrande", "followers": 380.78, "nationality": "United States"},
+    {"name": "Kim Kardashian", "account": "@kimkardashian", "followers": 364, "nationality": "United States"},
+    {"name": "Beyoncé", "account": "@beyonce", "followers": 319.6, "nationality": "United States"},
+    {"name": "Khloé Kardashian", "account": "@khloekardashian", "followers": 311.3, "nationality": "United States"},
+    {"name": "Nike", "account": "@nike", "followers": 306, "nationality": "United States"},
+    {"name": "Justin Bieber", "account": "@justinbieber", "followers": 304.9, "nationality": "Canada"},
+    {"name": "Taylor Swift", "account": "@taylorswift", "followers": 282.8, "nationality": "United States"},
+    {"name": "Neymar Jr", "account": "@neymarjr", "followers": 282.7, "nationality": "Brazil"},
+    {"name": "Kendall Jenner", "account": "@kendalljenner", "followers": 279.9, "nationality": "United States"},
+    {"name": "Jennifer Lopez", "account": "@jlo", "followers": 277.2, "nationality": "United States"},
+    {"name": "Nicki Minaj", "account": "@nickiminaj", "followers": 262.5, "nationality": "Trinidad and Tobago"},
+    {"name": "National Geographic", "account": "@natgeo", "followers": 206.9, "nationality": "United States"},
+    {"name": "Lionel Andrés Messi Cuccittini", "account": "@leomessi10", "followers": 201.8, "nationality": "Argentina"},
+    {"name": "Miley Cyrus", "account": "@mileycyrus", "followers": 198.7, "nationality": "United States"},
+    {"name": "Katy Perry", "account": "@katyperry", "followers": 198.4, "nationality": "United States"},
+    {"name": "Kourtney Kardashian", "account": "@kourtneykardash", "followers": 196.8, "nationality": "United States"},
+    {"name": "Kevin Hart", "account": "@kevinhart4real", "followers": 195.8, "nationality": "United States"},
+    {"name": "Ellen DeGeneres", "account": "@theellenshow", "followers": 194.7, "nationality": "United States"},
+    {"name": "Virat Kohli", "account": "@virat.kohli", "followers": 194.5, "nationality": "India"},
+    {"name": "Billie Eilish", "account": "@billieeilish", "followers": 193.9, "nationality": "United States"},
+    {"name": "Rihanna", "account": "@badgalriri", "followers": 191.5, "nationality": "Barbados"},
+    {"name": "Zendaya", "account": "@zendaya", "followers": 190.9, "nationality": "United States"},
+    {"name": "Drake", "account": "@champagnepapi", "followers": 190.8, "nationality": "Canada"},
+    {"name": "Emma Watson", "account": "@emmawatson", "followers": 189.7, "nationality": "United Kingdom"},
+    {"name": "LeBron James", "account": "@kingjames", "followers": 188.8, "nationality": "United States"}
+]
+```
+
+</details>
+
+## Oppgave 9
+
+1. Kopier listen med informasjon over de 30 mest befolkede land 👇👇 inn i en python-fil og print ordboken til Argentina.
+2. Lag en for-løkke som printer navn, hovedstad og antall språk for hvert land.
+3. Hvilket land har flest språk?
+4. Lag en ordbok som holder oversikt over språk og antall land som har språket som offisielt språk.
+    - Tips: Språk er en liste - du burde bruke en for-løkke som går gjennom språk inne i for-løkken for land.
+5. Sorter ordboken og print ut språket med flest land og antall land.
+    - Tips: [les eksempel om sortering av ordøker med verdier](#sortering-av-ordbøker-med-verdier)
+    - Fasit: `Engelsk: 7`
+<details>
+<summary>Klikk for startkode</summary>
+
+```python
+land_info = [
+    {"land": "Kina", "hovedstad": "Beijing", "befolkning": 1410000000, "språk": ["Mandarin"]},
+    {"land": "India", "hovedstad": "New Delhi", "befolkning": 1390000000, "språk": ["Hindi", "Engelsk"]},
+    {"land": "USA", "hovedstad": "Washington, D.C.", "befolkning": 331000000, "språk": ["Engelsk"]},
+    {"land": "Indonesia", "hovedstad": "Jakarta", "befolkning": 273000000, "språk": ["Indonesisk"]},
+    {"land": "Pakistan", "hovedstad": "Islamabad", "befolkning": 225000000, "språk": ["Urdu", "Engelsk"]},
+    {"land": "Brasil", "hovedstad": "Brasília", "befolkning": 213000000, "språk": ["Portugisisk"]},
+    {"land": "Nigeria", "hovedstad": "Abuja", "befolkning": 211000000, "språk": ["Engelsk"]},
+    {"land": "Bangladesh", "hovedstad": "Dhaka", "befolkning": 166000000, "språk": ["Bengali"]},
+    {"land": "Russland", "hovedstad": "Moskva", "befolkning": 146000000, "språk": ["Russisk"]},
+    {"land": "Mexico", "hovedstad": "Mexico City", "befolkning": 128000000, "språk": ["Spansk"]},
+    {"land": "Japan", "hovedstad": "Tokyo", "befolkning": 125000000, "språk": ["Japansk"]},
+    {"land": "Etiopia", "hovedstad": "Addis Ababa", "befolkning": 118000000, "språk": ["Amharisk"]},
+    {"land": "Filippinene", "hovedstad": "Manila", "befolkning": 113000000, "språk": ["Filippinsk"]},
+    {"land": "Egypt", "hovedstad": "Kairo", "befolkning": 104000000, "språk": ["Arabisk"]},
+    {"land": "Vietnam", "hovedstad": "Hanoi", "befolkning": 97400000, "språk": ["Vietnamesisk"]},
+    {"land": "DR Kongo", "hovedstad": "Kinshasa", "befolkning": 90000000, "språk": ["Fransk"]},
+    {"land": "Turkey", "hovedstad": "Ankara", "befolkning": 83700000, "språk": ["Tyrkisk"]},
+    {"land": "Iran", "hovedstad": "Teheran", "befolkning": 83700000, "språk": ["Persisk"]},
+    {"land": "Tyskland", "hovedstad": "Berlin", "befolkning": 83000000, "språk": ["Tysk"]},
+    {"land": "Thailand", "hovedstad": "Bangkok", "befolkning": 70000000, "språk": ["Thai"]},
+    {"land": "Frankrike", "hovedstad": "Paris", "befolkning": 67000000, "språk": ["Fransk"]},
+    {"land": "Storbritannia", "hovedstad": "London", "befolkning": 67000000, "språk": ["Engelsk"]},
+    {"land": "Italia", "hovedstad": "Roma", "befolkning": 60300000, "språk": ["Italiensk"]},
+    {"land": "Sør-Afrika", "hovedstad": "Pretoria, Cape Town, Bloemfontein", "befolkning": 60000000,
+     "språk": ["Afrikaans", "Engelsk", "isiNdebele", "isiXhosa", "isiZulu", "sesotho", "Setswana", "siSwati", "Tshivenda", "Xitsonga"]},
+    {"land": "Myanmar", "hovedstad": "Naypyidaw", "befolkning": 54400000, "språk": ["Burmese"]},
+    {"land": "Sør-Korea", "hovedstad": "Seoul", "befolkning": 51700000, "språk": ["Koreansk"]},
+    {"land": "Colombia", "hovedstad": "Bogotá", "befolkning": 50300000, "språk": ["Spansk"]},
+    {"land": "Kenya", "hovedstad": "Nairobi", "befolkning": 49000000, "språk": ["Swahili", "Engelsk"]},
+    {"land": "Spania", "hovedstad": "Madrid", "befolkning": 47000000, "språk": ["Spansk"]},
+    {"land": "Argentina", "hovedstad": "Buenos Aires", "befolkning": 45000000, "språk": ["Spansk"]},
+]
+```
+
+</details>
+
+<details>
+<summary>Klikk for fasit til deloppgave 3</summary>
+
+```python
+{
+  'Mandarin': 1,
+  'Hindi': 1,
+  'Engelsk': 7,
+  'Indonesisk': 1,
+  'Urdu': 1,
+  'Portugisisk': 1,
+  'Bengali': 1,
+  'Russisk': 1,
+  'Spansk': 4,
+  'Japansk': 1,
+  'Amharisk': 1,
+  'Filippinsk': 1,
+  'Arabisk': 1,
+  'Vietnamesisk': 1,
+  'Fransk': 2,
+  'Tyrkisk': 1,
+  'Persisk': 1,
+  'Tysk': 1,
+  'Thai': 1,
+  'Italiensk': 1,
+  'Afrikaans': 1,
+  'isiNdebele': 1,
+  'isiXhosa': 1,
+  'isiZulu': 1,
+  'sesotho': 1,
+  'Setswana': 1,
+  'siSwati': 1,
+  'Tshivenda': 1,
+  'Xitsonga': 1,
+  'Burmese': 1,
+  'Koreansk': 1,
+  'Swahili': 1
+}
+```
+
+</details>
+
+## Oppgave 10 - Meteorologisk API
+
+I denne oppgaven skal du lage et værprogram der brukeren kan skrive inn navnet på et stedsnavn og få ut værmeldingen på det aktuelle stedet.
+
+1. Bruk bibliotektet [Geocoder](https://geocoder.readthedocs.io/providers/ArcGIS.html) og lag et program der brukeren kan skrive inn et stedsnavn, også printer programmet lengdegrad (lon) og breddegrad (lat) til stedet.
+2. Bruk Meteorologisk intstitutts API og utvid programmet slik at værmeldingen for stedet brukeren skrev inn i printes.
+   - Tips: Se [eksempel - Værdata](#eksempel---værdata)
+
+## Oppgave 11 - Enturs API
+
+- [https://developer.entur.org/](https://developer.entur.org/)
+
+Bruk Enturs API og lag et program der brukeren kan skrive inn et busstopp, og få ut hvor lenge det er til neste buss/tog/trikk kommer.
+
+<details>
+
+<summary>Klikk her for tips</summary>
+
+```python
+
+import requests
+
+body = """
+{
+  stopPlace(id: "NSR:StopPlace:548") {
+    id
+    name
+    estimatedCalls(timeRange: 72100, numberOfDepartures: 10) {
+      realtime
+      aimedArrivalTime
+      aimedDepartureTime
+      expectedArrivalTime
+      expectedDepartureTime
+      actualArrivalTime
+      actualDepartureTime
+      date
+      forBoarding
+      forAlighting
+      destinationDisplay {
+        frontText
+      }
+      quay {
+        id
+      }
+      serviceJourney {
+        journeyPattern {
+          line {
+            id
+            name
+            transportMode
+          }
+        }
+      }
+    }
+  }
+}
+"""
+
+response = requests.post(url="https://api.entur.io/journey-planner/v3/graphql", json={"query": body})
+data = response.json()
+print(data)
+```
+
+</details>

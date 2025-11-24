@@ -1,0 +1,204 @@
+---
+title: Funksjoner
+description: Funksjoner i Python.
+---
+
+> Kort fortalt er en funksjon er en **ferdig definert oppskrift** som kan utføre en oppgave.  
+> Funksjoner _defineres_ med nøkkelordet `def` og _kjøres_ med enkle parenteser med argumenter inne i parentesene `(parameter1, parameter2, ..)
+`
+
+## Oppgaver
+
+- <a href="https://cs50.harvard.edu/python/psets/0/" target="_blank">Harvard CS50: Problem Set 0</a> (oppgavene er under punkt 7 og hopp over "Before you begin")
+- <a href="https://trix.ifi.uio.no/course/8?tags=funksjon" target="_blank">Uio Trix: funksjoner</a>
+
+
+## Filmer
+
+### Introduksjon til funksjoner
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lGS6O47debI?si=dTPzrPpWZeCm6qcI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### Returverdier
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/AetGXMcNU3M?si=8Bniwp5yyF0AMwvy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### En visuell gjennomgang
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KW6qncswzHw?si=GmLpHs6G5n3F4RFb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+### Hvor liten skal en funksjon være?
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/rXjf8eiGsSI?si=-uFF_U20AdYz5drX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Notater
+
+### Innebygde funksjoner
+
+Python kommer med et sett med innebygde funksjoner, f.eks.:
+
+- `print()` - printer i terminalen
+- `input()` - ber brukeren om å skrive inn noe
+- `len()` – finner lengden på en liste eller tekst
+- `sum()` – summerer tall i en liste
+- `max()` og `min()` – finner største og minste verdi
+- `set()` – fjerner duplikater
+- [Alle innebygde funksjoner i Python (docs.python.org/3/library/functions)](https://docs.python.org/3/library/functions.html)
+
+```python
+lærere = ["Hafnor", "Gade", "Manikarnika", "Thorsen", "Gade"]
+len(lærere)
+max(lærere)
+min(lærere)
+
+list(set(lærere))
+str(int("0120"))
+```
+
+### Funksjoner fra moduler
+
+I tillegg til innebygde funksjoner kan vi importere moduler med flere funksjoner. 
+
+#### Eksempel random-modulen
+
+```python
+# importerer random-modulen og kjører funksjonen randint fra
+# random-moudlen med dot-notasjon
+import random 
+tall = random.randint(10, 100) # dot-notasjon
+```
+
+```python
+# alternativt: importerer funksjonene choice og randint fra
+# random-modulen, trenger ikke dot-notasjon
+from random import choice, randint 
+lærere = ["Hafnor", "Gade", "Manikarnika", "Thorsen", "Gade"]
+beste_lærer = choice(lærere)
+```
+
+### Egne funksjoner
+
+Vi kan også lage egne funksjoner med nøkkelordet `def`.
+
+```python
+# enkel funksjon
+def hei_verden():
+    print("Hallo, verden!")
+
+hei_verden()
+hei_verden()
+
+# med argumenter
+def hei_navn(navn):
+    print(f"Hallo, {navn}!")
+
+hei_navn("Thor")
+hei_navn("Ravi")
+
+# argument med standardverdi, 
+# standardverdien settes hvis ikke den sendes inn som argument
+def hei_sveis(navn="verden"):
+    print(f"Hallo, {navn}!")
+
+hei_sveis()
+hei_sveis("Vegar")
+
+# mange argumenter
+def hei_til_to(navn1, navn2):
+    print(f"Hallo, {navn1} og {navn2}!")
+
+hei_til_to("Cecilie", "Ingrid")
+
+# uendelig mange argumenter med *
+# *navn blir til en liste
+def hei_til_mange(*navn):
+    print(f"Hallo", end="")
+    for enkeltnavn in navn:
+        print(f", {enkeltnavn}", end="")
+    print("!")
+
+hei_til_mange("Ravi", "Cecilie", "Fredrik", "Peder", "Vegar")
+```
+
+### Returverdier
+
+Funksjoner kan også **returnere verdier** med nøkkelordet `return`
+
+```python
+# Eksempel på funksjoner med returverdier
+def beregn_areal(bredde, høyde):
+    return bredde * høyde
+
+def er_myndig(alder=0):
+    if alder >= 18:
+        return True
+    else:
+        return False
+
+alder = int(input("Hvor gammel er du? "))
+if er_myndig(alder):
+    print("Fett, du kan ta lappen!")
+else:
+    print("Sorry, kompis!")
+```
+
+### Ryddigere kode med funksjoner
+
+Etter hvert som vi lager større og større programmer, blir det viktigere og viktigere å lage en strukturert kode som er enkel å jobbe med.
+Og funksjoner er et veldig godt hjelpemiddel for å strukturere kode.
+
+Eksempelet under viser to koder som gjør det samme, den første koden er uten funksjoner, mens den siste koden er delt opp i flere små funksjoner.
+
+Små funksjoner med gode navn som aller helst bare gjør én ting, er veldig fine å gjenbruke - legg merke til de tre første linjene i funksjonen `print_vær` i det siste eksempelet.
+
+```python
+# Uten funksjoner
+import requests
+
+"""
+Sandvika 59.88, 10.52
+Trondheim 63.43, 10.39
+"""
+
+# Henter værdata for Sandvika, Bærum
+url = "https://api.met.no/weatherapi/locationforecast/2.0/compact"
+params = {"lat": 59.88, "lon": 10.52}  # Sandvika, Bærum
+headers = {"User-Agent": "SandvikaVGS/1.0"}  # kreves av MET API
+respons = requests.get(url, params=params, headers=headers)
+
+data = respons.json()
+temperatur = data["properties"]["timeseries"][0]["data"]["instant"]["details"]["air_temperature"]
+vind = data["properties"]["timeseries"][0]["data"]["instant"]["details"]["wind_speed"]
+
+print("Været i Sandvika akkurat nå:")
+print("Temperatur:", temperatur, "°C")
+print("Vind:", vind, "m/s")
+```
+
+```python
+# Med funksjoner
+import requests
+
+def hent_værdata(lat, lon):
+    url = f"https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={lat}&lon={lon}"
+    headers = {
+        "User-Agent": "SandvikaVGS/1.0"
+    }
+    respons = requests.get(url, headers=headers)
+    return respons.json()
+
+def værdetalj_nå(data, detalj):
+    return data["properties"]["timeseries"][0]["data"]["instant"]["details"][detalj]
+
+def print_vær(navn, lat, lon):
+    data = hent_værdata(lat, lon)
+    temperatur = værdetalj_nå(data, "air_temperature")
+    vind = værdetalj_nå(data, "wind_speed")
+    
+    print(f"Været i {navn} akkurat nå:")
+    print("Temperatur:", temperatur, "°C")
+    print("Vind:", vind, "m/s")
+
+print_vær("Trondheim", "59.88", "10.52")
+print_vær("Sandvika", "63.43", "10.39")
+```
