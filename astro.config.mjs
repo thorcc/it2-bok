@@ -22,14 +22,14 @@ export default defineConfig({
 					label: 'Oppsett',
 					autogenerate: { directory: 'oppsett' },
 				},
-				{
-					label: 'Spill',
-					autogenerate: { directory: 'spill' },
-				},
-				{
-					label: 'Stortignet Fantasy',
-					autogenerate: { directory: 'stortinget-fantasy' },
-				},
+				// {
+				// 	label: 'Spill',
+				// 	autogenerate: { directory: 'spill' },
+				// },
+				// {
+				// 	label: 'Stortignet Fantasy',
+				// 	autogenerate: { directory: 'stortinget-fantasy' },
+				// },
 			],
 		}),
 	],
