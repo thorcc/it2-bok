@@ -300,3 +300,35 @@ def rute_index():
 
 app.run(debug=True)
 ```
+
+## Oppgaver
+
+### 1. Aktivitetskalkulator
+
+> Oppgave 2 fra eksamen høsten 2019
+
+Lag en applikasjon som beregner kaloriforbruk for en gitt aktivitet - en slags treningskalkulator.
+Beregningen skal basere seg på valgt **aktivitet** i kombinasjon med valgt **intensitet** og **varighet** på treningen.
+
+#### Krav
+
+- Brukeren skal kunne velge mellom disse fem aktivitetene:
+  - Aerobics (841 kcal/time)
+  - Bordtennis (236 kcal/time)
+  - Fotball (510 kcal/time)
+  - Golf (244 kcal/time)
+  - Jogging (666 kcal/time)
+- Brukeren skal kunne velge mellom disse intensitetsnivåene:
+  - Lavt (Du kan gange kaloriforbruket med 0,8 for å trekke fra 20 %.)
+  - Middels (Kaloriforbruket som er oppgitt.)
+  - Høyt (Du kan gange kaloriforbruket med 1,2 for å kegge til 20 %.)
+  - Brukeren skal kunne oppgi varighet i minutter.
+
+- Løsningen skal implementeres etter denne grensesnittskissen (*wireframe*):
+  - Brukeren skal velge aktivitet fra en nedtrekksliste.
+  - Brukeren skal velge intensitet på treningen ved å velge én av tre radiobuttons.
+  - Brukeren skal oppgi varighet på treningen i minutter i et tekstfelt.
+  - Ved klikk på knappen skal kaloriforbruket for valgt aktivitet, intensitet og angitt varighet beregnes og vises.
+
+![2-h19](../../../assets/bilder/h19-2.png)
+

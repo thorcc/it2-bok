@@ -66,3 +66,26 @@ For-løkken på linjene 19 til 25 går lager en rad for hver person i listen per
 </body>
 </html>
 ```
+
+## Oppgaver
+
+### 2. Energiinhold i frokost 
+
+> Oppgave 3 fra eksamen høsten 2013
+
+Det er vanlig å bruke kilokalorier (kcal) som mål på hvor mye energi mat inneholder. Denne energien får vi i oss i form av proteiner, fett og karbohydrater. Alle matvarer har forskjellig andel av disse tre, og under ser du en tabell som viser hvor mye proteiner, fett og karbohydrater det er i «typiske» frokostenheter.
+
+#### Tabell over frokostenheter:
+
+| Matvare                   | Kcal | Protein (i gram) | Fett (i gram) | Karbohydrater (i gram) |
+| ------------------------- | ---- | ---------------- | ------------- | ---------------------- |
+| Lettmelk (1 glass à 2 dl) | 92   | 6.6              | 3             | 9.6                    |
+| 1 egg                     | 80   | 6.9              | 5.5           | 0.7                    |
+| Grovbrød (1 skive = 40 g) | 103  | 3.5              | 1             | 19.6                   |
+| Smør (til 1 brødskive)    | 36   | 0.025            | 4.1           | 0.025                  |
+| Gulost (1 skive)          | 53   | 4                | 4.2           | 0                      |
+
+
+Du skal lage en applikasjon til en webside der brukeren får se denne tabellen, som kan brukes til å utføre følgende oppgaver:
+
+- Med utgangspunkt i tabellen skal brukeren kunne sette sammen sin egen frokost av disse matvarene, ta utskrift av hvor mange kcal denne frokosten inneholder totalt, og få vist fordeling av kcal på de ulike matvarene i frokosten ~~i et diagram (søylediagram, kakediagram eller annet)~~ i prosent.
