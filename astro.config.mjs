@@ -11,12 +11,12 @@ export default defineConfig({
 			//social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
-					label: 'Grunnleggende',
-					autogenerate: { directory: 'grunnleggende'}
-				},
-				{
 					label: 'Flask',
 					autogenerate: { directory: 'flask' },
+				},
+				{
+					label: 'Grunnleggende',
+					autogenerate: { directory: 'grunnleggende'}
 				},
 				{
 					label: 'Oppsett',
