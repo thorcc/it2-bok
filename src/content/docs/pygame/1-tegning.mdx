@@ -1,0 +1,46 @@
+---
+title: Tegning
+---
+
+
+## Koordinatsystem
+
+![Koordinatsystem](../../../assets/bilder/pygame/koordinatsystem.svg)
+
+## Figurer
+
+### Rektangler
+
+**Med fyll**
+
+```python
+pygame.draw.rect(overflate, farge, (x, y, bredde, høyde))
+pygame.draw.rect(self.screen, "black", (100, 50, 125, 75))
+```
+
+![drawRect](../../../assets/bilder/pygame/drawRect.svg)
+
+**Uten fyll**
+
+```python
+pygame.draw.rect(overflate, farge, (x, y, bredde, høyde), tykkelse)
+pygame.draw.rect(self.screen, "black", (100, 50, 125, 75), 5)
+```
+
+![drawRect2](../../../assets/bilder/pygame/drawRect2.svg)
+
+### Linjer
+
+```python
+pygame.draw.line(overflate, farge, (start_x, start_y), (slutt_x, slutt_y), tykkelse)
+pygame.draw.line(self.screen, "black", (100, 50), (125, 75), 5)
+```
+
+![drawLine](../../../assets/bilder/pygame/drawLine.svg)
+
+
+## Sprites
+
+## Bilder
+
+## Tekst
