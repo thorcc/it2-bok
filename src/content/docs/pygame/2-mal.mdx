@@ -1,0 +1,157 @@
+---
+title: "Mal"
+---
+
+Forskjellige Pygame-spill består ofte av mange samme elementer, som for eksempel et vindu (screen) og en klokke.
+For å spare litt tid, er det fint å bruke en mal.
+
+For å spare enda mer tid, kan du også legge malen inn i [VS Code som en snippet](#vs-code-snippet).
+
+
+```python
+import pygame
+
+# Konstanter
+FPS = 60
+WIDTH = 400
+HEIGHT = 400
+
+class Game:
+    def __init__(self) -> None:
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("SPILLTITTEL")
+
+        # Game state
+        self.running = True
+
+        # Sprite groups
+        self.sprites = pygame.sprite.Group()
+    
+    def handle_events(self) -> None:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+        
+        # Key pressed
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            print("UP button pressed")
+        if keys[pygame.K_SPACE]:
+            print("SPACE button pressed")
+        if keys[pygame.K_w]:
+            print("W button pressed")
+
+        # Mouse events
+        left, middle, right = pygame.mouse.get_pressed()
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        if left:
+            print(f"left button clicked: ({mouse_x},{mouse_y})")
+        if middle:
+            print(f"middle button clicked: ({mouse_x},{mouse_y})")
+        if right:
+            print(f"right button clicked: ({mouse_x},{mouse_y})")
+
+    def update(self) -> None:
+        self.sprites.update()
+
+    def draw(self) -> None:
+        self.screen.fill("white")
+        self.sprites.draw(self.screen)
+
+        pygame.display.flip()
+    
+    def run(self) -> None:
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            self.clock.tick(FPS)
+        pygame.quit()
+
+if __name__ == "__main__":
+    game = Game()
+    game.run()
+```
+
+## VS Code-snippet
+
+Snippets er maler eller kodesnutter som kan knyttes til nøkkelord i VS Code.
+Koden under er en snippet for Pygame-malen over, som lager maler med nøkkelordet (prefikset) `pygameclass`.
+
+Koden må kopieres inn i en snippet-fil i VS Code.
+
+- Mac: File -> Preferences -> Configure snippets
+- Windows: Code -> Preferences -> Configure snippets
+
+> Husk komma mellom hver "snippet"
+
+```
+"Pygame Game Template ": {
+    "prefix": "pygameclass",
+    "body": [
+        "import pygame",
+        "",
+        "# Constants",
+        "FPS = 60",
+        "WIDTH = 800",
+        "HEIGHT = 600",
+        "",
+        "class Game:",
+        "    def __init__(self) -> None:",
+        "        pygame.init()",
+        "        self.clock = pygame.time.Clock()",
+        "        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))",
+        "        pygame.display.set_caption(\"GAME TITLE\")",
+        "",
+        "        # Game state",
+        "        self.running = True",
+        "",
+        "        # Sprite groups",
+        "        self.sprites = pygame.sprite.Group()",
+        "    ",
+        "    def handle_events(self) -> None:",
+        "        for event in pygame.event.get():",
+        "            if event.type == pygame.QUIT:",
+        "                self.running = False",
+        "        ",
+        "        # Key pressed",
+        "        keys = pygame.key.get_pressed()",
+        "        # if keys[pygame.K_UP]:",
+        "        #     print(\"UP button pressed\")",
+        "        # if keys[pygame.K_SPACE]:",
+        "        #     print(\"SPACE button pressed\")",
+        "        # if keys[pygame.K_w]:",
+        "        #     print(\"W button pressed\")",
+        "",
+        "        # Mouse events",
+        "        # left, middle, right = pygame.mouse.get_pressed()",
+        "        # mouse_x, mouse_y = pygame.mouse.get_pos()",
+        "        # if left:",
+        "        #     print(f\"left button clicked: ({mouse_x},{mouse_y})\")",
+        "",
+        "    def update(self) -> None:",
+        "        self.sprites.update()",
+        "",
+        "    def draw(self) -> None:",
+        "        self.screen.fill(\"white\")",
+        "        self.sprites.draw(self.screen)",
+        "",
+        "        pygame.display.flip()",
+        "    ",
+        "    def run(self) -> None:",
+        "        while self.running:",
+        "            self.handle_events()",
+        "            self.update()",
+        "            self.draw()",
+        "            self.clock.tick(FPS)",
+        "        pygame.quit()",
+        "",
+        "if __name__ == \"__main__\":",
+        "    game = Game()",
+        "    game.run()"
+    ],
+    "description": "A comprehensive Pygame template using a Game class structure, including event loops, update, draw, and init boilerplate code."
+}
+```

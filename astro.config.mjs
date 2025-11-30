@@ -11,6 +11,10 @@ export default defineConfig({
 			//social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
+					label: 'Pygame',
+					autogenerate: { directory: 'pygame' },
+				},
+				{
 					label: 'Flask',
 					autogenerate: { directory: 'flask' },
 				},
