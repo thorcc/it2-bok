@@ -38,9 +38,19 @@ pygame.draw.line(self.screen, "black", (100, 50), (125, 75), 5)
 
 ![drawLine](../../../assets/bilder/pygame/drawLine.svg)
 
+### Flere Figurer
 
-## Sprites
+[Pygame-dokumentasjoen (pygame.org/docs/ref/draw)](https://www.pygame.org/docs/ref/draw.html) viser en oversikt over alle figurene som er mulig å tegne i Pygame.
+For figurer som ikke finnes i Pygame-modulen er det enklest å tegne figurene i et tegneprogram og laste inn bildefilene.
 
-## Bilder
+## Sprites og bilder
+
+Se egen side for sprites.
 
 ## Tekst
+
+```python
+font = pygame.font.SysFont("Arial", 36)
+tekst = font.render("Hei Pygame!", True, "black")
+self.screen.blit(tekst, (100, 100))
+```
