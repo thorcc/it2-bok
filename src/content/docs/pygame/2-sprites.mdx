@@ -10,50 +10,116 @@ En sprites må ha atributtene `self.image` og `self.rect`, og kan ha metoden `up
 
 ![](../../../assets/bilder/pygame/sprite.svg)
 
-## image
+> Figuren er lastet ned fra: [https://kenney.nl/](https://kenney.nl/)
 
-Attributten `self.image` må være av datatypen `pygame.Surface`.
-En `Surface` representerer et bilde i Pygame.
+- `self.image` opprettes ofte ved å laste inn ett bilde, se linje 4 under.
+- `self.rect` opprettes som regel ved å hente rektangelen som ligger rundt bildet i `self.image`
+
+```python {4-5}
+class Figur(pygame.sprite.Sprite):
+    def __init__(self, x: int, y:int) -> None:
+        super().__init__()
+        self.image = pygame.image.load("yellow.png").convert_alpha()
+        self.rect = self.image.get_rect()
+    
+    def update(self):
+        pass
+
+```
 
 
-## rect
+<details>
 
-![](../../../assets/bilder/pygame/rect.png)
+    <summary>Sprite uten bilde</summary>
 
-## Eksempel
+En sprite kan lages uten å bruke bilde.
+Dette gjøres ofte når man ønsker å tegne geometriske figurer.
+
+Koden under tegner en sirkel på `self.image` sin `Surface`.
+Legg merke til at for sprites skjer tegning i `update`-metoden.
 
 ```python
 class Ball(pygame.sprite.Sprite):
     def __init__(self, x: int, y:int, width: int, height: int, color: str) -> None:
         super().__init__()
-        self.image = pygame.Surface((width, height), pygame.SRCALPHA)
+        self.image = pygame.Surface((width, height), pygame.SRCALPHA) #
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+    
+    def update(self):
+        pygame.draw.circle(self.image, self.color, (self.rect.width // 2, self.rect.height // 2), self.rect.width // 2)
+
+```
+
+</details>
+
+## Image
+
+Attributten `self.image` representerer et bilde, den må være av datatypen `pygame.Surface`.
+Bilder kan skaleres med funksjonen `pygame.transform.scale(BILDE, (BREDDE, HØYDE))`, som returnerer et nytt bilde.
+
+```python {5}
+class Figur(pygame.sprite.Sprite):
+    def __init__(self, x: int, y:int) -> None:
+        super().__init__()
+        self.image = pygame.image.load("yellow.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (50, 50)) # skalerer bilde til 50x50
+        self.rect = self.image.get_rect()
+    
+    def update(self):
+        pass
+
+```
+
+## Rect
+
+`self.rect` er rektangelen som ligger rundt bildet.
+Det er den som holder styr på figurens posisjon på skjermen.
+
+Den har mange forskjellige attributter som kan manipuleres for å flytte figuren rundt.
+
+![](../../../assets/bilder/pygame/rect.png)
+
+<details>
+
+<summary>Alle `rect` sine attributter</summary>
+
+```
+x,y
+top, left, bottom, right
+topleft, bottomleft, topright, bottomright
+midtop, midleft, midbottom, midright
+center, centerx, centery
+size, width, height
+w,h
+```
+
+</details>
+
+
+```python {5,8-9,17-18}
+class Spiller(pygame.sprite.Sprite):
+    def __init__(self) -> None:
+        super().__init__()
+        self.image = pygame.image.load("yellow.png").convert_alpha()
+        self.rect = self.image.get_rect()
+
+        # Plasserer figuren midt på skjermen i starten
+        self.rect.x = WIDTH // 2
+        self.rect.y = HEIGHT // 2
+
+        # Fart som skal brukes til å flytte på figuren
         self.speed_x = 1
         self.speed_y = -1
-        self.color = color
 
     def update(self):
+        # Flytter figuren ved å endre på rect sin x og y
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
 
         if self.rect.right > WIDTH or self.rect.left < 0:
             self.speed_x *= -1
-            self.color = pygame.Color(randint(0,255), randint(0,255), randint(0,255))
         if self.rect.bottom > HEIGHT or self.rect.top < 0:
             self.speed_y *= -1
-            self.color = pygame.Color(randint(0,255), randint(0,255), randint(0,255))
-
-        pygame.draw.circle(self.image, self.color, (self.rect.width // 2, self.rect.height // 2), self.rect.width // 2)
-
-    def accelerate(self):
-        self.speed_x += 1
-        self.speed_y += 1
-
-    def brake(self):
-        self.speed_x -= 1
-        self.speed_y -= 1
 ```
 
 <details>
@@ -69,16 +135,15 @@ FPS = 60
 WIDTH = 800
 HEIGHT = 600
 
-class Ball(pygame.sprite.Sprite):
-    def __init__(self, x: int, y:int, width: int, height: int, color: str) -> None:
+class Spiller(pygame.sprite.Sprite):
+    def __init__(self, x: int, y:int) -> None:
         super().__init__()
-        self.image = pygame.Surface((width, height), pygame.SRCALPHA)
+        self.image = pygame.image.load("yellow.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.speed_x = 1
         self.speed_y = -1
-        self.color = color
 
     def update(self):
         self.rect.x += self.speed_x
@@ -86,12 +151,8 @@ class Ball(pygame.sprite.Sprite):
 
         if self.rect.right > WIDTH or self.rect.left < 0:
             self.speed_x *= -1
-            self.color = pygame.Color(randint(0,255), randint(0,255), randint(0,255))
         if self.rect.bottom > HEIGHT or self.rect.top < 0:
             self.speed_y *= -1
-            self.color = pygame.Color(randint(0,255), randint(0,255), randint(0,255))
-
-        pygame.draw.circle(self.image, self.color, (self.rect.width // 2, self.rect.height // 2), self.rect.width // 2)
 
     def accelerate(self):
         self.speed_x += 1
@@ -113,32 +174,19 @@ class Game:
 
         # Sprite groups
         self.sprites = pygame.sprite.Group()
-        self.ball = Ball(100,100, 25,25, "blue")
-        self.sprites.add(self.ball)
+        self.spiller = Spiller(100,100, 25,25, "blue")
+        self.sprites.add(self.spiller)
     
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
         
-        # Key pressed
         keys = pygame.key.get_pressed()
-        # if keys[pygame.K_UP]:
-        #     print("UP button pressed")
         if keys[pygame.K_UP]:
-            self.ball.accelerate()
-            print("speed up")
+            self.spiller.accelerate()
         if keys[pygame.K_DOWN]:
-            self.ball.brake()
-            print("speed down")
-        # if keys[pygame.K_w]:
-        #     print("W button pressed")
-
-        # Mouse events
-        # left, middle, right = pygame.mouse.get_pressed()
-        # mouse_x, mouse_y = pygame.mouse.get_pos()
-        # if left:
-        #     print(f"left button clicked: ({mouse_x},{mouse_y})")
+            self.spiller.brake()
 
     def update(self) -> None:
         self.sprites.update()
