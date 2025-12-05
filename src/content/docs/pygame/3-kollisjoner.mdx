@@ -1,0 +1,19 @@
+---
+title: Kollisjoner
+
+---
+
+## Kollisjon mellom to sprites
+
+```python
+pygame.sprite.collide_rect(sprite1, sprite2) -> bool
+```
+
+## Kollisjon med grupper
+
+```python
+collided_enemies = pygame.sprite.spritecollide(player, enemies_group, True) # dokill=True to remove collided enemies from group
+
+for enemy in collided_enemies:
+    print("Player collided with an enemy!")
+```
