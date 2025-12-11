@@ -21,7 +21,7 @@ class Figur(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("yellow.png").convert_alpha()
         self.rect = self.image.get_rect()
-    
+
     def update(self):
         pass
 
@@ -44,7 +44,7 @@ class Ball(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.Surface((width, height), pygame.SRCALPHA) #
         self.rect = self.image.get_rect()
-    
+
     def update(self):
         pygame.draw.circle(self.image, self.color, (self.rect.width // 2, self.rect.height // 2), self.rect.width // 2)
 
@@ -64,7 +64,7 @@ class Figur(pygame.sprite.Sprite):
         self.image = pygame.image.load("yellow.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (50, 50)) # skalerer bilde til 50x50
         self.rect = self.image.get_rect()
-    
+
     def update(self):
         pass
 
@@ -176,12 +176,12 @@ class Game:
         self.sprites = pygame.sprite.Group()
         self.spiller = Spiller(100,100, 25,25, "blue")
         self.sprites.add(self.spiller)
-    
+
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.spiller.accelerate()
@@ -196,7 +196,7 @@ class Game:
         self.sprites.draw(self.screen)
 
         pygame.display.flip()
-    
+
     def run(self) -> None:
         while self.running:
             self.handle_events()
@@ -211,3 +211,44 @@ if __name__ == "__main__":
 ```
 
 </details>
+
+## Grupper
+
+`Group`-klassen (`pygame.sprite.Group()`) kan brukes til å samle sprite-objekter.
+Den kommer med metodene `draw` og `update` som kjører henholdsvis `draw`- og `update`-metodene til alle sprite-objektene som er i gruppen.
+I tillegg kan grupper også brukes for å kollisjoner med samlinger av sprites (se [pygame/kollisjoner](./3-kollisjoner.mdx)).
+
+Under er et eksempel på bruk av grupper.
+
+```python {6-8, 10-11, 13-15, 18-19, 23-24}
+class Game:
+    def __init__(self) -> None:
+
+        (...)
+
+        # Sprite groups
+        self.players = pygame.sprite.Group() # oppretter en sprite-gruppe for spillere
+        self.enemies = pygame.sprite.Group() # oppretter en sprite-gruppe for fiender
+
+        # legger til en spiller i players-gruppen
+        self.players.add(Player())
+
+        # legger til 10 fiender i enemies-gruppen
+        for i in range(10):
+            self.enemies.add(Enemy())
+
+    def update(self) -> None:
+        self.players.update() # kjører update-metoden på alle sprites i players-gruppen
+        self.enemies.update() # kjører update-metoden på alle sprites i enemies-gruppen
+
+    def draw(self) -> None:
+        self.screen.fill("white")
+        self.players.draw(self.screen) # tegner alle sprites i players-gruppen på vinduet
+        self.enemies.draw(self.screen) # tegner alle sprites i enemies-gruppen på vinduet
+
+        pygame.display.flip()
+
+(...)
+
+
+```
