@@ -1,19 +1,224 @@
 ---
 title: Kollisjoner
-
 ---
+
+`Kollisjoner` i Pygame håndteres via modulen `pygame.sprite`.
+Disse funksjonene lar deg sjekke om to sprites treffer hverandre,
+eller om en sprite treffer én eller flere sprites i en *gruppe*.
+
+En kollisjon kan sjekkes på flere måter:
+- **Rektangel** - raskt og ofte «godt nok» (`collide_rect`).
+- **Sirkel** - fint for runde objekter (`collide_circle`).
+- **Piksel-presis** - mest nøyaktig med masker (`collide_mask`).
+- **Egendefinert funksjon** - du kan sende inn din egen kollisjonsfunksjon.
+
 
 ## Kollisjon mellom to sprites
 
+### Rektangel
+
+Sjekker overlapp mellom `sprite.rect` for begge sprites.
+
 ```python
-pygame.sprite.collide_rect(sprite1, sprite2) -> bool
+hit = pygame.sprite.collide_rect(sprite1, sprite2)
+if hit:
+    print("sprite 1 og sprite 2 kolliderte")
 ```
 
-## Kollisjon med grupper
+
+### Sirkel
+
+Forutsetter at begge sprites har en `radius`-attributt:
 
 ```python
-collided_enemies = pygame.sprite.spritecollide(player, enemies_group, True) # dokill=True to remove collided enemies from group
+hit = pygame.sprite.collide_circle(sprite1, sprite2)
+if hit:
+    print("sprite 1 og sprite 2 kolliderte")
+```
 
+
+### Mask ("piksel-kollisjon")
+
+`collide_mask` sjekker overlapp av fargede piksler. Begge sprites må ha `mask`.
+
+```python {6,14,16-18}
+class Asteroid(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("asteroid.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image) # lager mask
+        self.angle = 0
+
+    def update(self, dt: float):
+        # roterer figuren og lager ny mask
+        self.angle += 90 * dt
+        self.image = pygame.transform.rotate(self.original, self.angle)
+        self.rect = self.image.get_rect(center=self.rect.center)
+        self.mask = pygame.mask.from_surface(self.image)  # lager ny mask av det oppdaterte bildet
+
+hit = pygame.sprite.collide_mask(player, asteroid)
+if hit:
+    print("Du traff!")
+```
+
+> `collide_mask` krever en del datakraft, for å unngå å sjekke `collide_mask` for ofte, kan den kombineres med `collide_rect`.
+
+```python
+hit_rect = pygame.sprite.collide_rect(player, asteroid)
+if hit_rect:
+    print("Kollisjon med rect, sjekker mask")
+    hit_mask = pygame.sprite.collide_mask(player, asteroid)
+    if hit_mask:
+        print("Piksel-perfekt kollisjon")
+```
+
+
+## Kollisjoner med grupper
+
+### Sprite mot én gruppe
+
+```python
+collided_enemies = pygame.sprite.spritecollide(player, enemies_group, dokill=True, collided=pygame.sprite.collide_rect)
 for enemy in collided_enemies:
-    print("Player collided with an enemy!")
+    print(f"Spilleren kolliderte med {enemy}!")
 ```
+
+- **Returnerer** en liste med treff fra `enemies_group`.
+- **`dokill=True`** fjerner treffede sprites **fra akkurat den gruppen**.`.
+- **`collided=`** angir kollisjonsfunksjonen som skal brukes for å sjekke kollisjonen (se [Kollishjon mellom to sprites](#kollisjon-mellom-to-sprites)).
+
+### Hvis *noe* i gruppen treffer (effektiv)
+
+```python
+hit = pygame.sprite.spritecollideany(player, enemies_group, dokill=False, collided=pygame.sprite.collide_circle)
+if hit:
+    print("Spilleren treffer minst én fiende!")
+```
+
+### Gruppe mot gruppe
+
+```python
+hits = pygame.sprite.groupcollide(bullets, enemies, dokill1=True, dokill2=True)
+for bullet, enemies_hit in hits.items():
+    for enemy in enemies_hit:
+        print("Bullet traff enemy!")
+```
+- **Returnerer** en ordbok `{sprite_fra_group1: [sprites_fra_group2]}`.
+- **`dokill1`/`dokill2`** fjerner treffede sprites **fra de gruppene som sendes inn**.
+
+
+## Tips og vanlige feil
+
+- **`image` og `rect` må finnes** på alle sprites; `rect` brukes i de fleste sjekker, `mask` i piksel‑presis.
+- **Oppdater `mask` kun når `image` endres** (rotasjon, skalering, alpha‑endringer) for ytelse.
+- **Grov-til-fin**: `collide_rect` først, deretter `collide_mask` ved behov.
+- **`dokill` fjerner fra den aktuelle gruppen**, ikke fra alle.
+
+
+<details>
+<summary>Eksempel i en større kode</summary>
+
+```python {40-42,45-48}
+import pygame
+
+FPS = 60
+WIDTH, HEIGHT = 800, 600
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.image = pygame.Surface((32, 32), pygame.SRCALPHA)
+        pygame.draw.rect(self.image, (50, 180, 255), self.image.get_rect())
+        self.rect = self.image.get_rect(center=pos)
+        self.speed = 240
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def update(self, dt):
+        keys = pygame.key.get_pressed()
+        move = pygame.Vector2((keys[pygame.K_RIGHT] - keys[pygame.K_LEFT],
+                               keys[pygame.K_DOWN] - keys[pygame.K_UP]))
+        if move.length_squared():
+            move = move.normalize() * self.speed * dt
+            self.rect.move_ip(move)
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super().__init__()
+        self.image = pygame.Surface((28, 28), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (255, 80, 80), (14, 14), 14)
+        self.rect = self.image.get_rect(center=pos)
+        self.mask = pygame.mask.from_surface(self.image)
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, pos, vel):
+        super().__init__()
+        self.image = pygame.Surface((6, 6), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (255, 230, 50), (3, 3), 3)
+        self.rect = self.image.get_rect(center=pos)
+        self.vel = pygame.Vector2(vel)
+
+    def update(self, dt):
+        self.rect.move_ip(self.vel * dt)
+        if not (-20 <= self.rect.x <= WIDTH+20 and -20 <= self.rect.y <= HEIGHT+20):
+            self.kill()  # fjern fra alle grupper hvis utenfor
+
+class Game:
+    def __init__(self):
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.running = True
+        self.players = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+        self.bullets = pygame.sprite.Group()
+
+        self.player = Player((WIDTH//2, HEIGHT//2))
+        self.players.add(self.player)
+        for i in range(8):
+            self.enemies.add(Enemy((80 + i*80, 100)))
+
+    def handle_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                # skyt kule mot musepeker
+                mouse = pygame.Vector2(pygame.mouse.get_pos())
+                dir = (mouse - pygame.Vector2(self.player.rect.center)).normalize()
+                self.bullets.add(Bullet(self.player.rect.center, dir * 500))
+
+    def update(self):
+        dt = self.clock.get_time() / 1000.0
+        self.players.update(dt)
+        self.enemies.update(dt)
+        self.bullets.update(dt)
+
+        # Piksel-presis player vs enemies
+        player_hits = pygame.sprite.spritecollide(self.player, self.enemies, False, pygame.sprite.collide_mask)
+        if player_hits:
+            print(f"Player treff: {len(player_hits)}")
+
+        # Bullets vs enemies – fjern begge ved treff
+        pygame.sprite.groupcollide(self.bullets, self.enemies, True, True)
+
+    def draw(self):
+        self.screen.fill("white")
+        self.enemies.draw(self.screen)
+        self.players.draw(self.screen)
+        self.bullets.draw(self.screen)
+        pygame.display.flip()
+
+    def run(self):
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            self.clock.tick(FPS)
+        pygame.quit()
+
+if __name__ == "__main__":
+    Game().run()
+```
+
+</details>
