@@ -17,6 +17,8 @@ Lag et Pygame-oppsett der vinduet er `858x525` piksler og har svart bakgrunn.
 
 Lag en `Racket`-klasse som arver fra `pygame.sprite.Sprite`, klassen skal representere racketene i spillet (de hvite rektanglene).
 
+> Hvis du bruker malen kan du legge klassene for sprites over `Game`-klassen.
+
 Klassen skal ha følgende attributter:
 
 - `rect` - figurens rektangel
@@ -28,6 +30,34 @@ Og følgende metoder:
 
 - `up` - som flytter racketen opp
 - `down` - som flytter racketen ned
+
+<details>
+
+    <summary>Løsningsforslag</summary>
+
+```python
+class Racket(pygame.sprite.Sprite):
+    def __init__(self, x: int):
+        super().__init__()
+        self.image = pygame.Surface((25, 100)) # bildet er en overflate med bredde 25 og høyde 100
+        self.rect = self.image.get_rect()
+
+        self.rect.left = x # plasserer racketens venstre side x piksler fra venstre side av skjermen
+        self.rect.centery = HEIGHT / 2 # plasserer racketen midt på skjermen i y-retning
+
+        self.image.fill("white") # fyller bildet med hvit farge
+
+    def up(self):
+        # må sjekke om racketen er innenfor vinduet
+        if self.rect.top > 0:
+            self.rect.y -= 1
+
+    def down(self):
+        if self.rect.bottom < HEIGHT:
+            self.rect.y += 1
+```
+
+</details>
 
 ## Oppgave 3 - Ball
 
