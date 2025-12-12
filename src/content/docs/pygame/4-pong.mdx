@@ -1,0 +1,53 @@
+---
+title: Pong
+---
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uCqIkgFKHr4?si=ITBOqbPCVI1VcRly" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Pong er et 2D-spill som simulerer bordtennis.
+Det ble opprinnelig lansert som et arkadespill i 1972.
+
+> [Les mer om Pong på Wikipedia](https://no.wikipedia.org/wiki/Pong)
+
+## Oppgave 1 - Oppsett
+
+Lag et Pygame-oppsett der vinduet er `858x525` piksler og har svart bakgrunn.
+
+## Oppgave 2 - Racket
+
+Lag en `Racket`-klasse som arver fra `pygame.sprite.Sprite`, klassen skal representere racketene i spillet (de hvite rektanglene).
+
+Klassen skal ha følgende attributter:
+
+- `rect` - figurens rektangel
+- `image` - figurens bilde/surface
+- `x` - et heltall som angir racketens x-posision.
+- `y` - et heltall som angir racketens y-posision.
+
+Og følgende metoder:
+
+- `up` - som flytter racketen opp
+- `down` - som flytter racketen ned
+
+## Oppgave 3 - Ball
+
+Lag en klasse `Ball` som også arver fra `pygame.sprite.Sprite`, klassen skal representere ballen i spillet.
+
+
+Klassen skal ha følgende attributter:
+
+- `rect` - figurens rektangel
+- `image` - figurens bilde/surface
+- `x` - et heltall som angir ballens x-posision.
+- `y` - et heltall som angir ballens y-posision.
+- `fart_x` - et heltall som angir ballens fart i x-retning.
+- `fart_y` - et heltall som angri ballens fart i y-retning.
+
+Og følgende metoder:
+
+- `flytt` - som flytter ballens x og y med henholdsvis x-fart og y-fart
+- `snu` - som snur racketens fart
+
+## Oppgave xx
+
+Kommer på tavla eller her snart..
