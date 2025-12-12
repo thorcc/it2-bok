@@ -114,6 +114,88 @@ class Ball(pygame.sprite.Sprite):
 
 </details>
 
-## Oppgave xx
+## Game-klassen
 
-Kommer på tavla eller her snart..
+- TODO: Lag Oppgaver
+    - Opprette objekter
+    - Styre spillere med tastaturet
+
+Hele koden:
+
+```python
+class Game:
+    def __init__(self) -> None:
+        pygame.init()
+        self.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption("GAME TITLE")
+        self.font = pygame.font.SysFont("Arial", 36)
+
+        # Game state
+        self.running = True
+        self.racket1 = Racket(x = 10)
+        self.racket2 = Racket(x = WIDTH-35)
+        self.ball = Ball()
+        self.player1_points = 0
+        self.player2_points = 0
+
+        # Sprite groups
+        self.rackets = pygame.sprite.Group()
+        self.balls = pygame.sprite.Group()
+
+        self.rackets.add(self.racket1)
+        self.rackets.add(self.racket2)
+        self.balls.add(self.ball)
+
+
+    def handle_events(self) -> None:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+
+        # Key pressed
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.racket2.up()
+        if keys[pygame.K_DOWN]:
+            self.racket2.down()
+        if keys[pygame.K_w]:
+            self.racket1.up()
+        if keys[pygame.K_s]:
+            self.racket1.down()
+
+    def update(self) -> None:
+        self.rackets.update()
+        self.balls.update()
+        hit = pygame.sprite.spritecollide(self.ball, self.rackets, dokill=False, collided=pygame.sprite.collide_rect)
+        if hit:
+            self.ball.flip_x()
+        if self.ball.outside_left():
+            self.ball.reset()
+            self.player2_points += 1
+
+        if self.ball.outside_right():
+            self.ball.reset()
+            self.player1_points += 1
+
+    def draw(self) -> None:
+        self.screen.fill("black")
+        self.rackets.draw(self.screen)
+        self.balls.draw(self.screen)
+
+        text_player1 = self.font.render(str(self.player1_points), True, "white")
+        text_player2 = self.font.render(str(self.player2_points), True, "white")
+
+        self.screen.blit(text_player1, (50, 50))
+        self.screen.blit(text_player2, (WIDTH - 50, 50))
+
+        pygame.display.flip()
+
+    def run(self) -> None:
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            self.clock.tick(FPS)
+        pygame.quit()
+```
