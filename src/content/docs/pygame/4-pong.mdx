@@ -77,6 +77,43 @@ Og følgende metoder:
 - `flip_x` - som snur ballens fart i x-retning
 - `flip_y` - som snur ballens fart i y-retning
 
+<details>
+
+    <summary>Løsningsforslag</summary>
+
+```python
+import random
+
+class Ball(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface((25, 25))
+        self.rect = self.image.get_rect()
+
+        self.rect.centerx = WIDTH // 2
+        self.rect.centery = HEIGHT // 2
+
+        self.image.fill("white")
+
+        self.speed_x = random.choice([-5,5])
+        self.speed_y = random.choice([-5,5])
+
+    def update(self):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+
+        if self.rect.top < 0 or self.rect.bottom > HEIGHT:
+            self.flip_y()
+
+    def flip_x(self):
+        self.speed_x = -self.speed_x
+
+    def flip_y(self):
+        self.speed_y = -self.speed_y
+```
+
+</details>
+
 ## Oppgave xx
 
 Kommer på tavla eller her snart..
