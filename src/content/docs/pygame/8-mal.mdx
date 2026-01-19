@@ -1,5 +1,5 @@
 ---
-title: "Mal"
+title: "6. Mal"
 ---
 
 Forskjellige Pygame-spill består ofte av mange samme elementer, som for eksempel et vindu (screen) og en klokke.
@@ -28,12 +28,12 @@ class Game:
 
         # Sprite groups
         self.sprites = pygame.sprite.Group()
-    
+
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-        
+
         # Key pressed
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
@@ -61,7 +61,7 @@ class Game:
         self.sprites.draw(self.screen)
 
         pygame.display.flip()
-    
+
     def run(self) -> None:
         while self.running:
             self.handle_events()
