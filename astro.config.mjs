@@ -13,22 +13,27 @@ export default defineConfig({
 				{
 					label: 'Apputvikling',
 					autogenerate: { directory: 'apputvikling' },
+					collapsed: false,
 				},
 				{
 					label: 'Pygame',
 					autogenerate: { directory: 'pygame' },
+					collapsed: true
 				},
 				{
 					label: 'Grunnleggende',
 					autogenerate: { directory: 'grunnleggende'}
+					collapsed: true
 				},
 				{
 					label: 'Oppsett',
 					autogenerate: { directory: 'oppsett' },
+					collapsed: true
 				},
 				{
 					label: 'Diverse',
 					autogenerate: { directory: 'diverse' },
+					collapsed: true
 				}
 				// {
 				// 	label: 'Spill',
