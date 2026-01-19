@@ -2,32 +2,32 @@
 title: 2. Objektorientert modellering
 ---
 
-Objektorientert modellering (OOM) brukes for å planlegge og strukturere programmer på en oversiktlig måte før man begynner å programmere.
-I IT2 er målet å forstå hvordan vi kan dele programmene våre opp i objekter som samarbeider.
-Rent praktisk skal vi bruke **UML-diagrammer** for å visualisere dette.
+Objektorientert modellering (OOM) er verktøy som brukes for å modellere objektorienterte programmer.
+Som oftest dreier det seg om å lage diagrammer som beskriver strukturen i et program.
 
-## Hva er OOM?
+I IT2 skal vi bruke klassediagrammer som følger [UML-standaren](https://en.wikipedia.org/wiki/Unified_Modeling_Language) for å modellere programmene våre.
 
-Objektorientert modellering (OOM) går ut på å beskrive og planlegge et prorgam ved hjelp av **objekter** og **klasser**, uten å skrive kode.
-Målet er å få oversikt over hvordan systemet skal bygges opp før man begynner å programmere, slik at man kan skrive ryddigere kode som er lettere å vedlikeholde.
 
 <details>
 <summary>Forskjellen på objektorientert modellering og objektorientert programmering</summary>
 
 Objektorientert modellering og objektorientert programmering henger tett sammen, men er ikke det samme.
 
-**Objektorientert modellering** brukes i planleggingsfasen.
+**Objektorientert modellering** brukes som regel i planleggingsfasen.
 Her beskriver man hvilke klasser systemet skal bestå av, hvilke attributter og metoder de har, og hvordan klassene henger sammen.
-Dette gjøres ofte ved hjelp av UML-diagrammer.
 
-**Objektorientert programmering** handler om å implementere denne modellen i et programmeringsspråk, for eksempel Python eller Java.
+**Objektorientert programmering** handler om å skrive kode som følger modellen som er laget i planleggingsfasen.
 Da skriver man faktisk kode som følger strukturen som er planlagt i UML.
 
 Kort sagt kan man si at objektorientert modellering svarer på *hva systemet skal bestå av*, mens objektorientert programmering svarer på *hvordan systemet fungerer i praksis*.
 
 </details>
 
-## Sentrale begreper
+
+## Klassediagram
+
+<details>
+<summary>Nyttige begreper i objektorientert programmering/modellering</summary>
 
 * **Klasse**: En mal for objekter, for eksempel `Elev`.
 * **Objekt**: Et konkret eksemplar av en klasse, for eksempel én bestemt elev.
@@ -35,27 +35,17 @@ Kort sagt kan man si at objektorientert modellering svarer på *hva systemet ska
 * **Metoder**: Funksjoner som beskriver hva et objekt kan gjøre.
 * **Konstruktør**: En metode som brukes til å opprette nye objekter.
 
-## UML (Unified Modeling Language)
+</details>
 
-UML er et smodelleringsspråk som brukes til å grafisk beskrive objektorienterte programmer.
-UML er ikke et programmeringsspråk, men et hjelpemiddel for planlegging og kommunikasjon.
+Klassediagrammer viser klasser med tilhørende attributter og metoder.
 
-Det finnes mange forskjellig typer UML-diagrammer.
-Noen studenter fra UiO har laget en fin oversikt over de mest brukte: [HOW TO UML-DIAGRAM (UiO)](https://www.uio.no/studier/emner/matnat/ifi/IN1030/v23/materiale-fra-gruppetimer/gruppe-9/how-to-uml-diagram-guide.pdf).
 
-I IT2 holde vi oss til **klassediagramer**.
-
-## UML-klassediagram
-
-Et klassediagram viser:
-
-* Klassenavn
-* Attributter
-* Metoder
+> `+` betyr *public* og `-` betyr *private*.
 
 ```mermaid
 classDiagram
-    class Klassenavn{
+    Eksempelklasse1 -- Eksempelklasse2
+    class Eksempelklasse1{
         +datatype attributt1
         +datatype attributt2
         +datatype attributt3
@@ -65,12 +55,13 @@ classDiagram
         +metode3()
         ...
     }
+    class Eksempelklasse2{
+        +datatype attributt1
+        ...
+        +metode1()
+        ...
+    }
 ```
-
-I UML brukes symboler for synlighet:
-
-* `+` betyr public (tilgjengelig utenfra)
-* `-` betyr private (kun internt i klassen)
 
 ### Eksempel: Twitter
 
@@ -79,6 +70,7 @@ Her er et forslag til klassediagram for en enkel versjon av Twitter, som består
 
 ```mermaid
 classDiagram
+    Bruker -- Tweet
     class Bruker{
         +str brukernavn
         +str passord
@@ -88,6 +80,7 @@ classDiagram
     }
     class Tweet{
         +str tekst
+        +Bruker bruker
         +int likes
         +datetime tidspunkt
     }
@@ -102,16 +95,6 @@ Arv betyr at en klasse kan arve egenskaper og metoder fra en annen klasse. For e
 ### Assosiasjon
 
 Assosiasjon beskriver at klasser har en relasjon til hverandre. For eksempel kan en `Klasse` bestå av mange `Elev`-objekter.
-
-## Sammenheng mellom UML og kode
-
-UML brukes ofte før programmering for å planlegge strukturen:
-
-* Attributter i UML blir variabler i klassen
-* Metoder i UML blir metoder i koden
-* Arv i UML blir implementert med arv i programmeringsspråket
-
-Dette gjør overgangen fra idé til ferdig program enklere.
 
 ## Hvorfor bruke OOM og UML?
 
