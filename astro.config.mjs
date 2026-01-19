@@ -22,7 +22,7 @@ export default defineConfig({
 				},
 				{
 					label: 'Grunnleggende',
-					autogenerate: { directory: 'grunnleggende'}
+					autogenerate: { directory: 'grunnleggende'},
 					collapsed: true
 				},
 				{
