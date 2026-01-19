@@ -11,12 +11,12 @@ export default defineConfig({
 			//social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
-					label: 'Pygame',
-					autogenerate: { directory: 'pygame' },
+					label: 'Apputvikling',
+					autogenerate: { directory: 'apputvikling' },
 				},
 				{
-					label: 'Flask',
-					autogenerate: { directory: 'flask' },
+					label: 'Pygame',
+					autogenerate: { directory: 'pygame' },
 				},
 				{
 					label: 'Grunnleggende',
@@ -26,6 +26,10 @@ export default defineConfig({
 					label: 'Oppsett',
 					autogenerate: { directory: 'oppsett' },
 				},
+				{
+					label: 'Diverse',
+					autogenerate: { directory: 'diverse' },
+				}
 				// {
 				// 	label: 'Spill',
 				// 	autogenerate: { directory: 'spill' },
