@@ -23,7 +23,7 @@ Kort sagt kan man si at objektorientert modellering svarer på *hva systemet ska
 
 </details>
 
-## Tegne UML-diagrammer i VS Code
+## UML-diagrammer i VS Code
 
 1. Last ned utvidelsen [Mermaid Editor](https://marketplace.visualstudio.com/items?itemName=tomoyukim.vscode-mermaid-editor)
 2. Lag en ny fil med filendelsen `.mmd` eller `.mermaid`
@@ -92,10 +92,7 @@ Diagrammet under viser et eksempel på en klasse for Tweets (poster) på Twitter
 classDiagram
     class Tweet{
         +str tekst
-        +Bruker bruker
-        +List~Like~ likes
         +datetime tidspunkt
-
         +repost() bool
         +slett() bool
     }
@@ -108,12 +105,9 @@ classDiagram
 classDiagram
     class Tweet{
         +str tekst
-        +Bruker bruker
-        +int likes
         +datetime tidspunkt
-
-        +repost()
-        +slett()
+        +repost() bool
+        +slett() bool
     }
 ```
 
@@ -121,23 +115,28 @@ classDiagram
 
 ### Relasjoner
 
-Relasjoner mellom klasser vises i klassediagrammer som streker.
+Relasjoner mellom klasser vises i klassediagrammer som streker, med et lite symbol i den ene enden som viser hvilken type relasjonen er.
+
+I eksempelet under har klassen `Bruker` en relasjon til klassen `Tweet` gjennom listene `tweets` og `likes`.
+Diamanten i enden av streken viser at relasjonen er en [*komposisjon*](#komposisjon-composition).
 
 ```mermaid
 classDiagram
-    Bruker -- Tweet
+    Bruker --* Tweet
     class Bruker{
         +str brukernavn
         +str passord
+        +List~Tweet~ tweets
+        +List~Tweet~ likes
         +publiser_tweet()
         +følg_bruker()
         +lik_tweet()
     }
     class Tweet{
         +str tekst
-        +Bruker bruker
-        +int likes
         +datetime tidspunkt
+        +repost() bool
+        +slett() bool
     }
 ```
 
@@ -146,7 +145,7 @@ classDiagram
 
 ```text {2}
 classDiagram
-    Bruker -- Tweet
+    Bruker --* Tweet
     class Bruker{
         +str brukernavn
         +str passord
@@ -164,47 +163,15 @@ classDiagram
 
 </details>
 
-### Relasjonstyper
-
-```mermaid
-classDiagram
-classA --|> classB : Inheritance
-classC --* classD : Composition
-classE --o classF : Aggregation
-classG --> classH : Association
-classI -- classJ : Link(Solid)
-classK ..> classL : Dependency
-classM ..|> classN : Realization
-classO .. classP : Link(Dashed)
-```
-
-```text
-classDiagram
-classA --|> classB : Inheritance
-classC --* classD : Composition
-classE --o classF : Aggregation
-classG --> classH : Association
-classI -- classJ : Link(Solid)
-classK ..> classL : Dependency
-classM ..|> classN : Realization
-classO .. classP : Link(Dashed)
-```
-
-
-#### Oversikt
+#### Relasjonstyper
 
 | Relasjon    | Typisk betydning | Eksempel                   | Forklaring                                                                              |
 | ----------- | ---------------- | -------------------------- | --------------------------------------------------------------------------------------- |
-| Arv         | er-en/er-et      | `Katt` er et `Dyr`         | `Katt` er en *spesialisering av `Dyr`, mens `Dyr` er en *generalisering* av `Katt`.     |
+| Arv         | er-en/er-et      | `Katt` er et `Dyr`         | `Katt` er en *spesialisering* av `Dyr`, mens `Dyr` er en *generalisering* av `Katt`.    |
 | Komposisjon | Eier             | `Hus` eier en `Dør`        | `Dør` kan ikke eksistere uten `Hus`. Når `Hus` slettes, slettes også `Dør`.             |
 | Aggregering | Har              | `Spiller` har et `Lag`     | `Spiller` kan eksitere uten å ha et `Lag`. Når `Lag` slettes, slettes *ikke* `Spiller`. |
 
 #### Arv (Inheritance / Generalization)
-
-```mermaid
-classDiagram
-Katt --|> Dyr
-```
 
 ```
 Katt --|> Dyr
@@ -218,12 +185,81 @@ Katt --|> Dyr
 * `Katt` *arver* attributter og metoder fra `Dyr`
 * Representerer et **er-et-**/**er-en-** relasjon, vi kan si at `Katt` *er et* `Dyr`.
 
-#### Komposisjon (Composition)
+> Pilen skal peke mot klassen det arves fra.
 
 ```mermaid
 classDiagram
-Hus --* Dør
+class Dyr {
+    +navn : str
+    +lag_lyd()
+}
+
+class Katt {
+    +lag_lyd()
+    +spinn()
+}
+
+Katt --|> Dyr
 ```
+
+<details>
+<summary>Mermaid-kode</summary>
+
+```text
+classDiagram
+Katt --|> Dyr
+
+class Dyr {
+    +navn : str
+    +lag_lyd()
+}
+
+class Katt {
+    +lag_lyd()
+    +spinn()
+}
+
+```
+</details>
+
+<details>
+<summary>Python-kode</summary>
+
+```python
+class Dyr:
+    def __init__(self, navn: str):
+        self.navn = navn
+
+    def lag_lyd(self):
+        print("Dyret lager en lyd")
+
+
+class Katt(Dyr):
+    def __init__(self, navn: str):
+        # Kjører init-metoden til Dyr
+        super().__init__(navn)
+
+    def lag_lyd(self):
+        # Overstyrer metode fra Dyr
+        print(f"{self.navn} sier mjau")
+
+    def spinn(self):
+        print(f"{self.navn} spinner")
+
+
+# Bruk
+dyr = Dyr("Ukjent dyr")
+dyr.lag_lyd()
+
+katt = Katt("Pus")
+katt.lag_lyd()   # arvet + overstyrt
+katt.spinn()     # kun i Katt
+
+```
+
+</details>
+
+#### Komposisjon (Composition)
 
 ```
 Hus --* Dør
@@ -233,12 +269,80 @@ Hus --* Dør
 * `Dør` kan **ikke eksistere uten** `Hus`
 * Når `Hus` slettes, slettes også `Dør`
 
-#### Aggregering (Aggregation)
+> Diamanten skal være på den siden som *eies*.
 
 ```mermaid
 classDiagram
-Lag --o Spiller
+Hus --* Dør
+
+class Hus {
+    -dører : List[Dør]
+    +åpne_alle_dører()
+}
+
+class Dør {
+    -nummer : int
+    +åpne()
+}
+
 ```
+
+<details>
+<summary>Mermaid-kode</summary>
+
+```text
+classDiagram
+Hus --* Dør
+
+class Hus {
+    -dører : List[Dør]
+    +åpne_alle_dører()
+}
+
+class Dør {
+    -nummer : int
+    +åpne()
+}
+
+```
+
+</details>
+
+
+<details>
+<summary>Python-kode</summary>
+
+```python
+class Dør:
+    def __init__(self, nummer: int):
+        self.nummer = nummer
+
+    def åpne(self):
+        print(f"Dør {self.nummer} åpnes")
+
+
+class Hus:
+    def __init__(self, antall_dører: int):
+        self.dører: list[Dør] = []
+        for i in range(antall_dører):
+            self.dører.append(Dør(i))
+
+    def åpne_alle_dører(self):
+        for dør in self.dører:
+            dør.åpne()
+
+
+# Bruk
+hus = Hus(2)
+hus.åpne_alle_dører()
+
+hus = None # Alle dørene forsvinner når hus slettes
+```
+
+</details>
+
+
+#### Aggregering (Aggregation)
 
 ```
 Lag --o Spiller
@@ -248,10 +352,127 @@ Lag --o Spiller
 * `Spiller` kan eksistere uavhengig av `Lag`
 * Hvis `Lag` slettes, slettes *ikke* `Spiller`
 
-<details>
-<summary>KI-forklaring av flere relasjonstyper</summary>
+> Diamanten skal være på den siden som *has*.
 
-## 4. Association (Assosiasjon)
+```mermaid
+classDiagram
+Lag --o Spiller
+
+class Lag {
+    -navn : str
+    -spillere : List[Spiller]
+    +legg_til_spiller(spiller)
+    +spill_kamp()
+}
+
+class Spiller {
+    -navn : str
+    +spill()
+}
+
+```
+
+<details>
+<summary>Mermaid-kode</summary>
+
+```text
+classDiagram
+Lag --o Spiller
+
+class Lag {
+    -navn : str
+    -spillere : List[Spiller]
+    +legg_til_spiller(spiller)
+    +spill_kamp()
+}
+
+class Spiller {
+    -navn : str
+    +spill()
+}
+
+```
+
+</details>
+
+<details>
+<summary>Python-kode</summary>
+
+```python
+class Spiller:
+    def __init__(self, navn: str):
+        self.navn = navn
+
+    def spill(self):
+        print(f"{self.navn} spiller")
+
+
+class Lag:
+    def __init__(self, navn: str):
+        self.navn = navn
+        self.spillere: list[Spiller] = []
+
+    def legg_til_spiller(self, spiller: Spiller):
+        self.spillere.append(spiller)
+
+    def spill_kamp(self):
+        print(f"Lag {self.navn} spiller kamp")
+        for spiller in self.spillere:
+            spiller.spill()
+
+
+# Spiller eksisterer uavhengig av lag
+spiller1 = Spiller("Erling Braut Haaland")
+spiller2 = Spiller("Phil Foden")
+
+# Oppretter et lag
+lag = Lag("Manchester City")
+# Legger til spillere i laget
+lag.legg_til_spiller(spiller1)
+lag.legg_til_spiller(spiller2)
+
+lag.spill_kamp()
+
+# Laget slettes ...
+lag = None
+
+# ... men en spillerne finnes fortsatt
+spiller1.spill()
+spiller2.spill()
+```
+
+</details>
+
+#### Flere relasjonstype
+
+<details>
+<summary>Les om flere relasjonstyper her.</summary>
+
+I UML-klassediagrammer finnes det flere relasjonstyper.
+Diagrammet under viser alle de forskjellige typene.
+
+```mermaid
+classDiagram
+classA --|> classB : Arv
+classC --* classD : Komposisjon
+classE --o classF : Aggregering
+classG --> classH : Assosiasjon
+classK ..> classL : Avhengighet
+classM ..|> classN : Realisering
+```
+
+```text
+classDiagram
+classA --|> classB : Arv
+classC --* classD : Komposisjon
+classE --o classF : Aggregering
+classG --> classH : Assosiasjon
+classK ..> classL : Avhengighet
+classM ..|> classN : Realisering
+```
+
+
+#### Association (Assosiasjon)
 
 ```
 classG --> classH
@@ -268,7 +489,7 @@ classG --> classH
 
 ---
 
-## 5. Link (Solid linje)
+#### Link (Solid linje)
 
 ```
 classI -- classJ
@@ -282,7 +503,7 @@ classI -- classJ
 
 ---
 
-## 6. Dependency (Avhengighet)
+#### Dependency (Avhengighet)
 
 ```
 classK ..> classL
@@ -303,7 +524,7 @@ classK ..> classL
 
 ---
 
-## 7. Realization (Realisering)
+#### Realization (Realisering)
 
 ```
 classM ..|> classN
@@ -320,7 +541,7 @@ classM ..|> classN
 
 ---
 
-## 8. Link (Dashed / stiplet linje)
+#### Link (Dashed / stiplet linje)
 
 ```
 classO .. classP
