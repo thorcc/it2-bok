@@ -23,6 +23,15 @@ Kort sagt kan man si at objektorientert modellering svarer på *hva systemet ska
 
 </details>
 
+## Tegne UML-diagrammer i VS Code
+
+1. Last ned utvidelsen [Mermaid Editor](https://marketplace.visualstudio.com/items?itemName=tomoyukim.vscode-mermaid-editor)
+2. Lag en ny fil med filendelsen `.mmd` eller `.mermaid`
+3. Skriv kode for et diagram
+4. Høyreklikk i fila og velg `Mermaid:Generate image`
+5. Et bilde med filendelsen `.svg` vil dukke opp i samme mappe som `.mmd`/`.mermaid`-fila.
+
+> [Her er eksempler på mermaid-kode for klassediagrammer.](https://mermaid.ai/open-source/syntax/classDiagram.html)
 
 ## Klassediagram
 
@@ -37,36 +46,82 @@ Kort sagt kan man si at objektorientert modellering svarer på *hva systemet ska
 
 </details>
 
-Klassediagrammer viser klasser med tilhørende attributter og metoder.
+Klassediagrammer er UML-diagrammer som viser en oversikt over klasser og relasjoner mellom klasser.
 
+### Klasser
+
+I klassediagrammer vises klasser som en boks som inneholder en oversikt over klassenes attributter og metoder.
 
 > `+` betyr *public* og `-` betyr *private*.
 
 ```mermaid
 classDiagram
-    Eksempelklasse1 -- Eksempelklasse2
-    class Eksempelklasse1{
+    class Eksempelklasse{
+        +datatype attributt1
+        +datatype attributt2
+        +datatype attributt3
+
+        +metode1(argument) datatype
+        +metode2(argument) datatype
+        +metode3(argument1, argument2) datatype
+    }
+```
+
+<details>
+<summary>Mermaid-kode</summary>
+
+```
+classDiagram
+    class Eksempelklasse{
         +datatype attributt1
         +datatype attributt2
         +datatype attributt3
         ...
-        +metode1()
-        +metode2()
-        +metode3()
-        ...
-    }
-    class Eksempelklasse2{
-        +datatype attributt1
-        ...
-        +metode1()
-        ...
+
+        +metode1(argument) datatype
+        +metode2(argument) datatype
+        +metode3(argument1, argument2) datatype
     }
 ```
 
-### Eksempel: Twitter
+</details>
 
-Twitter består av brukere som har forskjellig egenskaper (attributter) og som kan gjøre ting (metoder).
-Her er et forslag til klassediagram for en enkel versjon av Twitter, som består av brukere og tweets:
+Diagrammet under viser et eksempel på en klasse for Tweets (poster) på Twitter:
+
+```mermaid
+classDiagram
+    class Tweet{
+        +str tekst
+        +Bruker bruker
+        +List~Like~ likes
+        +datetime tidspunkt
+
+        +repost() bool
+        +slett() bool
+    }
+```
+
+<details>
+<summary>Mermaid-kode</summary>
+
+```
+classDiagram
+    class Tweet{
+        +str tekst
+        +Bruker bruker
+        +int likes
+        +datetime tidspunkt
+
+        +repost()
+        +slett()
+    }
+```
+
+</details>
+
+### Relasjoner
+
+Relasjoner mellom klasser vises i klassediagrammer som streker.
 
 ```mermaid
 classDiagram
@@ -86,19 +141,201 @@ classDiagram
     }
 ```
 
-## Forhold mellom klasser
+<details>
+<summary>Mermaid-kode</summary>
 
-### Arv
+```text {2}
+classDiagram
+    Bruker -- Tweet
+    class Bruker{
+        +str brukernavn
+        +str passord
+        +publiser_tweet()
+        +følg_bruker()
+        +lik_tweet()
+    }
+    class Tweet{
+        +str tekst
+        +Bruker bruker
+        +int likes
+        +datetime tidspunkt
+    }
+```
 
-Arv betyr at en klasse kan arve egenskaper og metoder fra en annen klasse. For eksempel kan klassen `Elev` arve fra klassen `Person`. Da slipper man å skrive samme kode flere ganger.
+</details>
 
-### Assosiasjon
+### Relasjonstyper
 
-Assosiasjon beskriver at klasser har en relasjon til hverandre. For eksempel kan en `Klasse` bestå av mange `Elev`-objekter.
+```mermaid
+classDiagram
+classA --|> classB : Inheritance
+classC --* classD : Composition
+classE --o classF : Aggregation
+classG --> classH : Association
+classI -- classJ : Link(Solid)
+classK ..> classL : Dependency
+classM ..|> classN : Realization
+classO .. classP : Link(Dashed)
+```
 
-## Hvorfor bruke OOM og UML?
+```text
+classDiagram
+classA --|> classB : Inheritance
+classC --* classD : Composition
+classE --o classF : Aggregation
+classG --> classH : Association
+classI -- classJ : Link(Solid)
+classK ..> classL : Dependency
+classM ..|> classN : Realization
+classO .. classP : Link(Dashed)
+```
 
-* Gir bedre oversikt over systemet
-* Gjør koden mer strukturert og gjenbrukbar
-* Reduserer feil før programmering starter
-* Gjør samarbeid enklere
+
+#### Oversikt
+
+| Relasjon    | Typisk betydning | Eksempel                   | Forklaring                                                                              |
+| ----------- | ---------------- | -------------------------- | --------------------------------------------------------------------------------------- |
+| Arv         | er-en/er-et      | `Katt` er et `Dyr`         | `Katt` er en *spesialisering av `Dyr`, mens `Dyr` er en *generalisering* av `Katt`.     |
+| Komposisjon | Eier             | `Hus` eier en `Dør`        | `Dør` kan ikke eksistere uten `Hus`. Når `Hus` slettes, slettes også `Dør`.             |
+| Aggregering | Har              | `Spiller` har et `Lag`     | `Spiller` kan eksitere uten å ha et `Lag`. Når `Lag` slettes, slettes *ikke* `Spiller`. |
+
+#### Arv (Inheritance / Generalization)
+
+```mermaid
+classDiagram
+Katt --|> Dyr
+```
+
+```
+Katt --|> Dyr
+```
+
+**Betydning:**
+`Katt` arver fra `Dyr`.
+
+* `Katt` er en *spesialisering* av `Dyr`
+* `Dyr` er en *generalisering* av `Dyr`
+* `Katt` *arver* attributter og metoder fra `Dyr`
+* Representerer et **er-et-**/**er-en-** relasjon, vi kan si at `Katt` *er et* `Dyr`.
+
+#### Komposisjon (Composition)
+
+```mermaid
+classDiagram
+Hus --* Dør
+```
+
+```
+Hus --* Dør
+```
+
+* `Hus` eier `Dør`
+* `Dør` kan **ikke eksistere uten** `Hus`
+* Når `Hus` slettes, slettes også `Dør`
+
+#### Aggregering (Aggregation)
+
+```mermaid
+classDiagram
+Lag --o Spiller
+```
+
+```
+Lag --o Spiller
+```
+
+* `Lag` har `Spiller`
+* `Spiller` kan eksistere uavhengig av `Lag`
+* Hvis `Lag` slettes, slettes *ikke* `Spiller`
+
+<details>
+<summary>KI-forklaring av flere relasjonstyper</summary>
+
+## 4. Association (Assosiasjon)
+
+```
+classG --> classH
+```
+
+**Generell relasjon mellom to klasser**
+
+* `classG` kjenner til eller bruker `classH`
+* Pilen viser navigerbarhet
+* Ingen eierskap eller livssyklus implisert
+
+**Eksempel:**
+`Order --> Customer`
+
+---
+
+## 5. Link (Solid linje)
+
+```
+classI -- classJ
+```
+
+**Uspesifisert assosiasjon**
+
+* Klassene er relatert
+* Ingen retning eller semantikk angitt
+* Brukes ofte i forenklede diagrammer
+
+---
+
+## 6. Dependency (Avhengighet)
+
+```
+classK ..> classL
+```
+
+**Svak og midlertidig relasjon**
+
+* `classK` bruker `classL`
+* Ofte via:
+
+  * metodeparametere
+  * lokale variabler
+  * statiske metodekall
+* Endringer i `classL` kan påvirke `classK`
+
+**Eksempel:**
+`ReportService ..> PDFGenerator`
+
+---
+
+## 7. Realization (Realisering)
+
+```
+classM ..|> classN
+```
+
+**Implementasjon av interface**
+
+* `classN` er et interface
+* `classM` implementerer kontrakten
+* Brukes i objektorientert design
+
+**Eksempel:**
+`MySqlRepository ..|> Repository`
+
+---
+
+## 8. Link (Dashed / stiplet linje)
+
+```
+classO .. classP
+```
+
+**Uformell eller konseptuell relasjon**
+
+* Ikke like strengt definert i UML
+* Brukes ofte for:
+
+  * konseptuelle koblinger
+  * annotasjoner
+  * høy-nivå-relasjoner
+
+I strenge UML-diagrammer erstattes denne ofte av **Dependency**.
+
+
+</details>
