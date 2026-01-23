@@ -560,3 +560,147 @@ I strenge UML-diagrammer erstattes denne ofte av **Dependency**.
 
 
 </details>
+
+## Eksamensoppgaver
+
+#### Oppgave 1
+
+
+Hva er hovedprinsippet bak objektorientert programmering (OOP)? Velg riktig alternativ.
+
+- å lage lineære og sekvensielle programkoder
+- å bryte ned et problem i et sett med funksjoner
+- å representere data og funksjoner som objekter
+- å minimere bruken av variabler
+
+#### Oppgave 2
+
+Hvilket av følgende alternativer beskriver best en klasse i objektorientert programmering (OOP)?
+
+- En klasse er en instans av et objekt.
+- En klasse er en funksjon som utfører en spesifikk oppgave.
+- En klasse er en mal eller en prototype for objekter.
+- En klasse er en metode for å lagre data.
+
+#### Oppgave 3
+
+Hvis en klasse B arver fra klasse A, hvilken betegnelse er mest korrekt for klasse B i forhold til klasse A i objektorientert modellering?
+
+- B er en spesialisering av A.
+- B er en assosiert klasse til A.
+- B er en generalisering av A.
+- B er en avhengig klasse av A.
+
+#### Oppgave 4
+
+En utvikler som modellerer et objektorientert program, oppdager at flere av klassene har like eller lignende metoder og egenskaper. Utvikleren velger å generalisere de felles metodene og egenskapene til en superklasse.
+Hvilket prinsipp eller hvilken mekanisme må implementeres for å realisere denne modellen med objektorientert programmering?
+
+- abstraksjon
+- polymorfisme
+- innkapsling
+- arv
+
+#### Oppgave 5
+
+Hvilket av de følgende prinsippene innen objektorientert programmering handler om gjenbruk av kode?
+Velg riktig svar:
+
+- abstraksjon
+- polymorfisme
+- innkapsling
+- arv
+
+#### Oppgave 6
+
+En egenskap (et felt) i objekter av en klasse inneholder objekter av en annen klasse.
+Hva er riktig type relasjon mellom de to klassene i objektorientert modellering (OOM)?
+
+- assosiasjon
+- generalisering
+- komposisjon
+- aggregering
+
+#### Oppgave 7
+
+Vi ønsker å lage en liten kalkulator for de fire regneoperasjonene: minus, pluss, gange og dele.
+Nedenfor finner du pseudokode som beskriver en del av en løsning ved hjelp av fire funksjoner:
+
+```text
+FUNCTION pluss(a, b)
+    RETURN a + b
+ENDFUNCTION
+
+FUNCTION minus(a, b)
+    RETURN a - b
+ENDFUNCTION
+
+FUNCTION gange(a, b)
+    RETURN a * b
+ENDFUNCTION
+
+FUNCTION dele(a, b)
+    RETURN a / b
+ENDFUNCTION
+```
+
+1. Lag et klassediagram for en tilsvarende klasse kalt Kalkulator til bruk i en objektorientert løsning.
+2. Implementer klassen i ditt programmeringsspråk.
+3. Implementer et egnet testprogram for å teste løsningen, og identifiser mulige feil og unntak.
+4. Implementer nødvendig håndtering av mulige feil og unntak.
+
+
+#### Oppgave 8
+
+På et universitet kan studentene velge å knytte seg til et valgfritt fakultet og da bli en del av fakultetet.
+Dette er modellert med de to klassene Student og Fakultet i klassediagrammet nedenfor.
+
+![](../../../assets/bilder/oom/h25-2.png)
+
+**a)**
+
+Se på klassediagrammet ovenfor.
+Hva er riktig type relasjon mellom de to klassene i objektorientert modellering (OOM)?
+
+- aggregering
+- generalisering
+- komposisjon
+- avhengighet
+
+**b)**
+
+Begrunn svaret ditt på oppgave 2a i tekstboksen nedenfor.
+
+#### Oppgave 9
+
+
+I denne oppgaven får du utdelt et klassediagram som viser strukturen til en digital klokke.
+Diagrammet består av to klasser: Tallviser og Digitalklokke.
+
+Tallviser representerer en enkel teller med en verdi og en maksimal verdi.
+Den kan brukes for timer og minutter.
+
+Digitalklokke består av to tallvisere, en for timer og en for minutter, og har metoder for å stille inn tiden, la tiden gå og vise tiden som tekst.
+
+![](../../../assets/bilder/oom/h25-5a.png)
+
+**a)**
+
+Forklar diagrammet ved å beskrive relasjonen mellom klassene og hva klassene representerer.
+
+Du skal også identifisere og forklare attributtene og metodene i klassene.
+
+**b)**
+
+Implementer klassene i ditt programmeringsspråk ved å lage klassen Tallviser med alle nødvendige attributter og metoder, og ved å lage klassen Digitalklokke, som bruker to instanser av klassen Tallviser.
+
+
+**c)**
+
+Implementer et testprogram som oppretter en instans av klassen Digitalklokke, og som tester metodene for å stille inn tid, la tiden gå og vise tiden. Test også at 60 minutter blir til en time når klokken går.
+
+**d)**
+
+Implementer nødvendig håndtering av feil og unntak i programmet.
+
+Hvis du allerede har skrevet programmet slik at dette er håndtert, trenger du bare å påpeke dette med kommentarer i koden.
