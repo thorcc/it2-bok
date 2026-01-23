@@ -1,5 +1,5 @@
 ---
-title: 1. Flask
+title: 2. Flask
 ---
 
 Flask er et _rammeverk_ for å lage nettsider med Python.
