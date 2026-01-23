@@ -181,7 +181,7 @@ Katt --|> Dyr
 `Katt` arver fra `Dyr`.
 
 * `Katt` er en *spesialisering* av `Dyr`
-* `Dyr` er en *generalisering* av `Dyr`
+* `Dyr` er en *generalisering* av `Katt`
 * `Katt` *arver* attributter og metoder fra `Dyr`
 * Representerer et **er-et-**/**er-en-** relasjon, vi kan si at `Katt` *er et* `Dyr`.
 
@@ -276,12 +276,12 @@ classDiagram
 Hus --* Dør
 
 class Hus {
-    -dører : List[Dør]
+    +dører : List[Dør]
     +åpne_alle_dører()
 }
 
 class Dør {
-    -nummer : int
+    +nummer : int
     +åpne()
 }
 
@@ -295,12 +295,12 @@ classDiagram
 Hus --* Dør
 
 class Hus {
-    -dører : List[Dør]
+    +dører : List[Dør]
     +åpne_alle_dører()
 }
 
 class Dør {
-    -nummer : int
+    +nummer : int
     +åpne()
 }
 
@@ -359,14 +359,14 @@ classDiagram
 Lag --o Spiller
 
 class Lag {
-    -navn : str
-    -spillere : List[Spiller]
+    +navn : str
+    +spillere : List[Spiller]
     +legg_til_spiller(spiller)
     +spill_kamp()
 }
 
 class Spiller {
-    -navn : str
+    +navn : str
     +spill()
 }
 
@@ -380,14 +380,14 @@ classDiagram
 Lag --o Spiller
 
 class Lag {
-    -navn : str
-    -spillere : List[Spiller]
+    +navn : str
+    +spillere : List[Spiller]
     +legg_til_spiller(spiller)
     +spill_kamp()
 }
 
 class Spiller {
-    -navn : str
+    +navn : str
     +spill()
 }
 
