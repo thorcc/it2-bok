@@ -2,6 +2,58 @@
 title: 2. Flask
 ---
 
+<details>
+<summary>Sidespor: meny i terminalen</summary>
+
+```python
+matvarer = [
+    {"navn": "Melk", "pris": 20},
+    {"navn": "Brød", "pris": 30},
+    {"navn": "Ost", "pris": 50},
+]
+
+def vis_meny():
+    print()
+    print("-- Meny --")
+    print("1: Se alle varer")
+    print("q: Avslutt")
+
+
+def se_alle_varer(matvarer):
+    print()
+    print("-- Se alle varer --")
+    for vare in matvarer:
+        print(f"{vare['navn']}: {vare['pris']}")
+
+def legg_til_vare(varenavn, pris):
+    matvarer.append({
+        "navn": varenavn,
+        "pris": pris
+    })
+
+while True:
+    vis_meny()
+    brukervalg = input("> ")
+
+    if brukervalg == "q":
+        break
+    elif brukervalg == "1":
+        se_alle_varer(matvarer)
+    elif brukervalg == "2":
+        print("Hva heter varen?")
+        navn = input(">")
+        print("Hva er prisen?")
+        pris = input(">")
+        legg_til_vare(navn, pris)
+    else:
+        print("Ugyldig valg")
+
+print("Ha en fin dag")
+```
+
+</details>
+
+
 Flask er et _rammeverk_ for å lage nettsider med Python.
 
 > Et _rammeverk_ i programmering er et ferdig oppsett med verktøy og regler som hjelper deg å lage programmer/apper/nettsider/spill raskere og mer strukturert.
