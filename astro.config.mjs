@@ -21,6 +21,11 @@ export default defineConfig({
 					collapsed: false,
 				},
 				{
+					label: 'Twitter-klone',
+					autogenerate: { directory: 'twitter' },
+					collapsed: false,
+				},
+				{
 					label: 'Pygame',
 					autogenerate: { directory: 'pygame' },
 					collapsed: true
