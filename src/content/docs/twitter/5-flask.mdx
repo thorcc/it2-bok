@@ -1,0 +1,176 @@
+---
+title: 5. Flask
+---
+
+I denne delen lærer du å:
+
+- sette opp en enkel Flask-app
+- lage ruter som håndterer GET og POST
+- koble Flask sammen med klassene Twitter, Bruker og Tweet
+- teste funksjonalitet med tekst-svar før du lager HTML
+
+Denne delen handler om å få logikken til å fungere i nettleseren uten at HTML kommer i veien.
+
+## Hva betyr "uten HTML"?
+
+Når vi lager en web-app er det lett å bruke mye tid på:
+
+- templates
+- skjema og design
+- feilsøking i HTML
+
+I denne delen dropper vi det, og returnerer bare tekst fra rutene.
+
+Målet er å sjekke at:
+
+- brukere kan opprettes
+- man kan logge inn og ut
+- man kan skrive tweets
+- man kan hente global feed og brukersider
+
+## Oppsett av Flask i app.py
+
+app.py skal:
+
+- importere `Flask` og `request` og `redirect`
+- importere `Twitter` og `Bruker` fra `twitter.py`
+- opprette et Flask-objekt
+- opprette et Twitter-objekt
+- ha en variabel som sier hvem som er logget inn
+- starte serveren
+
+Start med dette oppsettet:
+
+```python
+from flask import Flask, request, redirect
+from twitter import Twitter, Bruker
+
+app = Flask(__name__)
+twitter = Twitter()
+logget_inn: Bruker = None
+
+app.run(debug=True)
+```
+
+## Første rute: global feed som tekst
+
+Lag en GET-rute for forsiden. Den skal:
+
+- hente den globale feeden fra twitter-objektet
+- returnere en tekststreng der hver tweet står på hver sin linje
+
+Forslag til løsning:
+
+```python
+@app.get("/")
+def index():
+    feed = twitter.lag_global_feed()
+    return f"logget_inn: {logget_inn} \n {feed}"
+```
+Hvis det ikke finnes tweets ennå, vil du få en tom side.
+
+## Rute: lage bruker
+
+Vi lager en **POST-rute** som tar imot et brukernavn og lager en ny bruker.
+
+I denne delen bruker vi `request.values.get` for å hente data.
+
+```python
+@app.post("/lag-bruker")
+def lag_bruker():
+    brukernavn = request.values.get("brukernavn")
+    ny_bruker = twitter.lag_bruker(brukernavn)
+    logget_inn = ny_bruker
+    return redirect("/")
+```
+
+Dette gjør to ting:
+- lager brukeren
+- logger inn som den brukeren
+
+## Rute: logge inn
+
+En rute som finner en bruker med et brukernavn og setter `logget_inn` til å være lik brukeren.
+
+```python
+@app.post("/logg-inn")
+def logg_inn_rute():
+    brukernavn = request.values.get("brukernavn")
+    bruker = twitter.finn_bruker(brukernavn)
+    logget_inn = bruker
+    return redirect("/")
+```
+
+## Rute: logge ut
+
+```python
+@app.post("/logg-ut")
+def logg_ut():
+    global logget_inn
+    logget_inn = None
+    return redirect("/")
+```
+
+## Rute: lage ny tweet
+
+Denne ruten skal:
+
+- hente tekst fra request
+- sjekke at noen er logget inn
+- be den innloggede brukeren lage en tweet
+- sende brukeren tilbake til forsiden
+
+```python
+@app.post("/ny-tweet")
+def ny_tweet():
+    global logget_inn
+    if logget_inn is None:
+        return "Du må være logget inn for å skrive tweet", 401
+
+    tekst = request.values.get("tekst")
+    logget_inn.lag_tweet(tekst)
+    return redirect("/")
+```
+
+## Rute: se en bruker som tekst
+
+Lag en GET-rute som viser tweets for en bestemt bruker.
+
+```python
+@app.get("/bruker/<brukernavn>")
+def vis_bruker(brukernavn):
+    bruker = twitter.finn_bruker(brukernavn)
+    return bruker.tweets
+```
+
+## Test i nettleseren uten HTML
+
+Du kan teste rutene med å skrive inn URL-er og ved å sende POST fra nettleseren.
+
+Siden vi ikke har HTML-skjema ennå, er en enkel måte å teste POST på å bruke terminalen med curl.
+
+Eksempler:
+
+- Lage bruker:
+
+```bash
+    curl -X POST -d "brukernavn=arsenal4ever" http://127.0.0.1:5000/lag-bruker
+```
+
+- Lage tweet:
+
+```bash
+curl -X POST -d "tekst=Hei" http://127.0.0.1:5000/ny-tweet
+```
+
+- Se global feed: [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
+- Se bruker: [http://127.0.0.1:5000/bruker/arsenal4ever](http://127.0.0.1:5000/bruker/arsenal4ever)
+
+## Neste del
+
+I neste del skal vi lage HTML og templates.
+
+Der skal vi:
+- lage forms for å lage bruker og logge inn
+- vise feeden i en HTML-side
+- vise en brukerside med tweets
