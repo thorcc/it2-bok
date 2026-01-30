@@ -156,24 +156,13 @@ Disse relasjoene er **komposisjoner**:
 
 ## Ansvarsfordeling
 
-Hver klasse har ansvar for sine egne ting.
+I programmet vårt skal vi ha denne ansvarsfordelingen:
 
 - `Tweet` - skal lagre informasjon om én tweet
 - `Bruker` - skal eie tweets og kunne lage nye tweets
 - `Twitter` - skal holde oversikt over alle brukere og samle tweets til en global feed
 
 Målet med denne ansvarsfordelingen er at det skal gjøre koden enklere å forstå og enklere å utvide.
-
-
-## Diskusjonsoppgaver
-
-Svar på spørsmålene før du går videre:
-
-1. Hvorfor er det lurt å ha en egen `Tweet`-klasse i stedet for bare å lagre tekst?
-2. Hvorfor ligger metoden `lag_tweet()` i `Bruker` og ikke i `Twitter`?
-3. Hvorfor er det `Twitter` som lager den globale feeden?
-
----
 
 ## Neste del
 
