@@ -1,0 +1,186 @@
+---
+title: 7. Innlogging med session
+---
+
+I denne delen skal du:
+
+- bruke Flask sessions for å huske hvem som er logget inn
+- lage skjemaer for innlogging og utlogging
+- forenkle tweet-skjemaet slik at brukeren ikke trenger å skrive brukernavn
+
+## Hva er en session?
+
+En session er en måte å huske informasjon om en bruker mellom forespørsler. Flask lagrer session-data i en cookie i nettleseren.
+
+Når en bruker logger inn, lagrer vi brukernavnet i session. Da kan vi hente det ut igjen på neste side.
+
+## Oppsett
+
+Importer `session` fra Flask og legg til en hemmelig nøkkel:
+
+```python
+from flask import Flask, request, redirect, render_template, session
+
+app = Flask(__name__)
+app.secret_key = "32b45edd-59a6-4252-b18f-b51bb8aeabfe"  # En hemmelig nøkkel som trengs for sessions
+```
+
+> Tips: Det er litt uheldig om noen får tak i den hemmelige nøkkelen, du kan for eksempel lage en egen med UUID: [https://www.uuidgenerator.net/](https://www.uuidgenerator.net/).
+
+## Bruke session
+
+Session fungerer som en ordbok:
+
+```python
+# Lagre en verdi
+session["brukernavn"] = "thorcc"
+
+# Hente en verdi
+brukernavn = session.get("brukernavn")
+
+# Slette en verdi
+session.pop("brukernavn")
+```
+
+## Oppgave: Rute for innlogging
+
+Lag en POST-rute `/logg-inn` som:
+
+1. henter `brukernavn` fra skjemaet
+2. lagrer brukernavnet i session
+3. sender brukeren tilbake til forsiden
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+@app.post("/logg-inn")
+def logg_inn():
+    brukernavn = request.values.get("brukernavn")
+    session["brukernavn"] = brukernavn
+    return redirect("/")
+```
+
+</details>
+
+## Oppgave: Rute for utlogging
+
+Lag en POST-rute `/logg-ut` som:
+
+1. fjerner brukernavnet fra session
+2. sender brukeren tilbake til forsiden
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+@app.post("/logg-ut")
+def logg_ut():
+    session.pop("brukernavn")
+    return redirect("/")
+```
+
+</details>
+
+## Oppgave: Oppdater index-ruten
+
+Oppdater index-ruten til å sende brukernavnet fra session til templaten:
+
+```python
+@app.get("/")
+def index():
+    feed = twitter.lag_global_feed()
+    brukernavn = session.get("brukernavn")
+    return render_template("index.html", feed=feed, brukernavn=brukernavn)
+```
+
+## Oppgave: Oppdater tweet-ruten
+
+Oppdater `/ny-tweet` til å hente brukernavn fra session i stedet for skjemaet.
+
+Krav:
+- Hent brukernavn fra `session.get("brukernavn")`
+- Hvis ingen er logget inn, send brukeren tilbake til forsiden
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+@app.post("/ny-tweet")
+def ny_tweet():
+    brukernavn = session.get("brukernavn")
+    if brukernavn is None:
+        return redirect("/")
+
+    tekst = request.values.get("tekst")
+    bruker = twitter.finn_bruker(brukernavn)
+    bruker.lag_tweet(tekst)
+    return redirect("/")
+```
+
+</details>
+
+## Oppgave: Oppdater index.html
+
+Oppdater `index.html` til å:
+
+- vise innloggingsskjema hvis ingen er logget inn
+- vise brukernavn og utloggingsknapp hvis noen er logget inn
+- bare vise tweet-skjemaet hvis noen er logget inn
+- fjerne brukernavn-feltet fra tweet-skjemaet
+
+Tips: Bruk `{% if brukernavn %}` for å sjekke om noen er logget inn.
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter</title>
+</head>
+<body>
+    <h1>Feed</h1>
+
+    {% if brukernavn %}
+        <p>Logget inn som: {{ brukernavn }}</p>
+        <form method="post" action="/logg-ut">
+            <button type="submit">Logg ut</button>
+        </form>
+
+        <h2>Skriv tweet</h2>
+        <form method="post" action="/ny-tweet">
+            <input type="text" name="tekst" placeholder="Hva skjer?">
+            <button type="submit">Tweet</button>
+        </form>
+    {% else %}
+        <h2>Logg inn</h2>
+        <form method="post" action="/logg-inn">
+            <input type="text" name="brukernavn" placeholder="Brukernavn">
+            <button type="submit">Logg inn</button>
+        </form>
+    {% endif %}
+
+    <h2>Tweets</h2>
+    {% for tweet in feed %}
+        <p>
+            <a href="/bruker/{{ tweet.bruker.brukernavn }}">
+                <b>{{ tweet.bruker.brukernavn }}</b>
+            </a>: {{ tweet.tekst }}
+        </p>
+    {% endfor %}
+</body>
+</html>
+```
+
+</details>
+
+## Hvordan sessions fungerer
+
+1. Når brukeren logger inn, lagrer Flask brukernavnet i en kryptert cookie
+2. Nettleseren sender cookien med hver forespørsel
+3. Flask dekrypterer cookien og gjør dataen tilgjengelig i `session`
+4. Når brukeren logger ut, slettes dataen fra cookien
+
+Den hemmelige nøkkelen (`secret_key`) brukes til å kryptere cookien.

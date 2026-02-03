@@ -1,0 +1,90 @@
+---
+title: 6. Brukerside
+---
+
+I denne delen skal du lage en side som viser alle tweets fra én bruker.
+
+## Rute med parameter
+
+Flask kan ta imot verdier fra URL-en. Syntaksen `<brukernavn>` i ruten gjør at verdien blir sendt som argument til funksjonen:
+
+```python
+@app.get("/bruker/<brukernavn>")
+def vis_bruker(brukernavn):
+    # brukernavn er nå en streng med verdien fra URL-en
+```
+
+Hvis noen besøker `/bruker/ada`, vil `brukernavn` være `"ada"`.
+
+## Oppgave: Rute for brukerside
+
+Lag en GET-rute `/bruker/<brukernavn>` som:
+
+1. finner brukeren med `twitter.finn_bruker()`
+2. returnerer 404 hvis brukeren ikke finnes
+3. sender brukeren til en template `bruker.html`
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+@app.get("/bruker/<brukernavn>")
+def vis_bruker(brukernavn):
+    bruker = twitter.finn_bruker(brukernavn)
+    if bruker is None:
+        return "Bruker ikke funnet", 404
+    return render_template("bruker.html", bruker=bruker)
+```
+
+</details>
+
+## Oppgave: Lag bruker.html
+
+Lag filen `templates/bruker.html` som viser:
+
+- Brukernavnet som overskrift
+- Alle tweets fra brukeren
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ bruker.brukernavn }}</title>
+</head>
+<body>
+    <h1>{{ bruker.brukernavn }}</h1>
+
+    {% for tweet in bruker.tweets %}
+        <p>{{ tweet.tekst }}</p>
+    {% endfor %}
+
+    <a href="/">Tilbake til forsiden</a>
+</body>
+</html>
+```
+
+</details>
+
+## Oppgave: Lenke til brukersider fra feeden
+
+Oppdater `index.html` slik at brukernavnet i feeden blir en lenke til brukersiden.
+
+Tips: Bruk `<a href="/bruker/{{ tweet.bruker.brukernavn }}">` for å lage lenken.
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```html
+{% for tweet in feed %}
+    <p>
+        <a href="/bruker/{{ tweet.bruker.brukernavn }}">
+            <b>{{ tweet.bruker.brukernavn }}</b>
+        </a>: {{ tweet.tekst }}
+    </p>
+{% endfor %}
+```
+
+</details>
