@@ -80,9 +80,10 @@ I vårt system betyr nyeste at tweeten har høyest id.
 
 Når du har en liste med Tweet-objekter, kan du sortere på id.
 
-Eksempel:
+For å sortere på et attributt kan vi bruke en lambda-funksjon:
+
 ```python
-alle_tweets.sort(key=attrgetter("id"), reverse=True)
+alle_tweets.sort(key=lambda tweet:tweet.id, reverse=True)
 ```
 
 Dette sorterer slik at tweet med høyest id kommer først.
@@ -91,8 +92,6 @@ Dette sorterer slik at tweet med høyest id kommer først.
 <summary>Løsningsforslag</summary>
 
 ```python
-from operator import attrgetter
-
 class Twitter:
     def __init__(self):
         self.brukere = []
@@ -112,7 +111,7 @@ class Twitter:
         alle_tweets = []
         for bruker in self.brukere:
             alle_tweets += bruker.tweets
-        alle_tweets.sort(key=attrgetter("id"), reverse=True)
+            alle_tweets.sort(key=lambda tweet:tweet.id, reverse=True)
         return alle_tweets
 ```
 
@@ -148,3 +147,26 @@ print("Alt fungerer som det skal")
 ```
 
 De siste testene viser hvordan vi kan navigere fra en tweet i feeden til brukeren som skrev den. Dette er nyttig når vi skal vise feeden i HTML.
+
+## Samle klassene i én fil
+
+Lag filen `twitter.py` og legg alle tre klassene i samme fil:
+
+```python
+from operator import attrgetter
+
+class Tweet:
+    # ...
+
+class Bruker:
+    # ...
+
+class Twitter:
+    # ...
+```
+
+Rekkefølgen er viktig: `Tweet` må komme før `Bruker` (fordi `Bruker` bruker `Tweet`), og begge må komme før `Twitter`.
+
+## Neste del
+
+I neste del skal vi koble klassene til en Flask-app med HTML.

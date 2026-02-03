@@ -55,7 +55,7 @@ Krav:
 - Vis hver tweet med brukernavn og tekst
 - Bruk en for-løkke i Jinja2
 
-Tips: I templates kan du skrive `{{ t.bruker.brukernavn }}` for å vise brukernavnet til en tweet.
+Tips: I templates kan du skrive `{{ tweet.bruker.brukernavn }}` for å vise brukernavnet til en tweet.
 
 <details>
 <summary>Løsningsforslag</summary>
@@ -103,7 +103,7 @@ Krav:
 
 Lag en POST-rute `/lag-bruker` som:
 
-1. henter `brukernavn` fra `request.form`
+1. henter `brukernavn` fra `request.values.get("brukernavn")`
 2. lager en ny bruker med `twitter.lag_bruker()`
 3. sender brukeren tilbake til forsiden
 
@@ -147,7 +147,7 @@ Skjemaet trenger:
 
 Lag en POST-rute `/ny-tweet` som:
 
-1. henter `brukernavn` og `tekst` fra `request.form`
+1. henter `brukernavn` og `tekst` fra request
 2. finner brukeren med `twitter.finn_bruker()`
 3. ber brukeren lage en tweet
 4. sender brukeren tilbake til forsiden

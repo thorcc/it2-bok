@@ -42,6 +42,24 @@ brukernavn = session.get("brukernavn")
 session.pop("brukernavn")
 ```
 
+## Oppgave: Oppdater rute for å lage bruker
+
+Oppdater `/lag-bruker` slik at brukeren automatisk blir logget inn etter at kontoen er opprettet:
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+@app.post("/lag-bruker")
+def lag_bruker():
+    brukernavn = request.values.get("brukernavn")
+    twitter.lag_bruker(brukernavn)
+    session["brukernavn"] = brukernavn
+    return redirect("/")
+```
+
+</details>
+
 ## Oppgave: Rute for innlogging
 
 Lag en POST-rute `/logg-inn` som:
@@ -76,7 +94,7 @@ Lag en POST-rute `/logg-ut` som:
 ```python
 @app.post("/logg-ut")
 def logg_ut():
-    session.pop("brukernavn")
+    session.pop("brukernavn", None)
     return redirect("/")
 ```
 
@@ -124,7 +142,7 @@ def ny_tweet():
 
 Oppdater `index.html` til å:
 
-- vise innloggingsskjema hvis ingen er logget inn
+- vise innloggingsskjema og "lag bruker"-skjema hvis ingen er logget inn
 - vise brukernavn og utloggingsknapp hvis noen er logget inn
 - bare vise tweet-skjemaet hvis noen er logget inn
 - fjerne brukernavn-feltet fra tweet-skjemaet
@@ -159,6 +177,12 @@ Tips: Bruk `{% if brukernavn %}` for å sjekke om noen er logget inn.
         <form method="post" action="/logg-inn">
             <input type="text" name="brukernavn" placeholder="Brukernavn">
             <button type="submit">Logg inn</button>
+        </form>
+
+        <h2>Lag ny bruker</h2>
+        <form method="post" action="/lag-bruker">
+            <input type="text" name="brukernavn" placeholder="Brukernavn">
+            <button type="submit">Lag bruker</button>
         </form>
     {% endif %}
 

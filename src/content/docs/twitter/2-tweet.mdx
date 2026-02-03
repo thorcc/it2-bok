@@ -56,12 +56,11 @@ print(planter[40].id)
 ```python
 class Tweet:
     neste_id = 1
-    def __init__(self, tekst: str, bruker: Bruker):
+    def __init__(self, tekst, bruker):
         self.id = Tweet.neste_id
         self.tekst = tekst
         self.bruker = bruker
         Tweet.neste_id += 1
-
 ```
 
 </details>
