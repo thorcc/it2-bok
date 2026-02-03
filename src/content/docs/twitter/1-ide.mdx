@@ -1,41 +1,28 @@
 ---
-title: 1. Fra idé til struktur
+title: 1. Idé
 ---
 
-I denne delen lærer du å:
-
-- forklare hva et klassediagram er
-- lese et klassediagram og forstå relasjoner mellom klasser
-- forklare hvilke objekter som finnes i Twitter-klonen
-- forstå hvem som har ansvar for hva i systemet
-
-Denne delen inneholder **ingen programmering**. Målet er å forstå strukturen før vi skriver kode.
-
-
-## Hva bygger vi?
-
-Vi skal lage en forenklet versjon av Twitter. Systemet skal kunne:
+I dette kapittelet skal vi skal lage en forenklet versjon av Twitter.
+Vår versjon skal kunne:
 
 - opprette brukere
 - la brukere skrive tweets
 - vise en global feed med alle tweets
 - vise tweets for én bestemt bruker
 
-For å få til dette trenger vi tre typer objekter:
-
-- Twitter
-- Bruker
-- Tweet
-
-
 ## Klassediagram
 
-Under ser du klassediagrammet for hele systemet:
+Koden skal bestå av klassene `Twitter`, `Bruker` og `Tweet`.
+
+- `Twitter` skal holde oversikt over alle brukere og samle tweets til en global feed
+- `Bruker` skal eie tweets og kunne lage nye tweets
+- `Tweet` skal lagre informasjon om én tweet
 
 ```mermaid
 classDiagram
     Twitter --* Bruker
     Bruker --* Tweet
+    Tweet --> Bruker
 
     class Twitter {
         list~Bruker~ brukere
@@ -53,6 +40,7 @@ classDiagram
     class Tweet {
         int id
         str tekst
+        Bruker bruker
     }
 ```
 
@@ -63,6 +51,7 @@ classDiagram
 classDiagram
     Twitter --* Bruker
     Bruker --* Tweet
+    Tweet --> Bruker
 
     class Twitter {
         list~Bruker~ brukere
@@ -80,54 +69,11 @@ classDiagram
     class Tweet {
         int id
         str tekst
+        Bruker bruker
     }
 ```
 
 </details>
-
-
-## Hvordan lese diagrammet
-
-Et klassediagram viser:
-
-- hvilke klasser som finnes
-- hvilke egenskaper (variabler) de har
-- hvilke metoder (funksjoner) de har
-- hvordan klassene henger sammen
-
-### Klasser
-
-I diagrammet ser vi tre klasser:
-
-- `Twitter`
-- `Bruker`
-- `Tweet`
-
-Hver boks representerer én klasse.
-
----
-
-### Egenskaper
-
-Egenskaper er variabler som tilhører objekter av klassen.
-
-Eksempel:
-- `Bruker` har egenskapen `brukernavn`
-- `Tweet` har egenskapene `id` og `tekst`
-- `Twitter` har en liste med `Bruker`-objekter
-
----
-
-### Metoder
-
-Metoder er funksjoner som tilhører klassen.
-
-Eksempel:
-- `Bruker.lag_tweet()` lager en ny tweet
-- `Twitter.finn_bruker()` finner en bruker basert på brukernavn
-- `Twitter.lag_global_feed()` samler alle tweets i systemet
-
----
 
 ## Relasjoner mellom klasser
 
@@ -137,11 +83,13 @@ Strekene i klassediagrammet viser relasjoner mellom klassene.
 classDiagram
 Twitter --* Bruker
 Bruker --* Tweet
+Tweet --> Bruker
 ```
 
 ```text
 Twitter --* Bruker
 Bruker --* Tweet
+Tweet --> Bruker
 ```
 
 
@@ -149,21 +97,12 @@ Dette betyr:
 
 - Ett `Twitter`-objekt har mange `Bruker`-objekter
 - Ett `Bruker`-objekt har mange `Tweet`-objekter
+- Hver `Tweet` har en referanse tilbake til `Bruker`-objektet som opprettet den
 
-Disse relasjoene er **komposisjoner**:
+De to første relasjonene er **komposisjoner**:
 - Tweets eksisterer som en del av en bruker
 - Brukere eksisterer som en del av Twitter-systemet
 
-## Ansvarsfordeling
-
-I programmet vårt skal vi ha denne ansvarsfordelingen:
-
-- `Tweet` - skal lagre informasjon om én tweet
-- `Bruker` - skal eie tweets og kunne lage nye tweets
-- `Twitter` - skal holde oversikt over alle brukere og samle tweets til en global feed
-
-Målet med denne ansvarsfordelingen er at det skal gjøre koden enklere å forstå og enklere å utvide.
-
-## Neste del
-
-I neste del skal vi lage den første klassen i kode: `Tweet`.
+Den siste relasjonen er en **assosiasjon**:
+- Hver tweet vet hvilken bruker som skrev den
+- Dette gjør det enkelt å navigere begge veier: fra bruker til tweets, og fra tweet til bruker

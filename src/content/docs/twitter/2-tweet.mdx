@@ -1,28 +1,37 @@
 ---
-title: 2. Tweet-klasse
+title: 2. Tweet-klassen
 ---
 
-I denne delen lærer du å:
-
-- lage en enkel klasse i Python
-- bruke `__init__` til å opprette objekter
-- bruke klassevariabler
-- gi hvert objekt en unik ID
-- enkel testing med `assert`
-
-## Klassediagram for Tweet
+`Tweet`-klassen skal lagre informasjon om en tweet, det vil si tweetens tekst, en referanse til brukeren som har laget tweeten og en id.
 
 ```mermaid
 classDiagram
 class Tweet {
     int id
     str tekst
+    Bruker bruker
 }
 ```
 
-## Klassevariabler og unik ID
 
-Vi vil at hver tweet skal få en unik ID. Dette løses med en klassevariabel som deles av alle Tweet-objekter.
+
+## Oppgave: Lag Tweet-klassen
+
+Krav:
+
+- Klassen skal ha en klassevariabel `neste_id` som starter på 1
+- `__init__` skal ta imot to argumenter: `tekst` og `bruker`
+- Hvert nytt objekt skal:
+  - få `id` lik `neste_id`
+  - øke `neste_id` med 1
+- Tweet-teksten lagres i `tekst`
+- Brukeren som skrev tweeten lagres i `bruker`
+
+<details>
+<summary>Tips til bruk av klassevariabler for å få unik ID</summary>
+
+Vi vil at hver tweet skal få en unik ID. Dette kan løses med en klassevariabel som deles av alle Tweet-objekter.
+Her er et eksempel på bruk av en klassevariabel i en annen kode:
 
 ```python
 class Plante:
@@ -39,26 +48,35 @@ planter = [Plante() for i in range(100)]
 print(planter[40].id)
 ```
 
-## Oppgave: Lag Tweet-klassen
+</details>
 
-Krav:
+<details>
+<summary>Løsningsforslag</summary>
 
-- Klassen skal ha en klassevariabel `neste_id` som starter på 1
-- Hvert nytt objekt skal:
-  - få `id` lik `neste_id`
-  - øke `neste_id` med 1
-- Tweet-teksten lagres i `tekst`
+```python
+class Tweet:
+    neste_id = 1
+    def __init__(self, tekst: str, bruker: Bruker):
+        self.id = Tweet.neste_id
+        self.tekst = tekst
+        self.bruker = bruker
+        Tweet.neste_id += 1
 
+```
+
+</details>
 
 ## Testing
 
 Med nøkkelordet `assert` kan vi forsikre oss at koden fungerer som den skal.
 Hvis en `assert`-test ikke er `True` vil koden gi feilmelding og programmet stoppe.
 
+Foreløpig har vi ikke laget `Bruker`-klassen, så vi sender `None` som bruker for å teste at ID-systemet fungerer:
+
 ```python
-t1 = Tweet("Hei verden")
-t2 = Tweet("Dette er en ny tweet")
-t3 = Tweet("Wow! Denne Twitter-klonen er skikkelig kul")
+t1 = Tweet("Hei verden", None)
+t2 = Tweet("Dette er en ny tweet", None)
+t3 = Tweet("Wow! Denne Twitter-klonen er skikkelig kul", None)
 
 assert t1.id == 1
 assert t2.id == 2
@@ -66,7 +84,3 @@ assert t3.id == 3
 
 print("Alt fungerer som det skal")
 ```
-
-## Neste del
-
-I neste del skal vi lage klassen `Bruker`, og la brukere eie og lage tweets.

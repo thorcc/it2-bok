@@ -2,27 +2,7 @@
 title: 3. Bruker-klassen
 ---
 
-I denne delen lærer du å:
-
-- lage en klasse som inneholder andre objekter
-- bruke lister til å lagre objekter
-- lage metoder som oppretter nye objekter
-- forstå eierskap mellom objekter
-
-
-## Hva er en Bruker?
-
-I Twitter-klonen vår representerer en bruker en person som:
-
-- har et brukernavn
-- kan skrive tweets
-- eier sine egne tweets
-
-I koden skal en **ikke** vite noe om andre brukere eller om den globale feeden.
-Det ansvaret ligger hos `Twitter`-klassen.
-
-
-## Klassediagram for Bruker
+I Twitter-klonen vår representerer en bruker en person som har et brukernavn, kan skrive tweets og eier sine egne tweets.
 
 ```mermaid
 classDiagram
@@ -31,20 +11,13 @@ class Bruker {
     list~Tweet~ tweets
     lag_tweet(tekst: str) None
 }
+Bruker --* Tweet
+Tweet --> Bruker
 ```
 
-
-## Bruker eier tweets
-
-Når en bruker lager en tweet:
-
-- opprettes et nytt `Tweet`-objekt
-- tweeten lagres i brukerens `tweets`-liste
-
-Dette er et eksempel på **komposisjon**:
-- tweets eksisterer som en del av en bruker
-- hvis brukeren forsvinner, forsvinner også tweetene
-
+Diagrammet viser at:
+- En bruker eier mange tweets (komposisjon)
+- Hver tweet har en referanse tilbake til brukeren (assosiasjon)
 
 ## Oppgave: Lag Bruker-klassen
 
@@ -59,17 +32,28 @@ Krav:
   - en instansvariabel `tweets` som starter som en tom liste
 - Klassen skal ha metoden `lag_tweet(tekst: str)`
 
-
-
-## Hva skal `lag_tweet()` gjøre?
-
 Metoden `lag_tweet()` skal:
 
-1. opprette et nytt `Tweet`-objekt
+1. opprette et nytt `Tweet`-objekt med teksten og `self` som bruker
 2. legge tweeten til i `tweets`-listen
 
-Metoden skal **ikke** returnere noe.
+Ved å sende `self` til `Tweet` kan tweeten vite hvilken bruker som opprettet den.
 
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+class Bruker:
+    def __init__(self, brukernavn: str):
+        self.brukernavn = brukernavn
+        self.tweets = []
+
+    def lag_tweet(self, tekst: str):
+        tweet = Tweet(tekst, self)
+        self.tweets.append(tweet)
+```
+
+</details>
 
 ## Sjekk at koden fungerer
 
@@ -84,14 +68,11 @@ assert len(b.tweets) == 2
 assert b.tweets[0].tekst == "Fotball er skikkelig kult!"
 assert b.tweets[1].tekst == "Arsenal er best!"
 
+# Sjekk at tweeten vet hvem som skrev den
+assert b.tweets[0].bruker is b
+assert b.tweets[0].bruker.brukernavn == "arsenal4ever"
+
 print("Alt fungerer som det skal")
 ```
 
-## Neste del
-
-I neste del skal vi lage klassen `Twitter`.
-
-Der skal vi:
-- lagre alle brukere i systemet
-- finne brukere basert på brukernavn
-- samle alle tweets til en global feed
+Legg merke til de to siste testene. De viser at vi kan navigere fra en tweet tilbake til brukeren som skrev den. Dette er nyttig når vi skal vise tweets i en feed og trenger å vise brukernavnet.

@@ -2,16 +2,7 @@
 title: 4. Twitter
 ---
 
-I denne delen lærer du å:
-
-- lage en klasse som holder oversikt over mange objekter
-- lagre og finne brukere i en liste
-- samle data fra flere objekter
-- sortere en liste med objekter
-
-## Hva er Twitter-klassen?
-
-I Twitter-klonen vår er Twitter selve systemet. Den skal:
+I Twitter-klonen vår er `Twitter`-klassen selve systemet. Den skal:
 
 - holde oversikt over alle brukere
 - kunne lage nye brukere
@@ -20,7 +11,6 @@ I Twitter-klonen vår er Twitter selve systemet. Den skal:
 
 Twitter skal ikke lage tweets direkte.
 Tweets lages av Bruker-objekter.
-
 
 ## Klassediagram for Twitter
 
@@ -33,6 +23,7 @@ class Twitter {
     finn_bruker(brukernavn: str) Bruker
     lag_global_feed() list~Tweet~
 }
+Twitter --* Bruker
 ```
 
 ## Twitter eier brukere
@@ -48,7 +39,7 @@ Dette er også komposisjon:
 
 ## Oppgave: Lag Twitter-klassen
 
-Lag klassen Twitter i Python.
+Lag klassen `Twitter` i Python.
 
 Krav:
 
@@ -60,25 +51,25 @@ Krav:
   - `lag_global_feed() -> list[Tweet]`
 
 
-## Metode: lag_bruker
+**Metode: lag_bruker**
 
-`lag_bruker` skal:
+`lag_bruker()` skal:
 
 1. opprette et nytt Bruker-objekt
 2. legge brukeren i lista brukere
 3. returnere den nye brukeren
 
-## Metode: finn_bruker
+**Metode: finn_bruker**
 
-`finn_bruker` skal:
+`finn_bruker()` skal:
 
 - gå gjennom alle brukere i lista
 - returnere brukeren hvis brukernavn matcher
 - returnere None hvis ingen matcher
 
-## Metode: lag_global_feed
+**Metode: lag_global_feed**
 
-`lag_global_feed` skal:
+`lag_global_feed()` skal:
 
 1. samle alle tweets fra alle brukere
 2. sortere tweetene slik at nyeste tweet kommer først
@@ -95,6 +86,37 @@ alle_tweets.sort(key=attrgetter("id"), reverse=True)
 ```
 
 Dette sorterer slik at tweet med høyest id kommer først.
+
+<details>
+<summary>Løsningsforslag</summary>
+
+```python
+from operator import attrgetter
+
+class Twitter:
+    def __init__(self):
+        self.brukere = []
+
+    def lag_bruker(self, brukernavn: str) -> Bruker:
+        bruker = Bruker(brukernavn)
+        self.brukere.append(bruker)
+        return bruker
+
+    def finn_bruker(self, brukernavn: str) -> Bruker | None:
+        for bruker in self.brukere:
+            if bruker.brukernavn == brukernavn:
+                return bruker
+        return None
+
+    def lag_global_feed(self) -> list[Tweet]:
+        alle_tweets = []
+        for bruker in self.brukere:
+            alle_tweets += bruker.tweets
+        alle_tweets.sort(key=attrgetter("id"), reverse=True)
+        return alle_tweets
+```
+
+</details>
 
 ## Sjekk at koden fungerer
 
@@ -117,14 +139,12 @@ assert tw.finn_bruker("ingen") is None
 feed = tw.lag_global_feed()
 assert [t.tekst for t in feed] == ["A2", "B1", "A1"]
 
+# Sjekk at vi kan finne brukernavn fra tweets i feeden
+assert feed[0].bruker.brukernavn == "ada"
+assert feed[1].bruker.brukernavn == "bob"
+assert feed[2].bruker.brukernavn == "ada"
+
 print("Alt fungerer som det skal")
 ```
 
-## Neste del
-
-I neste del skal vi begynne med Flask.
-
-Der skal vi:
-- lage en enkel web-app
-- lage ruter som viser og oppretter data
-- koble sammen klassene og nettsiden
+De siste testene viser hvordan vi kan navigere fra en tweet i feeden til brukeren som skrev den. Dette er nyttig når vi skal vise feeden i HTML.
