@@ -10,12 +10,16 @@ I denne delen skal du publisere Twitter-klonen på nett med PythonAnywhere.
 2. Klikk "Start running Python online" eller "Pricing & signup"
 3. Velg "Create a Beginner account" (gratis)
 4. Velg et brukernavn - dette blir en del av URL-en til appen din
+5. På "Dashboard" velg fanen "web"
+6. Klikk på "Add a new web app"
+7. Velg "Flask" som rammeverk og velg Python-versjonen som du kjører selv.
+8. I "path" skriver du stien til `app.py`, f.eks. `/home/BRUKERNAVN/twitter/app.py`
 
 ## Klargjør koden
 
 Før du laster opp må du endre én ting i `app.py`.
 
-Endre denne linjen:
+Endre linjen som kjører appen:
 
 ```python
 app.run(debug=True)
@@ -33,7 +37,7 @@ Dette gjør at `app.run()` bare kjører når du starter filen direkte på din eg
 ## Last opp filene
 
 1. Klikk på "Files" i menyen
-2. Lag en ny mappe som heter `twitter` under "mysite" eller i hjemmemappen
+2. Finn prosjekt-mappen i menyen til venstre
 3. Last opp filene:
    - `app.py`
    - `twitter.py`
@@ -50,53 +54,11 @@ twitter/
     └── bruker.html
 ```
 
-## Opprett web app
-
-1. Gå til "Web" i menyen
-2. Klikk "Add a new web app"
-3. Klikk "Next" på domenenavnet
-4. Velg "Flask"
-5. Velg nyeste Python-versjon
-6. Endre stien til Flask-appen til `/home/DITTBRUKERNAVN/twitter/app.py`
-
-## Konfigurer WSGI
-
-PythonAnywhere bruker en WSGI-fil for å starte appen. Denne må peke til din `app.py`.
-
-1. På "Web"-siden, finn "Code" og klikk på lenken til WSGI configuration file
-2. Finn denne seksjonen i filen:
-
-```python
-# import flask app but need to call it "application" for WSGI to work
-from my_flask_app import app as application
-```
-
-3. Endre den til:
-
-```python
-import sys
-sys.path.insert(0, '/home/DITTBRUKERNAVN/twitter')
-
-from app import app as application
-```
-
-Bytt ut `DITTBRUKERNAVN` med ditt faktiske brukernavn på PythonAnywhere.
-
 ## Start appen
 
-1. Gå tilbake til "Web"-siden
+1. Gå tilbake til "Web"-fanen
 2. Klikk den grønne "Reload"-knappen
 3. Klikk på lenken til appen din: `DITTBRUKERNAVN.pythonanywhere.com`
-
-## Feilsøking
-
-Hvis noe ikke fungerer:
-
-1. Sjekk error-loggen på "Web"-siden (klikk på "Error log")
-2. Vanlige feil:
-   - Feil sti i WSGI-filen
-   - Manglende filer i templates-mappen
-   - Skrivefeil i import-setninger
 
 ## Oppdatere appen
 
@@ -110,4 +72,4 @@ Når du gjør endringer:
 Med gratiskontoen:
 
 - Appen din er tilgjengelig på `DITTBRUKERNAVN.pythonanywhere.com`
-- Du må logge inn og klikke "Run until 3 months from today" hver 3. måned
+- Du må logge inn og klikke "Run until 1 months from today" hver måned
