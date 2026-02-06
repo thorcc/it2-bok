@@ -28,7 +28,7 @@ export default defineConfig({
 				{
 					label: 'Pygame',
 					autogenerate: { directory: 'pygame' },
-					collapsed: true
+					collapsed: false
 				},
 				{
 					label: 'Grunnleggende',
