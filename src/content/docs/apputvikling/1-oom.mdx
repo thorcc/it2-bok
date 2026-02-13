@@ -122,7 +122,7 @@ Diamanten i enden av streken viser at relasjonen er en [*komposisjon*](#komposis
 
 ```mermaid
 classDiagram
-    Bruker --* Tweet
+    Bruker *-- Tweet
     class Bruker{
         +str brukernavn
         +str passord
@@ -145,7 +145,7 @@ classDiagram
 
 ```text {2}
 classDiagram
-    Bruker --* Tweet
+    Bruker *-- Tweet
     class Bruker{
         +str brukernavn
         +str passord
@@ -174,7 +174,7 @@ classDiagram
 #### Arv (Inheritance / Generalization)
 
 ```
-Katt --|> Dyr
+Dyr <|-- Katt
 ```
 
 **Betydning:**
@@ -199,7 +199,7 @@ class Katt {
     +spinn()
 }
 
-Katt --|> Dyr
+Dyr <|-- Katt
 ```
 
 <details>
@@ -207,7 +207,7 @@ Katt --|> Dyr
 
 ```text
 classDiagram
-Katt --|> Dyr
+Dyr <|-- Katt
 
 class Dyr {
     +navn : str
@@ -262,18 +262,18 @@ katt.spinn()     # kun i Katt
 #### Komposisjon (Composition)
 
 ```
-Hus --* Dør
+Hus *-- Dør
 ```
 
 * `Hus` eier `Dør`
 * `Dør` kan **ikke eksistere uten** `Hus`
 * Når `Hus` slettes, slettes også `Dør`
 
-> Diamanten skal være på den siden som *eies*.
+> Diamanten skal være på den siden som *eier*.
 
 ```mermaid
 classDiagram
-Hus --* Dør
+Hus *-- Dør
 
 class Hus {
     +dører : List[Dør]
@@ -292,7 +292,7 @@ class Dør {
 
 ```text
 classDiagram
-Hus --* Dør
+Hus *-- Dør
 
 class Hus {
     +dører : List[Dør]
@@ -345,18 +345,18 @@ hus = None # Alle dørene forsvinner når hus slettes
 #### Aggregering (Aggregation)
 
 ```
-Lag --o Spiller
+Lag o-- Spiller
 ```
 
 * `Lag` har `Spiller`
 * `Spiller` kan eksistere uavhengig av `Lag`
 * Hvis `Lag` slettes, slettes *ikke* `Spiller`
 
-> Diamanten skal være på den siden som *has*.
+> Diamanten skal være på den siden som *har*.
 
 ```mermaid
 classDiagram
-Lag --o Spiller
+Lag o-- Spiller
 
 class Lag {
     +navn : str
@@ -377,7 +377,7 @@ class Spiller {
 
 ```text
 classDiagram
-Lag --o Spiller
+Lag o-- Spiller
 
 class Lag {
     +navn : str
