@@ -1,0 +1,189 @@
+---
+title: Databehandling
+description: Les og behandle data fra CSV- og JSON-filer i Python
+---
+
+Databehandling handler om å lese, filtrere og analysere data fra filer og netttjenester.
+I IT2 bruker vi Python til dette, og de vanligste formatene er **CSV** og **JSON**.
+
+## Dataformater
+
+### CSV
+
+CSV (*Comma-Separated Values*) er et enkelt tekstformat der data er organisert i rader og kolonner, litt som et regneark.
+Første rad er ofte overskrifter (kolonnenavn), og de neste radene er dataverdier.
+
+```
+navn,fag,karakter,termin
+Amelia Hansen,Matematikk,5,1
+Benjamin Larsen,Norsk,4,1
+Celine Olsen,IT2,6,1
+```
+
+> Merk: Selv om formatet heter "comma-separated", brukes noen ganger semikolon (`;`) som skilletegn i norske filer.
+
+### JSON
+
+JSON (*JavaScript Object Notation*) bruker ordbøker og lister for å strukturere data.
+En JSON-fil kan inneholde en liste med ordbøker:
+
+```json
+[
+  {
+    "navn": "Skuespill",
+    "leder": "Amelia Hansen",
+    "antall_medlemmer": 18,
+    "klar": false
+  },
+  {
+    "navn": "Dans",
+    "leder": "Celine Olsen",
+    "antall_medlemmer": 12,
+    "klar": false
+  }
+]
+```
+
+Fordelen med JSON er at det støtter nøstede strukturer (ordbøker inne i ordbøker, lister inne i ordbøker osv.), noe CSV ikke gjør like lett.
+
+---
+
+## Lese CSV-filer
+
+Python har et innebygd bibliotek som heter `csv`. Derfra kan vi bruke `csv.DictReader` for å lese CSV-filer som lister med ordbøker, der nøklene er kolonnenavnene.
+
+```python
+import csv
+
+with open("karakterer.csv", encoding="utf-8") as fil:
+    leser = csv.DictReader(fil)
+    karakterer = list(leser)
+
+print(karakterer[0])
+# {'navn': 'Amelia Hansen', 'fag': 'Matematikk', 'karakter': '5', 'termin': '1'}
+```
+
+> **OBS:** Alle verdier fra CSV leses som tekst (`str`). Vil du bruke tallverdier i beregninger, må du konvertere med `int()` eller `float()`.
+
+### Eksempel: Finn gjennomsnittskarakter i IT2
+
+```python
+import csv
+
+with open("karakterer.csv", encoding="utf-8") as fil:
+    leser = csv.DictReader(fil)
+    karakterer = list(leser)
+
+it2_karakterer = []
+for rad in karakterer:
+    if rad["fag"] == "IT2":
+        it2_karakterer.append(int(rad["karakter"]))
+
+snitt = sum(it2_karakterer) / len(it2_karakterer)
+print(f"Gjennomsnittskarakter i IT2: {snitt:.1f}")
+```
+
+## Lese JSON-filer
+
+Python har et innebygd bibliotek som heter `json`. Derfra kan vi bruke `json.load()` for å lese JSON-filer direkte til Python-lister eller -ordbøker.
+
+```python
+import json
+
+with open("revyen.json", encoding="utf-8") as fil:
+    grupper = json.load(fil)
+
+print(grupper[0])
+# {'navn': 'Skuespill', 'beskrivelse': '...', 'leder': 'Amelia Hansen', ...}
+```
+
+### Eksempel: Finn gruppen med flest medlemmer
+
+```python
+import json
+
+with open("revyen.json", encoding="utf-8") as fil:
+    grupper = json.load(fil)
+
+størst = grupper[0]
+for gruppe in grupper:
+    if gruppe["antall_medlemmer"] > størst["antall_medlemmer"]:
+        størst = gruppe
+
+print(f"Gruppen med flest medlemmer er {størst['navn']} med {størst['antall_medlemmer']} medlemmer")
+```
+
+### Eksempel: Finn grupper som ikke er klare
+
+```python
+import json
+
+with open("revyen.json", encoding="utf-8") as fil:
+    grupper = json.load(fil)
+
+ikke_klare = []
+for gruppe in grupper:
+    if gruppe["klar"] == False:
+        ikke_klare.append(gruppe["navn"])
+
+print("Grupper som ikke er klare:", ikke_klare)
+```
+
+## Vårt eget filbibliotek
+
+I Python er kodene for å lese inn CSV- og JSON-filer litt forskjellig.
+CSV-filer krever at vi bruker CSV-modulen og ofte `csv.DictReader`, mens for JSON-filer bruker vi ofte `json.load` fra JSON-modulen.
+
+Nå som vi har lært litt om objektorientert programmering, kan vi lage egne klasser for å forenkle innlesingen.
+Da slipper vi huske på de forskjellige modulene og funksjonene/klassene som følger med de.
+
+I denne delen lager vi to klasser `CSVfil` og `JSONfil` som begge arver fra samme superklasse.
+Målet med denne koden er å forenkle innlesing av filer ved å gjøre det så likt som mulig uavhengig av filtype.
+
+Klassene `CSVfil` og `JSONfil` har de samme metodene:
+
+| Metode | Beskrivelse |
+|--------|-------------|
+| `.kolonne(nøkkel)` | Returnerer en liste med alle verdier i en kolonne |
+| `.filtrer(nøkkel, verdi)` | Returnerer rader der `rad[nøkkel] == verdi` |
+| `.filtrer_og_hent_kolonne(nøkkel, verdi, kolonne)` | Filtrerer og returnerer kun verdier fra én kolonne |
+| `.gjennomsnitt(nøkkel)` | Regner ut gjennomsnittet av en tallkolonne |
+
+> Tips: Bruk disse klassene når du løser oppgaver og legg til nye metoder i din egen kode når du kommer bort i noe som klassene i kan løse enda.
+
+### Eksempel på bruk med CSVfil
+
+```python
+from filbib import CSVfil
+
+karakterer = CSVfil("karakterer.csv")
+
+# Hent alle karakterer i én liste
+alle_karakterer = karakterer.kolonne("karakter")
+print(alle_karakterer)  # ['5', '4', '6', '3', ...]
+
+# Finn gjennomsnittskarakter
+snitt = karakterer.gjennomsnitt("karakter")
+print(f"Snitt: {snitt:.2f}")
+```
+
+### Eksempel med JSONfil
+
+```python
+from filbib import JSONfil
+
+revy = JSONfil("revyen.json")
+
+# Hent alle gruppenavn
+navn = revy.kolonne("navn")
+print(navn)  # ['Skuespill', 'Dans', 'Musikk', ...]
+
+# Hent kun grupper som er klare
+klare = revy.filtrer("klar", True)
+print(klare)
+
+# Hent bare navnene på de klare gruppene
+klare_navn = revy.filtrer_og_hent_kolonne("klar", True, "navn")
+print(klare_navn)  # ['Musikk', 'Manus', 'Kostyme og sminke']
+```
+
