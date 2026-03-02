@@ -1,0 +1,358 @@
+---
+title: 2. Data og Flask
+description: Vis data fra filer som tabeller og plott i en Flask-nettside
+---
+
+I dette kapittelet kombinerer vi databehandling og Flask.
+Vi leser data fra filer og presenterer den via **tabeller** og **plott** på nettsider.
+
+## Oppsett
+
+Lag filstrukturen:
+
+```
+databehandling/
+├── app.py
+├── filbib.py
+├── revyen.json
+├── karakterer.csv
+└── templates/
+    └── index.html
+```
+
+<details>
+<summary>`karakterer.csv`</summary>
+
+```csv
+navn,fag,karakter,termin
+Amelia Hansen,Matematikk,5,1
+Amelia Hansen,Norsk,4,1
+Amelia Hansen,IT2,6,1
+Benjamin Larsen,Matematikk,3,1
+Benjamin Larsen,Norsk,4,1
+Benjamin Larsen,IT2,5,1
+Celine Olsen,Matematikk,6,1
+Celine Olsen,Norsk,5,1
+Celine Olsen,IT2,6,1
+Daniel Andersen,Matematikk,2,1
+Daniel Andersen,Norsk,3,1
+Daniel Andersen,IT2,4,1
+Emilie Berg,Matematikk,4,1
+Emilie Berg,Norsk,5,1
+Emilie Berg,IT2,5,1
+Fredrik Dahl,Matematikk,5,1
+Fredrik Dahl,Norsk,3,1
+Fredrik Dahl,IT2,4,1
+Amelia Hansen,Matematikk,5,2
+Amelia Hansen,Norsk,5,2
+Amelia Hansen,IT2,6,2
+Benjamin Larsen,Matematikk,4,2
+Benjamin Larsen,Norsk,4,2
+Benjamin Larsen,IT2,6,2
+Celine Olsen,Matematikk,6,2
+Celine Olsen,Norsk,6,2
+Celine Olsen,IT2,6,2
+Daniel Andersen,Matematikk,3,2
+Daniel Andersen,Norsk,3,2
+Daniel Andersen,IT2,5,2
+Emilie Berg,Matematikk,4,2
+Emilie Berg,Norsk,5,2
+Emilie Berg,IT2,5,2
+Fredrik Dahl,Matematikk,5,2
+Fredrik Dahl,Norsk,4,2
+Fredrik Dahl,IT2,5,2
+
+```
+
+</details>
+
+<details>
+<summary>`revyen.json`</summary>
+
+```json
+[
+  {
+    "navn": "Skuespill",
+    "beskrivelse": "Jobber med dialog, karakterutvikling og sceneopptreden.",
+    "leder": "Amelia Hansen",
+    "øvingsdag": "Mandag",
+    "antall_medlemmer": 18,
+    "klar": false
+  },
+  {
+    "navn": "Dans",
+    "beskrivelse": "Koreograferer og øver på dansenumre til showet.",
+    "leder": "Celine Olsen",
+    "øvingsdag": "Tirsdag",
+    "antall_medlemmer": 12,
+    "klar": false
+  },
+  {
+    "navn": "Musikk",
+    "beskrivelse": "Bandet som spiller live under forestillingen.",
+    "leder": "Fredrik Dahl",
+    "øvingsdag": "Onsdag",
+    "antall_medlemmer": 8,
+    "klar": true
+  },
+  {
+    "navn": "Manus",
+    "beskrivelse": "Skriver og redigerer tekstene og sketsjene til revyen.",
+    "leder": "Benjamin Larsen",
+    "øvingsdag": "Torsdag",
+    "antall_medlemmer": 5,
+    "klar": true
+  },
+  {
+    "navn": "Kostyme og sminke",
+    "beskrivelse": "Lager og koordinerer kostymer, rekvisitter og sminke.",
+    "leder": "Emilie Berg",
+    "øvingsdag": "Fredag",
+    "antall_medlemmer": 9,
+    "klar": true
+  },
+  {
+    "navn": "Lys og lyd",
+    "beskrivelse": "Styrer sceneteknikk, lysriggen og lydanlegget under showet.",
+    "leder": "Daniel Andersen",
+    "øvingsdag": "Onsdag",
+    "antall_medlemmer": 4,
+    "klar": false
+  }
+]
+
+```
+
+</details>
+
+Start med dette grunnoppsettet i `app.py`:
+
+```python
+from flask import Flask, render_template, request
+from filbib import JSONfil, CSVfil
+
+app = Flask(__name__)
+
+app.run(debug=True)
+```
+
+## Tabeller
+
+En tabell i HTML bruker taggene `<table>`, `<tr>` (rad), `<th>` (overskriftscelle) og `<td>` (datacelle).
+
+```html
+<table>
+    <tr>
+        <th>Navn</th>
+        <th>Medlemmer</th>
+    </tr>
+    <tr>
+        <td>Skuespill</td>
+        <td>18</td>
+    </tr>
+</table>
+```
+
+Med Jinja kan vi bruke for-løkker til å generere rader automatisk fra lister.
+
+### Flask-rute
+
+Les inn dataene og send dem til templaten med `render_template`:
+
+```python
+@app.get("/")
+def index():
+    revy = JSONfil("revyen.json")
+    return render_template("index.html", grupper=revy.data)
+```
+
+### HTML-template
+
+Bruk en Jinja-løkke til å lage én rad per gruppe:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Revyen</title>
+</head>
+<body>
+    <h1>Revygrupper</h1>
+    <table>
+        <tr>
+            <th>Gruppe</th>
+            <th>Leder</th>
+            <th>Medlemmer</th>
+            <th>Klar?</th>
+        </tr>
+        {% for gruppe in grupper %}
+        <tr>
+            <td>{{ gruppe.navn }}</td>
+            <td>{{ gruppe.leder }}</td>
+            <td>{{ gruppe.antall_medlemmer }}</td>
+            <td>{{ "Ja" if gruppe.klar else "Nei" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
+```
+
+## Plott med Chart.js
+
+Chart.js er et JavaScript-bibliotek for å lage interaktive diagrammer i nettleseren.
+Flask beregner dataene, og Chart.js tegner dem i en `<canvas>`-tag.
+
+Last inn Chart.js i `<head>`:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+```
+
+For å sende Python-data til JavaScript bruker vi Jinja-filteret `| tojson`, som konverterer Python-lister og -ordbøker til JavaScript-format.
+
+### Søylediagram – karakterer per fag
+
+#### Flask-rute
+
+Beregn data i Python og send to lister til templaten – én med etiketter og én med verdier:
+
+```python
+@app.get("/")
+def index():
+    karakterer = CSVfil("karakterer.csv")
+
+    fag = ["Matematikk", "Norsk", "IT2"]
+    snitt = []
+    for f in fag:
+        snitt.append(karakterer.gjennomsnitt_med_filter("fag", f, "karakter"))
+
+    return render_template("index.html", fag=fag, snitt=snitt)
+```
+
+#### HTML-template
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Karakterer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Gjennomsnittskarakter per fag</h1>
+    <canvas id="mittDiagram"></canvas>
+
+    <script>
+        const fag = {{ fag | tojson }};
+        const snitt = {{ snitt | tojson }};
+
+        new Chart(mittDiagram, {
+            type: "bar",
+            data: {
+                labels: fag,
+                datasets: [{
+                    label: "Snittkarakter",
+                    data: snitt
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
+```
+
+### Kakediagram – fordeling av revygrupper
+
+Kakediagrammer egner seg for å vise andeler. Her viser vi størrelsen på hver revygruppe.
+
+#### Flask-rute
+
+Sorter gruppene etter størrelse før du henter ut kolonnene, så diagrammet viser dem i riktig rekkefølge:
+
+```python
+@app.get("/revy")
+def revy():
+    revy = JSONfil("revyen.json")
+    revy.sorter("antall_medlemmer", synkende=True)
+    navn = revy.kolonne("navn")
+    medlemmer = revy.kolonne("antall_medlemmer")
+    return render_template("revy.html", navn=navn, medlemmer=medlemmer)
+```
+
+#### HTML-template
+
+```html
+<canvas id="revyDiagram"></canvas>
+
+<script>
+    new Chart(revyDiagram, {
+        type: "pie",
+        data: {
+            labels: {{ navn | tojson }},
+            datasets: [{
+                data: {{ medlemmer | tojson }}
+            }]
+        }
+    });
+</script>
+```
+
+---
+
+## Sortering
+
+Vi kan la brukeren velge sortering ved å sende en verdi i URL-en med `?sorter=kolonnenavn`.
+Flask leser denne verdien med `request.args.get()`.
+
+### Flask-rute
+
+```python
+@app.get("/")
+def index():
+    revy = JSONfil("revyen.json")
+    sorter_på = request.args.get("sorter")
+    if sorter_på:
+        revy.sorter(sorter_på, synkende=True)
+    return render_template("index.html", grupper=revy.data)
+```
+
+Hvis ingen `?sorter=`-parameter er oppgitt, returnerer `request.args.get("sorter")` verdien `None`, og tabellen vises usortert.
+
+### HTML-template
+
+Legg til skjemaer med knapper øverst i tabellen:
+
+```html
+<form method="get">
+    <input type="hidden" name="sorter" value="navn">
+    <button type="submit">Sorter etter navn</button>
+</form>
+<form method="get">
+    <input type="hidden" name="sorter" value="antall_medlemmer">
+    <button type="submit">Sorter etter medlemmer</button>
+</form>
+<form method="get">
+    <button type="submit">Nullstill</button>
+</form>
+
+<table>
+    <tr>
+        <th>Gruppe</th>
+        <th>Leder</th>
+        <th>Medlemmer</th>
+        <th>Klar?</th>
+    </tr>
+    {% for gruppe in grupper %}
+    <tr>
+        <td>{{ gruppe.navn }}</td>
+        <td>{{ gruppe.leder }}</td>
+        <td>{{ gruppe.antall_medlemmer }}</td>
+        <td>{{ "Ja" if gruppe.klar else "Nei" }}</td>
+    </tr>
+    {% endfor %}
+</table>
+```
+
+Hvert skjema bruker `method="get"` slik at sorteringsverdien sendes som en del av URL-en (`/?sorter=antall_medlemmer`).
+Det skjulte `<input type="hidden">`-feltet bestemmer hvilken kolonne det sorteres på, og Flask leser verdien med `request.args.get("sorter")` som før.

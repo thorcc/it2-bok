@@ -16,6 +16,11 @@ export default defineConfig({
 			//social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
+					label: 'Databehandling',
+					autogenerate: { directory: 'databehandling' },
+					collapsed: false,
+				},
+				{
 					label: 'Apputvikling',
 					autogenerate: { directory: 'apputvikling' },
 					collapsed: false,
