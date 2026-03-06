@@ -5,6 +5,10 @@ description: Nyttige snippets
 
 ## Nyttige snippets
 
+1. Trykk `CMD+SHIFT+p` / `CTRL+SHIFT+p`
+2. Skriv og velg `Snippets: Configure Snippets`
+3. Lim inn koden under.
+
 ```json
 {
 	// Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
@@ -14,16 +18,107 @@ description: Nyttige snippets
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
 	// Placeholders with the same ids are connected.
 	// Example:
-	"Lese fil": {
+	"Lese txt-fil": {
+		"prefix": "lestxt",
 		"scope": "python",
-		"prefix": "les",
+		"description": "Les txt-fil",
 		"body": [
-			"with open(\"$1\", \"r\") as fil:",
-			"    data = fil.read()",
-			"",
-			"linjer = data.split(\"\\n\")"
+			"with open(\"$1\") as fil:",
+			"    data = fil.read().split(\"\\n\")",
+			"$0"
 		],
-		"description": "Åpne filer"
+	},
+	"Les JSON": {
+		"prefix": "lesjson",
+		"scope": "python",
+		"description": "Les JSON-fil",
+		"body": [
+			"import json",
+			"with open(\"$1\", encoding=\"utf-8\") as fil:",
+			"    data = json.load(fil)",
+			"$0"
+		]
+	},
+	"Les CSV": {
+		"prefix": "lescsv",
+		"scope": "python",
+		"description": "Les CSV-fil som en liste med ordbøker",
+		"body": [
+			"import csv",
+			"with open(\"$1\", encoding=\"utf-8\") as fil:"
+			"    leser = csv.DictReader(fil)",
+			"    data = list(leser)",
+			"$0"
+		]
+	},
+	"Flask oppsett": {
+		"prefix": "flaskoppsett",
+		"scope": "python",
+		"description": "Oppsett av Flask-app",
+		"body": [
+			"from flask import Flask, render_template, request",
+			"",
+			"app = Flask(__name__)",
+			"",
+			"$0",
+			"",
+			"if __name__ == \"__main__\":",
+			"    app.run(debug=True)",
+		]
+	},
+	"Flask get-rute": {
+		"prefix": "flask-get",
+		"scope": "python",
+		"description": "En get-rute i Flask",
+		"body": [
+			"@app.get(\"/$1\")",
+			"def get_$2():",
+			"    return render_template(\"$3.html\")",
+			"$0"
+		]
+	},
+	"Plotly CDN": {
+		"prefix": "plotlycdn",
+		"scope": "html",
+		"body": [
+			"<script src=\"https://cdn.plot.ly/plotly-3.4.0.min.js\" charset=\"utf-8\"></script>",
+			"$0"
+		],
+		"description": "Lenke til Plotly-cdn"
+	},
+	"Plotly  stolpediagram": {
+		"prefix": "plotbar",
+		"scope": "html",
+		"body": [
+			"<!-- Husk å importere Plotly-biblioteket: 'plotlycdn' -->",
+			"<div id=\"divPlott\"></div>",
+			"<script>",
+			"Plotly.newPlot(\"divPlott\", [{",
+			"    x: {{ ${1} | tojson }},",
+			"    y: {{ ${2} | tojson }},",
+			"    type: \"bar\"",
+			"}])",
+			"</script>",
+			"$0"
+		],
+		"description": "Plotly bar chart med Jinja2-variabler"
+	},
+	"Plotly kakediagram": {
+		"prefix": "plotpie",
+		"scope": "html",
+		"body": [
+			"<!-- Husk å importere Plotly-biblioteket: 'plotlycdn' -->",
+			"<div id=\"divPlott\"></div>",
+			"<script>",
+			"Plotly.newPlot(\"divPlott\", [{",
+			"    labels: {{ ${1} | tojson }},",
+			"    values: {{ ${2} | tojson }},",
+			"    type: \"pie\"",
+			"}])",
+			"</script>",
+			"$0"
+		],
+		"description": "Plotly pie chart med Jinja2-variabler"
 	},
 	"Pygame Game Template ": {
 		"prefix": "pygameclass",
@@ -87,75 +182,11 @@ description: Nyttige snippets
 			"",
 			"if __name__ == \"__main__\":",
 			"    game = Game()",
-			"    game.run()"
+			"    game.run()",
+			"$0"
 		],
 		"description": "A comprehensive Pygame template using a Game class structure, including event loops, update, draw, and init boilerplate code."
-	},
-	"Flask oppsett": {
-		"prefix": "flaskoppsett",
-		"scope": "python",
-		"description": "Oppsett av Flask-app",
-		"body": [
-			"from flask import Flask, render_template, request",
-			"",
-			"app = Flask(__name__)",
-			"",
-			"$1",
-			"",
-			"if __name__ == \"__main__\":",
-			"    app.run(debug=True)",
-			""
-		]
-	},
-	"Flask get-rute": {
-		"prefix": "get-rute",
-		"scope": "python",
-		"description": "En get-rute i Flask",
-		"body": [
-			"@app.get(\"/$1\")",
-			"def get_$2():",
-			"    return render_template(\"$3.html\")",
-			""
-		]
-	},
-	"Plotly CDN": {
-		"prefix": "plotlycdn",
-		"body": [
-			"<script src=\"https://cdn.plot.ly/plotly-3.4.0.min.js\" charset=\"utf-8\"></script>"
-		],
-		"Lenke til Plotly-cdn"
-	},
-	"Plotly  stolpediagram": {
-		"prefix": "barplot",
-		"body": [
-			"<!-- Husk å importere Plotly-biblioteket: 'plotlycdn' -->""<div id=\"divPlott\"></div>",
-			"<script>",
-			"const x = {{ ${1} | tojson }};",
-			"const y = {{ ${2} | tojson }};",
-			"Plotly.newPlot(\"divPlott\", [{",
-			"  x: x,",
-			"  y: y,",
-			"  type: \"bar\"",
-			"}])",
-			"</script>"
-		],
-		"description": "Plotly bar chart med Jinja2-variabler"
-	},
-	"Plotly kakediagram": {
-		"prefix": "plotpie",
-		"body": [
-			"<!-- Husk å importere Plotly-biblioteket: 'plotlycdn' -->""<div id=\"divPlott\"></div>",
-			"<script>",
-			"const labels = {{ ${1} | tojson }};",
-			"const values = {{ ${2} | tojson }};",
-			"Plotly.newPlot(\"divPlott\", [{",
-			"  labels: labels,",
-			"  values: values,",
-			"  type: \"pie\"",
-			"}])",
-			"</script>"
-		],
-		"description": "Plotly pie chart med Jinja2-variabler"
 	}
 }
+
 ```
