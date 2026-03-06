@@ -3,231 +3,18 @@ title: 3. Oppgaver
 description: Oppgaver om databehandling
 ---
 
-## Oppgave 1 - Twitter
+## Oppgave 1
 
-- Datasett: [twitter.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/twitter.json)
-
-1. Lag et program som finner og presenterer de ti brukerne i datasettet som har flest Twitter-følgere.
-2. Utvid programmet slik at det regner ut og presenterer antall tweets og antall følgere per bruker for disse ti brukerne.
-3. Utvid programmet slik at det også viser brukerenes følgere/følger-ratio, altså antall som følger kontoen delt på antall som kontoen følger.
-
-## Oppgave 2 - YouTube
-
-> Oppgave 11 fra eksamen H23
-
-Du skal lage et program som leser inn informasjon fra et datasett og presenterer den. Last ned datasettet her:
-
-- [CSV/JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3049&aar=2023-19&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
-
-Tips: Du står fritt til å velge hvordan programmet skal presentere informasjonen, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter. Du kan også velge om du besvarer a og b i en samlet oversikt eller lager en oversikt for hvert oppgavepunkt.
-
-Programmet du lager i denne oppgaven, skal inneholde en flerlinjet kommentar øverst som beskriver de vurderingene og valgene du har gjort for å vaske og forberede datasettet til bruk med programmet ditt.
-
-1. Lag et program som finner og presenterer de ti landene i datasettet som har flest YouTube-kanaler.
-2. Utvid programmet til å regne ut og presentere gjennomsnittlig antall abonnenter og videovisninger per kanal for hvert av disse landene.
-
-## Oppgave 3 - Google Play Store
-
-> Oppgave 9 fra eksamen V23
-> OBS! Denne oppgaven er vanskelig. Den krever blanet annet at du _renser_ datasettet
-
-Du skal lage et program som leser inn informasjon fra datasettet og presenterer dette i to oversikter.
-Last ned datasettet her:
-
-- [CSV](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-6&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
-- [JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-7&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
-
-Tips: Du står fritt til å velge hvordan programmet skal presentere informasjon, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter.
-
-1. Lag et program som presenterer en oversikt over de tre største kategoriene målt i antall apper. Oversikten skal vise antallet apper, gjennomsnittsratingen og det gjennomsnittlige antallet installasjoner for hver av disse tre kategoriene.
-   - Tips: For å kunne beregne gjennomsnittet av antallet installasjoner må du tilpasse innholdet i det aktuelle datafeltet. Du vil få noe uttelling om du bare viser antallet apper og gjennomsnittsratingen.
-2. Utvid programmet slik at det også presenterer de tre mest populære appene, målt i antall installasjoner, i hver av disse tre kategoriene.
-
-## Oppgave 4 - Stortinget
-
-Fil: [stortinget.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/stortinget.json)
-
-1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
-2. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
-3. Lag en ordbok som teller antall representanter hvert parti har
-4. Lag et plott som viser en oversikt over partier og antall representanter
-5. Hvor mange representanter har hvert parti i gjennomsnitt?
+1. Kopier listen med vinnere av gullballen 👇👇 inn i en json-fil.
+2. Vis vinnerne i en tabell med navn og nasjonalitet
+3. Vis år på en fin måte.
+4. Lag et plott som viser vinnere og nasjonalitet
 
 <details>
-<summary>Løsningsforslag</summary>
-
-````python
-import json
-with open("stortinget.json", encoding="utf-8") as fil:
-    data = json.load(fil)
-
-politikere = data["representanter_liste"]
-
-# 1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
-
-for politiker in politikere:
-    print(f"{politiker['fornavn']} {politiker['etternavn']}: {politiker['parti']['navn']}")
-
-# 2. Lag en ordbok som teller antall representanter hvert parti har
-
-antall = {}
-for politiker in politikere:
-    parti = politiker['parti']['navn']
-    if parti not in antall:
-        antall[parti] = 1
-    else:
-        antall[parti] += 1
-print(antall)
-
-# 3. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
-
-# Tips: https://it2.thorcc.no/databehandling-og-algoritmer/lokker-lister-og-ordboker#sortering-av-ordbøker-med-verdier
-
-antall_liste = list(antall.items())
-antall_sortert = sorted(antall_liste, key=lambda parti: parti[1])
-parti_flest = antall_sortert[-1] # det siste partiet i lista har flest politikere på stortinget
-print(f"Partiet med flest politikere på tinget er {parti_flest[0]} de har {parti_flest[1]}")
-
-# 4. Lag et plott som viser en oversikt over partier og antall representanter
-
-import matplotlib.pyplot as plt
-parti_liste = list(antall.keys())
-antall_liste = list(antall.values())
-plt.bar(parti_liste, antall_liste)
-plt.xticks(rotation=90) # bonus: roterer teksten på x-aksen 90 grader slik at den er lettere å lese
-plt.show() # trenger ikke denne i .ipynb-filer
-
-# 5. Hvor mange representanter har hvert parti i gjennomsnitt?
-
-total = 0
-for parti in antall:
-    total += antall[parti]
-    snitt = total / len(antall)
-print(f"Hvert parti har i gjennomsnitt {snitt} representanter")
-````
-
-</details>
-
-
-## Oppgave 5 - Spotify
-
-Fil: [spotify-weekly-top-songs-global-uke2-2023.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/spotify-weekly-top-songs-global-uke2-2023.json)
-
-1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
-2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
-3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
-
-<details>
-<summary>Løsningsforslag</summary>
-
-````python
-import json
-with open("spotify-weekly-top-songs-global-uke2-2023.json") as fil:
-    sanger = json.load(fil)
-
-# 1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
-flest = sanger[0]
-for sang in sanger:
-    if sang["uker_paa_listen"] > flest["uker_paa_listen"]:
-        flest = sang
-print(flest)
-
-# 2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
-total = 0
-for sang in sanger:
-    if sang["artist"] == "Taylor Swift":
-        total += sang["antall_streams"]
-print(f"Taylor Swift har totalt {total} antall streams på sangene hennes som ligger på topplista.")
-
-# 3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
-sang_størst_endring = sanger[0]
-størst_endring = sang_størst_endring["plassering"] - sang_størst_endring["forrige_plassering"]
-for sang in sanger:
-    if sang["forrige_plassering"] != -1:
-        endring = sang["plassering"] - sang["forrige_plassering"]
-        if endring > størst_endring:
-            sang_størst_endring = sang
-            størst_endring = endring
-
-print(f"{sang_størst_endring['tittel']} gikk opp flest plasseringer")
-````
-
-</details>
-
-## Oppgave 6 - IMDB
-
-Fil: [imdb_top250.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/imdb_top250.json)
-
-1. Hvilken film har høyest karakter?
-2. Hva er gjennomsnittskarakteren til alle filmene på listen?
-3. Hva er gjennomsnittskarakteren til de ti første filmene?
-4. Hvilken regissør har regissert flest filmer på listen?
-   - For hver film er regisørrer en liste. Her holder det med første regissør i listen.
-   - Bonus: Alle regisørrene i regissørlistene skal telles med.
-
-<details>
-<summary>Løsningsforslag</summary>
-
-````python
-import json
-
-fil = open("imdb_top250.json", encoding="utf-8")
-filmer = json.load(fil)
-fil.close()
-
-# 1. Hvilken film har høyest karakter?
-høyest = filmer[0]
-for film in filmer:
-    if film["karakter"] > høyest["karakter"]:
-        høyest = film
-print(f"Filmen med høyest karakter er {høyest['navn']}")
-
-# 2. Hva er gjennomsnittskarakteren til filmene på listen?
-total_karakter = 0
-for film in filmer:
-    total_karakter += film['karakter']
-snittkarakter = total_karakter / len(filmer)
-print(f"Gjennomsnittskarakteren til filmene er {snittkarakter}")
-
-# 3. Hva er gjennomsnittskarakteren til de ti første filmene?
-filmer_sortert = sorted(filmer, key=lambda film:film['karakter'], reverse=True) # sorterer listen i stigende rekkefølge etter karakter.
-ti_første = filmer_sortert[:10] # lager en ny liste som inneholder de ti første filmene
-total_karakter_ti_første = 0
-for film in ti_første:
-    total_karakter_ti_første += film['karakter']
-snittkarakter_ti_første = total_karakter_ti_første / len(ti_første)
-print(f"Gjennomsnittskarakteren til filmene er {snittkarakter_ti_første}")
-
-# 4. Hvilken regissør har regissert flest filmer på listen?
-regissører_antall = {}
-for film in filmer:
-    for regissør in film['regissører']:
-        if regissør in regissører_antall:
-            regissører_antall[regissør] += 1
-        else:
-            regissører_antall[regissør] = 1
-
-regissører_sortert = sorted(regissører_antall.items(), key=lambda regissør: regissør[1], reverse=True)
-print(f"Regissøren med flest filmer på listen er {regissører_sortert[0][0]} med {regissører_sortert[0][1]} filmer")
-
-# Bonus: Det er faktisk fem regissører med syv filmer på listen.
-for i in range(6):
-    print(f"{i + 1}: {regissører_sortert[i][0]} - {regissører_sortert[i][1]} filmer")
-````
-
-</details>
-
-## Oppgave 7
-
-1. Kopier listen med vinnere av gullballen 👇👇 inn i en python-fil og print ordboken til den første spilleren.
-2. Lag en for-løkke som printer navn og nasjonalitet på hver spiller.
-3. Utvid koden slik at for-løkken også printer antall gullballer spillerne har vunnet.
-
-<details>
-<summary>Klikk for startkode</summary>
+<summary>`gullballen.json`</summary>
 
 ```python
-gullballen = [
+[
   {
     "navn": "Luís Figo",
     "år": [2000],
@@ -305,7 +92,7 @@ gullballen = [
 
 </details>
 
-## Oppgave 8
+## Oppgave 2
 
 1. Kopier listen med informasjon over de 30 mest fulgte Instagram-kontoene 👇👇 inn i en python-fil.
 2. Hvor mange følgere har kontoene på listen i gjennomsnitt?
@@ -351,7 +138,7 @@ top_30 = [
 
 </details>
 
-## Oppgave 9
+## Oppgave 3
 
 1. Kopier listen med informasjon over de 30 mest befolkede land 👇👇 inn i en python-fil og print ordboken til Argentina.
 2. Lag en for-løkke som printer navn, hovedstad og antall språk for hvert land.
@@ -443,6 +230,221 @@ land_info = [
 ```
 
 </details>
+
+## Oppgave 4 - Twitter
+
+- Datasett: [twitter.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/twitter.json)
+
+1. Lag et program som finner og presenterer de ti brukerne i datasettet som har flest Twitter-følgere.
+2. Utvid programmet slik at det regner ut og presenterer antall tweets og antall følgere per bruker for disse ti brukerne.
+3. Utvid programmet slik at det også viser brukerenes følgere/følger-ratio, altså antall som følger kontoen delt på antall som kontoen følger.
+
+## Oppgave 5 - YouTube
+
+> Oppgave 11 fra eksamen H23
+
+Du skal lage et program som leser inn informasjon fra et datasett og presenterer den. Last ned datasettet her:
+
+- [CSV/JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3049&aar=2023-19&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+
+Tips: Du står fritt til å velge hvordan programmet skal presentere informasjonen, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter. Du kan også velge om du besvarer a og b i en samlet oversikt eller lager en oversikt for hvert oppgavepunkt.
+
+Programmet du lager i denne oppgaven, skal inneholde en flerlinjet kommentar øverst som beskriver de vurderingene og valgene du har gjort for å vaske og forberede datasettet til bruk med programmet ditt.
+
+1. Lag et program som finner og presenterer de ti landene i datasettet som har flest YouTube-kanaler.
+2. Utvid programmet til å regne ut og presentere gjennomsnittlig antall abonnenter og videovisninger per kanal for hvert av disse landene.
+
+## Oppgave 6 - Google Play Store
+
+> Oppgave 9 fra eksamen V23
+> OBS! Denne oppgaven er vanskelig. Den krever blanet annet at du _renser_ datasettet
+
+Du skal lage et program som leser inn informasjon fra datasettet og presenterer dette i to oversikter.
+Last ned datasettet her:
+
+- [CSV](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-6&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+- [JSON](https://sokeresultat.udir.no/eksamenprovemateriell.html?kategori=rea3053&aar=2023-7&spraak=bokm%C3%A5l&trinn=annet&ferdighet=annet)
+
+Tips: Du står fritt til å velge hvordan programmet skal presentere informasjon, så lenge presentasjonen er godt egnet til å vise det oppgaven spør etter.
+
+1. Lag et program som presenterer en oversikt over de tre største kategoriene målt i antall apper. Oversikten skal vise antallet apper, gjennomsnittsratingen og det gjennomsnittlige antallet installasjoner for hver av disse tre kategoriene.
+   - Tips: For å kunne beregne gjennomsnittet av antallet installasjoner må du tilpasse innholdet i det aktuelle datafeltet. Du vil få noe uttelling om du bare viser antallet apper og gjennomsnittsratingen.
+2. Utvid programmet slik at det også presenterer de tre mest populære appene, målt i antall installasjoner, i hver av disse tre kategoriene.
+
+## Oppgave 7 - Stortinget
+
+Fil: [stortinget.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/stortinget.json)
+
+1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
+2. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
+3. Lag en ordbok som teller antall representanter hvert parti har
+4. Lag et plott som viser en oversikt over partier og antall representanter
+5. Hvor mange representanter har hvert parti i gjennomsnitt?
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+with open("stortinget.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+politikere = data["representanter_liste"]
+
+# 1. Lag en for-løkke som printer navn og tilhørnde parti på alle politikerne
+
+for politiker in politikere:
+    print(f"{politiker['fornavn']} {politiker['etternavn']}: {politiker['parti']['navn']}")
+
+# 2. Lag en ordbok som teller antall representanter hvert parti har
+
+antall = {}
+for politiker in politikere:
+    parti = politiker['parti']['navn']
+    if parti not in antall:
+        antall[parti] = 1
+    else:
+        antall[parti] += 1
+print(antall)
+
+# 3. Hvilket parti har flest representanter på Stortinget og hvor mange har de?
+
+# Tips: https://it2.thorcc.no/databehandling-og-algoritmer/lokker-lister-og-ordboker#sortering-av-ordbøker-med-verdier
+
+antall_liste = list(antall.items())
+antall_sortert = sorted(antall_liste, key=lambda parti: parti[1])
+parti_flest = antall_sortert[-1] # det siste partiet i lista har flest politikere på stortinget
+print(f"Partiet med flest politikere på tinget er {parti_flest[0]} de har {parti_flest[1]}")
+
+# 4. Lag et plott som viser en oversikt over partier og antall representanter
+
+import matplotlib.pyplot as plt
+parti_liste = list(antall.keys())
+antall_liste = list(antall.values())
+plt.bar(parti_liste, antall_liste)
+plt.xticks(rotation=90) # bonus: roterer teksten på x-aksen 90 grader slik at den er lettere å lese
+plt.show() # trenger ikke denne i .ipynb-filer
+
+# 5. Hvor mange representanter har hvert parti i gjennomsnitt?
+
+total = 0
+for parti in antall:
+    total += antall[parti]
+    snitt = total / len(antall)
+print(f"Hvert parti har i gjennomsnitt {snitt} representanter")
+````
+
+</details>
+
+
+## Oppgave 8 - Spotify
+
+Fil: [spotify-weekly-top-songs-global-uke2-2023.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/spotify-weekly-top-songs-global-uke2-2023.json)
+
+1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
+2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
+3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+with open("spotify-weekly-top-songs-global-uke2-2023.json") as fil:
+    sanger = json.load(fil)
+
+# 1. Hvilken sang har flest uker på Spotifys Weekly Top Songs Global?
+flest = sanger[0]
+for sang in sanger:
+    if sang["uker_paa_listen"] > flest["uker_paa_listen"]:
+        flest = sang
+print(flest)
+
+# 2. Hvor mange streams har Taylor Swift til sammen på sangene hennes som er på topplista?
+total = 0
+for sang in sanger:
+    if sang["artist"] == "Taylor Swift":
+        total += sang["antall_streams"]
+print(f"Taylor Swift har totalt {total} antall streams på sangene hennes som ligger på topplista.")
+
+# 3. Hvilken sang gikk opp flest plasseringer fra forrige uke til denne?
+sang_størst_endring = sanger[0]
+størst_endring = sang_størst_endring["plassering"] - sang_størst_endring["forrige_plassering"]
+for sang in sanger:
+    if sang["forrige_plassering"] != -1:
+        endring = sang["plassering"] - sang["forrige_plassering"]
+        if endring > størst_endring:
+            sang_størst_endring = sang
+            størst_endring = endring
+
+print(f"{sang_størst_endring['tittel']} gikk opp flest plasseringer")
+````
+
+</details>
+
+## Oppgave 9 - IMDB
+
+Fil: [imdb_top250.json](https://raw.githubusercontent.com/thorcc/IT2-nettbok/main/pages/databehandling-og-algoritmer/vedlegg/imdb_top250.json)
+
+1. Hvilken film har høyest karakter?
+2. Hva er gjennomsnittskarakteren til alle filmene på listen?
+3. Hva er gjennomsnittskarakteren til de ti første filmene?
+4. Hvilken regissør har regissert flest filmer på listen?
+   - For hver film er regisørrer en liste. Her holder det med første regissør i listen.
+   - Bonus: Alle regisørrene i regissørlistene skal telles med.
+
+<details>
+<summary>Løsningsforslag</summary>
+
+````python
+import json
+
+fil = open("imdb_top250.json", encoding="utf-8")
+filmer = json.load(fil)
+fil.close()
+
+# 1. Hvilken film har høyest karakter?
+høyest = filmer[0]
+for film in filmer:
+    if film["karakter"] > høyest["karakter"]:
+        høyest = film
+print(f"Filmen med høyest karakter er {høyest['navn']}")
+
+# 2. Hva er gjennomsnittskarakteren til filmene på listen?
+total_karakter = 0
+for film in filmer:
+    total_karakter += film['karakter']
+snittkarakter = total_karakter / len(filmer)
+print(f"Gjennomsnittskarakteren til filmene er {snittkarakter}")
+
+# 3. Hva er gjennomsnittskarakteren til de ti første filmene?
+filmer_sortert = sorted(filmer, key=lambda film:film['karakter'], reverse=True) # sorterer listen i stigende rekkefølge etter karakter.
+ti_første = filmer_sortert[:10] # lager en ny liste som inneholder de ti første filmene
+total_karakter_ti_første = 0
+for film in ti_første:
+    total_karakter_ti_første += film['karakter']
+snittkarakter_ti_første = total_karakter_ti_første / len(ti_første)
+print(f"Gjennomsnittskarakteren til filmene er {snittkarakter_ti_første}")
+
+# 4. Hvilken regissør har regissert flest filmer på listen?
+regissører_antall = {}
+for film in filmer:
+    for regissør in film['regissører']:
+        if regissør in regissører_antall:
+            regissører_antall[regissør] += 1
+        else:
+            regissører_antall[regissør] = 1
+
+regissører_sortert = sorted(regissører_antall.items(), key=lambda regissør: regissør[1], reverse=True)
+print(f"Regissøren med flest filmer på listen er {regissører_sortert[0][0]} med {regissører_sortert[0][1]} filmer")
+
+# Bonus: Det er faktisk fem regissører med syv filmer på listen.
+for i in range(6):
+    print(f"{i + 1}: {regissører_sortert[i][0]} - {regissører_sortert[i][1]} filmer")
+````
+
+</details>
+
 
 ## Oppgave 10 - Meteorologisk API
 
