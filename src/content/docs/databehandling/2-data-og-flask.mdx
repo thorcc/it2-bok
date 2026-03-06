@@ -213,20 +213,20 @@ Bruk en Jinja-løkke til å lage én rad per gruppe:
 </html>
 ```
 
-## Plott med Chart.js
+## Plott med Plotly
 
-Chart.js er et JavaScript-bibliotek for å lage interaktive diagrammer i nettleseren.
-Flask beregner dataene og Chart.js tegner dem i en `<canvas>`-tag.
+Plotly er et JavaScript-bibliotek for å lage interaktive diagrammer i nettleseren.
+Flask beregner dataene og Plotly tegner dem i en `<div>`-tag.
 
-Last inn Chart.js i `<head>` i HTML-fila:
+Last inn Plotly i `<head>` i HTML-fila:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.plot.ly/plotly-3.4.0.min.js" charset="utf-8"></script>
 ```
 
 For å sende Python-data til JavaScript bruker vi Jinja-filteret `| tojson`, som konverterer Python-lister og -ordbøker til JavaScript-format.
 
-### Søylediagram: karakterer per fag
+### Stolpediagram: karakterer per fag
 
 ### Les inn fil i app.py
 
@@ -283,26 +283,21 @@ def index():
 <html>
 <head>
     <title>Karakterer</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-3.4.0.min.js" charset="utf-8"></script>
 </head>
 <body>
     <h1>Gjennomsnittskarakter per fag</h1>
-    <canvas id="mittDiagram"></canvas>
+    <div id="mittDiagram"></div>
 
     <script>
         const fagliste = {{ fagliste | tojson }};
         const snitt = {{ snittliste | tojson }};
 
-        new Chart(mittDiagram, {
-            type: "bar",
-            data: {
-                labels: fagliste,
-                datasets: [{
-                    label: "Snittkarakter",
-                    data: snittliste
-                }]
-            }
-        });
+        Plotly.newPlot("mittDiagram", [{
+            x: fagliste,
+            y: snitt,
+            type: "bar"
+        }]);
     </script>
 </body>
 </html>
@@ -348,20 +343,16 @@ def revy():
 #### HTML-template
 
 ```html
-<canvas id="revyDiagram"></canvas>
+<div id="revyDiagram"></div>
 
 <script>
     const navn = {{ navn | tojson }}
     const medlemmer = {{ medlemmer | tojson }}
-    new Chart(revyDiagram, {
-        type: "pie",
-        data: {
-            labels: navn,
-            datasets: [{
-                data: medlemmer
-            }]
-        }
-    });
+    Plotly.newPlot("revyDiagram", [{
+        labels: navn,
+        values: medlemmer,
+        type: "pie"
+    }]);
 </script>
 ```
 

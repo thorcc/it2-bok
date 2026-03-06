@@ -7,7 +7,7 @@ description: Oppgaver om databehandling
 
 1. Kopier listen med vinnere av gullballen 👇👇 inn i en json-fil.
 2. Vis vinnerne i en tabell med navn og nasjonalitet.
-3. Vis år i tabellen på en fin måte.
+3. Vis antall ganger vinnerne har vunnet i tabellen.
 4. Lag et plott som viser antall vinnere per nasjonalitet.
 
 <details>
@@ -92,13 +92,83 @@ description: Oppgaver om databehandling
 
 </details>
 
+<details>
+<summary>løsningsforslag</summary>
+
+```python title="app.py"
+from flask import Flask, render_template, request
+import json
+
+app = Flask(__name__)
+
+with open("gullballen.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+@app.get("/")
+def get_index():
+    teller = {}
+    for vinner in data:
+        if vinner["nasjonalitet"] not in teller:
+            teller[vinner["nasjonalitet"]] = len(vinner["år"])
+        else:
+            teller[vinner["nasjonalitet"]] += len(vinner["år"])
+
+    nasjonalitet = list(teller.keys())
+    antall = list(teller.values())
+
+    return render_template("index.html", vinnere=data, nasjonalitet=nasjonalitet, antall=antall)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+```
+
+```html title="/templates/index.html"
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+<script src="https://cdn.plot.ly/plotly-3.4.0.min.js" charset="utf-8"></script>
+
+<h1>Gullballen</h1>
+
+<table>
+    <thead>
+        <th>Navn</th>
+        <th>Nasjonalitet</th>
+        <th>Antall</th>
+    </thead>
+    <tbody>
+        {% for vinner in vinnere %}
+        <tr>
+            <td>{{ vinner["navn"] }}</td>
+            <td>{{ vinner["nasjonalitet"] }}</td>
+            <td>{{ vinner["år"] | length }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="divPlott"></div>
+<script>
+const x = {{ nasjonalitet | tojson }};
+const y = {{ antall | tojson }};
+Plotly.newPlot("divPlott", [{
+  x: x,
+  y: y,
+  type: "bar"
+}])
+</script>
+
+```
+
+</details>
+
 ## Oppgave 2
 
 1. Kopier listen med informasjon over de 30 mest befolkede land inn i en JSON-fil.
 2. Vis navn, hovedstad og antall språk for hvert land i en tabell.
-3. Lag en tabell med antall land som har Engelsk som språk.
-4. Lag et stolpediagram (barplot) som viser språk og antall som land som har det språket som offisielt språk.
-    - Tips: Språk er en liste - du burde bruke en for-løkke som går gjennom språk inne i for-løkken for land.
+3. Lag et stolpediagram som viser land og antall innbyggere
+4. Lag en ny tabell med antall land som har Engelsk som språk.
+5. Lag et nytt stolpediagram som viser innbyggertall for land som har engelsk som srpåk. for-løkken for land.
 
 <details>
 <summary>`land.json`</summary>
@@ -137,6 +207,109 @@ land_info = [
     {"land": "Spania", "hovedstad": "Madrid", "befolkning": 47000000, "språk": ["Spansk"]},
     {"land": "Argentina", "hovedstad": "Buenos Aires", "befolkning": 45000000, "språk": ["Spansk"]},
 ]
+```
+
+</details>
+
+<details>
+<summary>løsningsforslag</summary>
+
+```python title="app.py"
+from flask import Flask, render_template
+import json
+
+app = Flask(__name__)
+
+with open("land.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+@app.get("/")
+def get_index():
+    engelsk_land = [land for land in data if "Engelsk" in land["språk"]]
+
+    alle_navn = [land["land"] for land in data]
+    alle_befolkning = [land["befolkning"] for land in data]
+
+    engelsk_navn = [land["land"] for land in engelsk_land]
+    engelsk_befolkning = [land["befolkning"] for land in engelsk_land]
+
+    return render_template(
+        "index.html",
+        land=data,
+        engelsk_land=engelsk_land,
+        alle_navn=alle_navn,
+        alle_befolkning=alle_befolkning,
+        engelsk_navn=engelsk_navn,
+        engelsk_befolkning=engelsk_befolkning,
+    )
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+```html title="/templates/index.html"
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+<script src="https://cdn.plot.ly/plotly-3.4.0.min.js" charset="utf-8"></script>
+
+<h1>Verdens mest befolkede land</h1>
+
+<h2>Alle land</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Land</th>
+            <th>Hovedstad</th>
+            <th>Antall språk</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in land %}
+        <tr>
+            <td>{{ l["land"] }}</td>
+            <td>{{ l["hovedstad"] }}</td>
+            <td>{{ l["språk"] | length }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="plottAlle"></div>
+
+<h2>Land med engelsk som språk ({{ engelsk_land | length }} land)</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Land</th>
+            <th>Hovedstad</th>
+            <th>Befolkning</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in engelsk_land %}
+        <tr>
+            <td>{{ l["land"] }}</td>
+            <td>{{ l["hovedstad"] }}</td>
+            <td>{{ l["befolkning"] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div id="plottEngelsk"></div>
+
+<script>
+Plotly.newPlot("plottAlle", [{
+    x: {{ alle_navn | tojson }},
+    y: {{ alle_befolkning | tojson }},
+    type: "bar"
+}], { title: "Befolkning per land" });
+
+Plotly.newPlot("plottEngelsk", [{
+    x: {{ engelsk_navn | tojson }},
+    y: {{ engelsk_befolkning | tojson }},
+    type: "bar"
+}], { title: "Befolkning i engelsktalende land" });
+</script>
 ```
 
 </details>
