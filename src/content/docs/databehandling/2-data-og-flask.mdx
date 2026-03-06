@@ -13,7 +13,6 @@ Lag filstrukturen:
 ```
 databehandling/
 ├── app.py
-├── filbib.py
 ├── revyen.json
 ├── karakterer.csv
 └── templates/
@@ -155,6 +154,23 @@ En tabell i HTML bruker taggene `<table>`, `<tr>` (rad), `<th>` (overskriftscell
 
 Med Jinja kan vi bruke for-løkker til å generere rader automatisk fra lister.
 
+### Les inn fil i app.py
+
+```python
+from flask import Flask, render_template, request
+import json
+
+app = Flask(__name__)
+
+with open("revyen.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+# Legg inn ruter her
+
+
+app.run(debug=True)
+```
+
 ### Flask-rute
 
 Les inn dataene og send dem til templaten med `render_template`:
@@ -162,8 +178,7 @@ Les inn dataene og send dem til templaten med `render_template`:
 ```python
 @app.get("/")
 def index():
-    revy = JSONfil("revyen.json")
-    return render_template("index.html", grupper=revy.data)
+    return render_template("index.html", grupper=data)
 ```
 
 ### HTML-template
@@ -187,10 +202,10 @@ Bruk en Jinja-løkke til å lage én rad per gruppe:
         </tr>
         {% for gruppe in grupper %}
         <tr>
-            <td>{{ gruppe.navn }}</td>
-            <td>{{ gruppe.leder }}</td>
-            <td>{{ gruppe.antall_medlemmer }}</td>
-            <td>{{ "Ja" if gruppe.klar else "Nei" }}</td>
+            <td>{{ gruppe['navn'] }}</td>
+            <td>{{ gruppe['leder'] }}</td>
+            <td>{{ gruppe['antall_medlemmer'] }}</td>
+            <td>{{ "Ja" if gruppe['klar'] == 'true' else "Nei" }}</td>
         </tr>
         {% endfor %}
     </table>
@@ -201,9 +216,9 @@ Bruk en Jinja-løkke til å lage én rad per gruppe:
 ## Plott med Chart.js
 
 Chart.js er et JavaScript-bibliotek for å lage interaktive diagrammer i nettleseren.
-Flask beregner dataene, og Chart.js tegner dem i en `<canvas>`-tag.
+Flask beregner dataene og Chart.js tegner dem i en `<canvas>`-tag.
 
-Last inn Chart.js i `<head>`:
+Last inn Chart.js i `<head>` i HTML-fila:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -211,7 +226,25 @@ Last inn Chart.js i `<head>`:
 
 For å sende Python-data til JavaScript bruker vi Jinja-filteret `| tojson`, som konverterer Python-lister og -ordbøker til JavaScript-format.
 
-### Søylediagram – karakterer per fag
+### Søylediagram: karakterer per fag
+
+### Les inn fil i app.py
+
+```python
+from flask import Flask, render_template, request
+import csv
+
+app = Flask(__name__)
+
+with open("karakterer.csv", encoding="utf-8") as fil:
+    leser = csv.DictReader(fil)
+    karakterer = list(leser)
+
+# Legg inn ruter her
+
+
+app.run(debug=True)
+```
 
 #### Flask-rute
 
@@ -220,14 +253,27 @@ Beregn data i Python og send to lister til templaten – én med etiketter og é
 ```python
 @app.get("/")
 def index():
-    karakterer = CSVfil("karakterer.csv")
+    fagstatistikk = {}
 
-    fag = ["Matematikk", "Norsk", "IT2"]
-    snitt = []
-    for f in fag:
-        snitt.append(karakterer.gjennomsnitt_med_filter("fag", f, "karakter"))
+    for k in karakterer:
+        if k["fag"] not in fagstatistikk:
+            fagstatistikk[k["fag"]] = {
+                antall: 1,
+                total: k["karakter"]
+            }
+        else:
+            fagstatistikk[k["fag"]]["antall"] += 1
+            fagstatistikk[k["fag"]]["totalkarakter"] += 1
 
-    return render_template("index.html", fag=fag, snitt=snitt)
+    fagliste = []
+    snittliste = []
+    for f in fagstatistikk:
+        fagliste.append(f)
+        snitt = fagstatistikk[f]["totalkarakter"] / fagstatistikk[f]["antall"]
+        snittliste.append(snitt)
+
+
+    return render_template("index.html", fagliste=fagliste, snittliste=snittliste)
 ```
 
 #### HTML-template
@@ -244,16 +290,16 @@ def index():
     <canvas id="mittDiagram"></canvas>
 
     <script>
-        const fag = {{ fag | tojson }};
-        const snitt = {{ snitt | tojson }};
+        const fagliste = {{ fagliste | tojson }};
+        const snitt = {{ snittliste | tojson }};
 
         new Chart(mittDiagram, {
             type: "bar",
             data: {
-                labels: fag,
+                labels: fagliste,
                 datasets: [{
                     label: "Snittkarakter",
-                    data: snitt
+                    data: snittliste
                 }]
             }
         });
@@ -262,9 +308,27 @@ def index():
 </html>
 ```
 
-### Kakediagram – fordeling av revygrupper
+### Kakediagram: fordeling av revygrupper
 
 Kakediagrammer egner seg for å vise andeler. Her viser vi størrelsen på hver revygruppe.
+
+### Les inn fil i app.py
+
+```python
+from flask import Flask, render_template, request
+import json
+
+app = Flask(__name__)
+
+with open("revyen.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+# Legg inn ruter her
+
+
+app.run(debug=True)
+```
+
 
 #### Flask-rute
 
@@ -273,11 +337,12 @@ Sorter gruppene etter størrelse før du henter ut kolonnene, så diagrammet vis
 ```python
 @app.get("/revy")
 def revy():
-    revy = JSONfil("revyen.json")
-    revy.sorter("antall_medlemmer", synkende=True)
-    navn = revy.kolonne("navn")
-    medlemmer = revy.kolonne("antall_medlemmer")
-    return render_template("revy.html", navn=navn, medlemmer=medlemmer)
+    gruppenavn = []
+    antall_medlemmer = []
+    for gruppe in data:
+        gruppenavn.append(gruppe["navn"])
+        antall_medlemmer.append(gruppe["antall_medlemmer"])
+    return render_template("revy.html", navn=gruppenavn, medlemmer=antall_medlemmer)
 ```
 
 #### HTML-template
@@ -286,35 +351,53 @@ def revy():
 <canvas id="revyDiagram"></canvas>
 
 <script>
+    const navn = {{ navn | tojson }}
+    const medlemmer = {{ medlemmer | tojson }}
     new Chart(revyDiagram, {
         type: "pie",
         data: {
-            labels: {{ navn | tojson }},
+            labels: navn,
             datasets: [{
-                data: {{ medlemmer | tojson }}
+                data: medlemmer
             }]
         }
     });
 </script>
 ```
 
----
 
 ## Sortering
 
 Vi kan la brukeren velge sortering ved å sende en verdi i URL-en med `?sorter=kolonnenavn`.
 Flask leser denne verdien med `request.args.get()`.
 
+### Les inn fil i app.py
+
+```python
+from flask import Flask, render_template, request
+import json
+
+app = Flask(__name__)
+
+with open("revyen.json", encoding="utf-8") as fil:
+    data = json.load(fil)
+
+# Legg inn ruter her
+
+
+app.run(debug=True)
+```
+
 ### Flask-rute
+
+Les inn dataene og send dem til templaten med `render_template`:
 
 ```python
 @app.get("/")
 def index():
-    revy = JSONfil("revyen.json")
     sorter_på = request.args.get("sorter")
-    if sorter_på:
-        revy.sorter(sorter_på, synkende=True)
-    return render_template("index.html", grupper=revy.data)
+    sorterte_grupper = sorted(personer, key=lambda x: x[sorter_på], reversed=True)
+    return render_template("index.html", grupper=sorterte_grupper)
 ```
 
 Hvis ingen `?sorter=`-parameter er oppgitt, returnerer `request.args.get("sorter")` verdien `None`, og tabellen vises usortert.
@@ -345,10 +428,10 @@ Legg til skjemaer med knapper øverst i tabellen:
     </tr>
     {% for gruppe in grupper %}
     <tr>
-        <td>{{ gruppe.navn }}</td>
-        <td>{{ gruppe.leder }}</td>
-        <td>{{ gruppe.antall_medlemmer }}</td>
-        <td>{{ "Ja" if gruppe.klar else "Nei" }}</td>
+        <td>{{ gruppe['navn'] }}</td>
+        <td>{{ gruppe['leder'] }}</td>
+        <td>{{ gruppe['antall_medlemmer'] }}</td>
+        <td>{{ "Ja" if gruppe['klar'] == 'true' else "Nei" }}</td>
     </tr>
     {% endfor %}
 </table>
