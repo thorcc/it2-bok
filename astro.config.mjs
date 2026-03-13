@@ -31,6 +31,11 @@ export default defineConfig({
 					collapsed: false,
 				},
 				{
+					label: 'Stortinget fantast',
+					autogenerate: { directory: 'stortinget-fantasy' },
+					collapsed: false,
+				},
+				{
 					label: 'Pygame',
 					autogenerate: { directory: 'pygame' },
 					collapsed: false
